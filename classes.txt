@@ -4,7 +4,7 @@ public interface Administrator{
 
 }
 
-public class MasterAdmin extends{
+public class MasterAdmin extends Administrator{
 
 	public void createClient(Client client){
 		if(!repository.clientExists()){
@@ -25,6 +25,7 @@ public abstract class Client{
 public class WarehouseAgent extends Client{
 
 	private hashmap<int,int> ratings;
+	private hashmap controlledWarehouses<int, warehouse> // Warehouse name or warehouse ID
 	public void receiveRating(Int ownerId, Int rating){
 
 	try{
@@ -36,7 +37,13 @@ public class WarehouseAgent extends Client{
 
 }
 
-	public void rentWarehouse
+	public void rentWarehouse(RentReceipt receipt,Warehouse Id){
+	
+	try{
+	Warehouse warehouse = repository.getWarehouseById(id);	
+	
+	}
+}
 
 	
 }
