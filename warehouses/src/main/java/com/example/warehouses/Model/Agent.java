@@ -15,8 +15,8 @@ public class Agent extends Client {
 
     @Id
     private Long Id;
-    private String firstName;
-    private String lastName;
+    private java.lang.String firstName;
+    private java.lang.String lastName;
     private HashMap<Integer, Integer> ratings; // rating ID, rating Owner, Rating value 1-5 - Class RatingsReceived
     private HashMap<Integer, Warehouse> controlledWarehouses; // Id, warehouseId - Class ControlledWarehouses
 

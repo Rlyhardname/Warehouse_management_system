@@ -1,6 +1,5 @@
 package com.example.warehouses.Model;
 
-import com.example.warehouses.Interfaces.Client;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

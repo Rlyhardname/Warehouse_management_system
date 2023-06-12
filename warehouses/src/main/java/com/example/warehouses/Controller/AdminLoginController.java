@@ -1,10 +1,9 @@
 package com.example.warehouses.Controller;
 
-import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
 import com.example.warehouses.Interfaces.Client;
-import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Services.AdminService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +17,14 @@ public class AdminLoginController implements AdministratorFunctions {
 
     @PostMapping
     @Override
-    public void createClient(@RequestBody Client client) {
+    public void loginClient(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
 
-        AdminRepository repo = adminService.getAdminRepository();
+        adminService.loginClient(email,password, response);
 
     }
 
     @GetMapping
     public void testDB(){
-        adminService.testService();
+      //  adminService.testService();
     }
 }

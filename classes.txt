@@ -90,5 +90,11 @@ public class RentReceipt{
 	private double rentPerMonth;
 }
 
+public enum WarehouseCategory{
+
+
+
+}
+
 
 

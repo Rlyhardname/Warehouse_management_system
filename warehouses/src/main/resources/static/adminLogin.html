@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+</head>
+<body>
+
+<form action="http://localhost:8080/hidden/admin/login" method="post">
+  <label for="email">Account:</label>
+  <input type="text" id="email" name="email"><br><br>
+  <label for="password">Password:</label>
+  <input type="text" id="password" name="password"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+
+  const form = document.querySelector('form');
+  const submit = document.querySelector('#submit');
+  const email = document.querySelector('#email');
+  const password = document.querySelector('#password');
+  submit.addEventListener("click",function (e){
+
+    e.preventDefault();
+    fetch(form.action,{
+      method: 'POST',
+      body: JSON.stringify( {
+        "email" : email.value,
+        "password" : password.value
+      }),
+      headers: {
+        "Content-Type" : "application/json"
+      },
+    })
+  });
+</script>
+
+</body>
+</html>

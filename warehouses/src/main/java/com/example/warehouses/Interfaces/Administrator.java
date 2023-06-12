@@ -1,7 +1,6 @@
 package com.example.warehouses.Interfaces;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +19,6 @@ public abstract class Administrator {
     private String password;
     private String firstName;
     private String lastName;
-    private String accountType;
 
 }
 

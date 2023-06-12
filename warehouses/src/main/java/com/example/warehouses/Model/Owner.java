@@ -1,7 +1,5 @@
 package com.example.warehouses.Model;
 
-import com.example.warehouses.Interfaces.Client;
-
 public class Owner {
 
     public void CreatedWarehouse(Warehouse warehouse) {
