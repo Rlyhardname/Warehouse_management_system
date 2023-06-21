@@ -15,10 +15,14 @@ public class Warehouse{
 
     @Id
     private Long id;
+    private Long ownerId;
     private Long receiptId;
+    private String warehouseName;
     private double squareFeet;
     private double temperature;
     private double humidityPercent; // could combine the two into a class/state or remove one of them;
+    private String stockedGoodsType;
     private String warehouseCategory;
+    private boolean rented;
 
 }

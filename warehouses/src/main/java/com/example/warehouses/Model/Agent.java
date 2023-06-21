@@ -2,31 +2,27 @@ package com.example.warehouses.Model;
 
 import com.example.warehouses.Interfaces.Client;
 import com.example.warehouses.Repository.WarehouseRepository;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashMap;
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Entity
+@EqualsAndHashCode(callSuper = true)
 public class Agent extends Client {
 
-    @Id
-    private Long Id;
-    private java.lang.String firstName;
-    private java.lang.String lastName;
-    private HashMap<Integer, Integer> ratings; // rating ID, rating Owner, Rating value 1-5 - Class RatingsReceived
-    private HashMap<Integer, Warehouse> controlledWarehouses; // Id, warehouseId - Class ControlledWarehouses
+//    private HashMap<Integer, Integer> ratings; // rating ID, rating Owner, Rating value 1-5 - Class RatingsReceived
+//    private HashMap<Integer, Warehouse> controlledWarehouses; // Id, warehouseId - Class ControlledWarehouses
 
     public void receiveRating(int ownerId, int rating) {
 
-        try {
-            ratings.put(ownerId, rating);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ratings.put(ownerId, rating);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -38,5 +34,12 @@ public class Agent extends Client {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void init(String email, String password, String firstName, String lastName) {
+        setEmail(email);
+        setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
     }
 }

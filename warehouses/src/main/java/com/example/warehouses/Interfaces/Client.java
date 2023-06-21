@@ -1,18 +1,23 @@
 package com.example.warehouses.Interfaces;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Table
 @Entity
 public abstract class Client {
 
-    @jakarta.persistence.Id
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private Long Id;
-    private java.lang.String email;
-    private java.lang.String password;
-    private java.lang.String firstName;
-    private java.lang.String lastName;
-    private java.lang.String accountType;
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
 
 }
