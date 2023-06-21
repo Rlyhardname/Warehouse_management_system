@@ -2,6 +2,7 @@ package com.example.warehouses.Model;
 
 import com.example.warehouses.Interfaces.Client;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.TreeMap;
 public class Owner extends Client {
 
 
+    @Transient
     private Map<Long,String> warehousesOwned;
 
     public void init(String email, String password, String firstName, String lastName){

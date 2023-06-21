@@ -14,35 +14,23 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path ="hidden/admin/")
+@RequestMapping(path = "hidden/admin/")
 public class AdminLoginController implements AdministratorFunctions {
-
     private final AdminService adminService;
-    @Autowired
-    public AdminLoginController(AdminService adminService) {this.adminService =adminService;}
 
+    @Autowired
+    public AdminLoginController(AdminService adminService) {
+        this.adminService = adminService;
+    }
+
+    @SneakyThrows
     @PostMapping
     @Override
-    public Optional<Administrator> isLoginClient(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
+    public Optional<Administrator> isLoginAdmin(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
 
         Optional<Administrator> adminOpt = null;
-        try {
-            adminOpt = adminService.isLoginClient(email, password, response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-              Administrator admin =  adminOpt.orElseThrow(()-> new UserNotExististingException(
-                ));
-
-                //  response.getWriter();
-                // adminService.getAdminRepository().findAdminByEmail();
-                response.sendRedirect("login");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+        adminOpt = adminService.isLoginAdmin(email, password, response);
+        response.sendRedirect("login");
 
         return adminOpt;
     }
@@ -57,29 +45,9 @@ public class AdminLoginController implements AdministratorFunctions {
                                          @RequestParam String clientType,
                                          HttpServletResponse response) {
 
-
-        Optional<Client> clientOpt = adminService.createClient(email,password,firstName,lastName,clientType, response);
+        Optional<Client> clientOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
         response.sendRedirect("http://localhost:8080/MainPage.html");
 
         return clientOpt;
     }
-
-    @GetMapping("")
-    public void potatoRedirect(HttpServletResponse response){
-        try {
-
-            response.sendRedirect("http://localhost:8080/adminLogin.html");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
-
-
-
-
-//    @GetMapping
-//    public void testDB(){
-//        adminService.testService();
-//    }

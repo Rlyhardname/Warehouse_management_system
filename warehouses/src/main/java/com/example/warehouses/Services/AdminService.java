@@ -25,24 +25,17 @@ public class AdminService implements AdministratorFunctions {
 
     private final AdminRepository adminRepository;
     private final ClientRepository clientRepository;
+    private final GlobalService globalService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository) {
+    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, GlobalService globalService) {
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
+        this.globalService = globalService;
 
     }
-
-    public void testService() {
-        adminRepository.save(new MasterAdmin());
-        Administrator admin = adminRepository.findById(1L).orElseThrow(() -> new IllegalStateException(
-                "HAHAHA"
-        ));
-    }
-
-
     @Override
-    public Optional<Administrator> isLoginClient(String email, String password, HttpServletResponse response) throws IOException {
+    public Optional<Administrator> isLoginAdmin(String email, String password, HttpServletResponse response) throws IOException {
 
         Optional<Administrator> adminOpt = Optional.of(adminRepository.findAdminByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
@@ -62,24 +55,12 @@ public class AdminService implements AdministratorFunctions {
                                          String clientType,
                                          HttpServletResponse response) {
 
-        Client client = null;
-        if(clientType.equals("Owner")){
-            client = new Owner();
-            ((Owner)client).init(email,password,firstName,lastName);
-        } else if(clientType.equals("Agent")){
-            client = new Agent();
-            ((Agent)client).init(email,password,firstName,lastName);
-        }
-
-
-        Optional<Client> clientOpt = clientRepository.findClientByEmail(email);
-        if (clientOpt.isPresent()==false) {
-            clientRepository.save(client);
-        } else if(clientOpt != null){
-            throw new ClientAlreadyRegisteredException();
-        }
-
-        return clientOpt;
+       return globalService.register( email,
+                password,
+                firstName,
+                lastName,
+                clientType,
+                response);
     }
 }
 
