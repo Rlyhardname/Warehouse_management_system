@@ -33,5 +33,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
     }
 
+    @SneakyThrows
+    @ExceptionHandler(WarehouseAlreadyExistsException.class)
+    public ResponseEntity<Object> HandleWarehouseAlreadyExistsException(HttpServletResponse response){
+
+        response.sendRedirect("http://localhost:8080/createWarehouse.html");
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+    }
+
 
 }

@@ -41,4 +41,8 @@ public class Owner extends Client {
             e.printStackTrace();
         }
     }
+
+    public void rateAgent(){
+
+    }
 }

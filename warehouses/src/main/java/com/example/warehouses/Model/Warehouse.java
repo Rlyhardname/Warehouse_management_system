@@ -23,22 +23,42 @@ public class Warehouse{
     @Column(unique=true)
     private String warehouseName;
 //    private Long receiptId;
-//    private double squareFeet;
-//    private double temperature;
-//    private double humidityPercent; // could combine the two into a class/state or remove one of them;
-//    private String stockedGoodsType;
-//    private String warehouseCategory;
-//    private boolean rented;
+    private String squareFeet;
+    private String temperature;
+    private String humidityPercent; // could combine the two into a class/state or remove one of them;
+    private String stockedGoodsType;
+    private String warehouseCategory;
+    private boolean rented;
 
-    public void init(Owner owner, String name){
+    public void init(Owner owner,
+                     String name,
+                     String squareFeet,
+                     String temperature,
+                     String humidityPercent,
+                     String stockedGoodsType,
+                     String warehouseCategory,
+                     String rented){
         setOwner(owner);
         setWarehouseName(name);
+        setSquareFeet(squareFeet);
+        setTemperature(temperature);
+        setHumidityPercent(humidityPercent);
+        setStockedGoodsType(stockedGoodsType);
+        setWarehouseCategory(warehouseCategory);
+        if(rented.equals("yes")){
+            setRented(true);
+        }else{
+            setRented(false);
+        }
+
+
     }
 
     @Override
     public String toString(){
 
-        return warehouseName + " " + id;
+        return warehouseName + " " + id + " " + squareFeet + " " + temperature + " " +  humidityPercent +
+                " " + stockedGoodsType + " " + warehouseCategory + " " + rented;
     }
 
 }

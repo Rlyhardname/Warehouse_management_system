@@ -1,8 +1,6 @@
 package com.example.warehouses.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -16,6 +14,9 @@ import java.sql.Timestamp;
 @Table
 public class RentReceipt{
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private Long Id;
     private Long clientId;
     private Timestamp startDate;

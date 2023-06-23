@@ -3,10 +3,9 @@ package com.example.warehouses.Model;
 import com.example.warehouses.Interfaces.Client;
 import com.example.warehouses.Repository.WarehouseRepository;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.*;
-
-import java.util.HashMap;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Entity
