@@ -1,5 +1,9 @@
 package com.example.warehouses.Exception;
 
+import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
+import com.example.warehouses.Exception.Client.UserNotExististingException;
+import com.example.warehouses.Exception.Login.WrongPasswordException;
+import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;

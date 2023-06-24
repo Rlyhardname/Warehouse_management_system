@@ -1,4 +1,4 @@
-package com.example.warehouses.Exception;
+package com.example.warehouses.Exception.Client;
 
 public class UserNotExististingException extends RuntimeException{
 }

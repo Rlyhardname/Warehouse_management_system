@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table
 @Entity
-public abstract class Client {
+public class Client {
 
     @Id
     @GeneratedValue(
@@ -19,5 +19,8 @@ public abstract class Client {
     private String password;
     private String firstName;
     private String lastName;
+
+
+
 
 }

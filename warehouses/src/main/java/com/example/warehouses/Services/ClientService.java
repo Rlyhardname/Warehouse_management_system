@@ -1,7 +1,7 @@
 package com.example.warehouses.Services;
 
-import com.example.warehouses.Exception.UserNotExististingException;
-import com.example.warehouses.Exception.WrongPasswordException;
+import com.example.warehouses.Exception.Client.UserNotExististingException;
+import com.example.warehouses.Exception.Login.WrongPasswordException;
 import com.example.warehouses.Interfaces.Client;
 import com.example.warehouses.Repository.ClientRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,11 +36,11 @@ public class ClientService {
     }
 
     public Optional<Client> register(String email,
-                         String password,
-                         String firstName,
-                         String lastName,
-                         String clientType,
-                         HttpServletResponse response) {
+                                     String password,
+                                     String firstName,
+                                     String lastName,
+                                     String clientType,
+                                     HttpServletResponse response) {
        return globalService.register(email,
                 password,
                 firstName,

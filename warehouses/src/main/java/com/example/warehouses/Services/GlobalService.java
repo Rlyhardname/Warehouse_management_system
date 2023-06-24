@@ -1,6 +1,6 @@
 package com.example.warehouses.Services;
 
-import com.example.warehouses.Exception.ClientAlreadyRegisteredException;
+import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
 import com.example.warehouses.Interfaces.Client;
 import com.example.warehouses.Model.Agent;
 import com.example.warehouses.Model.Owner;

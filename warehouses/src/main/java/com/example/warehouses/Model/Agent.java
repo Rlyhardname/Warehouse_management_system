@@ -3,6 +3,7 @@ package com.example.warehouses.Model;
 import com.example.warehouses.Interfaces.Client;
 import com.example.warehouses.Repository.WarehouseRepository;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Agent extends Client {
 
+    @OneToOne
+    RentalForm rentalForm;
 //    private HashMap<Integer, Integer> ratings; // rating ID, rating Owner, Rating value 1-5 - Class RatingsReceived
 //    private HashMap<Integer, Warehouse> controlledWarehouses; // Id, warehouseId - Class ControlledWarehouses
 
@@ -25,7 +28,7 @@ public class Agent extends Client {
 
     }
 
-    public void rentWarehouse(WarehouseRepository repository, RentReceipt receipt, Long warehouseId) {
+    public void rentWarehouse(WarehouseRepository repository, RentalForm receipt, Long warehouseId) {
 
         try {
             Warehouse warehouse = repository.findById(warehouseId).orElseThrow(() -> new IllegalStateException("Warehouse " + warehouseId + "doesn't exist"));
@@ -40,5 +43,9 @@ public class Agent extends Client {
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
+    }
+
+    public double calcAverageRating(double TotalRatings, int NumberOfVotes){
+        return TotalRatings/NumberOfVotes;
     }
 }

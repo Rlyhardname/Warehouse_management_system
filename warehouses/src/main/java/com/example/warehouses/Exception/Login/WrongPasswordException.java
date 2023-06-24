@@ -1,4 +1,4 @@
-package com.example.warehouses.Exception;
+package com.example.warehouses.Exception.Login;
 
 import jakarta.servlet.http.HttpServletResponse;
 

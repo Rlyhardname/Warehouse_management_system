@@ -1,14 +1,14 @@
 package com.example.warehouses.Model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class AgentRatings {
     @EmbeddedId
     private AgentRatingsPK id;

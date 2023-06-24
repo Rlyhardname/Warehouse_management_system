@@ -3,13 +3,15 @@ package com.example.warehouses.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table
-public class Warehouse{
+public class Warehouse implements Serializable {
 
     @Id
     @GeneratedValue(
@@ -18,10 +20,12 @@ public class Warehouse{
     private Long id;
     // @JoinColumn(name = "owner_id", nullable = false)
     // @JsonBackReference
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne()//(fetch=FetchType.LAZY)
     private Owner owner;
     @Column(unique=true)
     private String warehouseName;
+    @ManyToOne
+    private Address address;
 //    private Long receiptId;
     private String squareFeet;
     private String temperature;
@@ -31,6 +35,7 @@ public class Warehouse{
     private boolean rented;
 
     public void init(Owner owner,
+                     Address address,
                      String name,
                      String squareFeet,
                      String temperature,
@@ -39,6 +44,7 @@ public class Warehouse{
                      String warehouseCategory,
                      String rented){
         setOwner(owner);
+        setAddress(address);
         setWarehouseName(name);
         setSquareFeet(squareFeet);
         setTemperature(temperature);

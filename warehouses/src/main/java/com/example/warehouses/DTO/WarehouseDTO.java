@@ -1,6 +1,8 @@
 package com.example.warehouses.DTO;
 
+import com.example.warehouses.Model.Address;
 import com.example.warehouses.Model.Warehouse;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,9 +10,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class WarehouseDTO {
 
     private final Long id;
+    private final Address address;
     private final String warehouseName;
     private final String squareFeet;
     private final String temperature;
@@ -21,6 +25,7 @@ public class WarehouseDTO {
 
     public WarehouseDTO(Warehouse warehouse) {
         this.id = warehouse.getId();
+        this.address = warehouse.getAddress();
         this.warehouseName = warehouse.getWarehouseName();
         this.squareFeet = warehouse.getSquareFeet();
         this.temperature = warehouse.getTemperature();
