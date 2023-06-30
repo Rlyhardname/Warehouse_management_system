@@ -1,9 +1,9 @@
 package com.example.warehouses.Repository;
 
-import com.example.warehouses.Model.warehouse.Address;
+import com.example.warehouses.Model.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address,Long> {
+public interface NotificationRepository extends JpaRepository<Notification,Long> {
 }

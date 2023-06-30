@@ -1,4 +1,4 @@
-package com.example.warehouses.Model;
+package com.example.warehouses.Model.User;
 
 import com.example.warehouses.Interfaces.Administrator;
 import jakarta.persistence.Entity;

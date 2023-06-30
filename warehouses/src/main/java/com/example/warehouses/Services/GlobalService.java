@@ -1,9 +1,10 @@
 package com.example.warehouses.Services;
 
+import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
-import com.example.warehouses.Interfaces.Client;
-import com.example.warehouses.Model.Agent;
-import com.example.warehouses.Model.Owner;
+import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.Agent;
+import com.example.warehouses.Model.User.Owner;
 import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Repository.ClientRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,5 +52,24 @@ public class GlobalService {
 
         return clientOpt;
     }
+
+    public boolean isEmailInDatabase(String email){
+            if(clientRepository.findClientByEmail(email).isPresent()){
+                return true;
+            }
+            return false;
+    }
+
+    public WarehouseCategory warehouseCategory(String category){
+        switch (category.toLowerCase()){
+            case "garage": return WarehouseCategory.GARAGE;
+            case "SMALL": return WarehouseCategory.SMALL;
+            case "MEDIUM": return WarehouseCategory.MEDIUM;
+            case "LARGE": return WarehouseCategory.LARGE;
+            case "INDUSTRIAL":  return WarehouseCategory.INDUSTRIAL;
+            default: return WarehouseCategory.EMPTY;
+        }
+    }
+
 
 }

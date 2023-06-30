@@ -4,7 +4,7 @@ import com.example.warehouses.Exception.Client.UserNotExististingException;
 import com.example.warehouses.Exception.Login.WrongPasswordException;
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
-import com.example.warehouses.Interfaces.Client;
+import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Repository.ClientRepository;
 import jakarta.servlet.http.HttpServletResponse;

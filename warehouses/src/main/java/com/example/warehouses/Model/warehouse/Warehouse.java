@@ -1,7 +1,12 @@
-package com.example.warehouses.Model;
+package com.example.warehouses.Model.warehouse;
 
+import com.example.warehouses.Configurations.Enum.WarehouseCategory;
+import com.example.warehouses.Model.User.Owner;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -18,18 +23,15 @@ public class Warehouse implements Serializable {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-    // @JoinColumn(name = "owner_id", nullable = false)
-    // @JsonBackReference
-    @ManyToOne()//(fetch=FetchType.LAZY)
+    @ManyToOne()
     private Owner owner;
     @Column(unique=true)
     private String warehouseName;
     @ManyToOne
     private Address address;
-//    private Long receiptId;
     private String squareFeet;
     private String temperature;
-    private String humidityPercent; // could combine the two into a class/state or remove one of them;
+    private String humidityPercent;
     private String stockedGoodsType;
     private String warehouseCategory;
     private boolean rented;
@@ -41,8 +43,8 @@ public class Warehouse implements Serializable {
                      String temperature,
                      String humidityPercent,
                      String stockedGoodsType,
-                     String warehouseCategory,
-                     String rented){
+                     WarehouseCategory warehouseCategory
+                     ){
         setOwner(owner);
         setAddress(address);
         setWarehouseName(name);
@@ -50,14 +52,8 @@ public class Warehouse implements Serializable {
         setTemperature(temperature);
         setHumidityPercent(humidityPercent);
         setStockedGoodsType(stockedGoodsType);
-        setWarehouseCategory(warehouseCategory);
-        if(rented.equals("yes")){
-            setRented(true);
-        }else{
-            setRented(false);
-        }
-
-
+        setWarehouseCategory(warehouseCategory.name());
+        rented = false;
     }
 
     @Override

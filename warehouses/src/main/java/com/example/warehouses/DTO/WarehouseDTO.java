@@ -1,7 +1,7 @@
 package com.example.warehouses.DTO;
 
-import com.example.warehouses.Model.Address;
-import com.example.warehouses.Model.Warehouse;
+import com.example.warehouses.Model.warehouse.Address;
+import com.example.warehouses.Model.warehouse.Warehouse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ public class WarehouseDTO {
     private final String warehouseName;
     private final String squareFeet;
     private final String temperature;
-    private final String humidityPercent; // could combine the two into a class/state or remove one of them;
+    private final String humidityPercent;
     private final String stockedGoodsType;
     private final String warehouseCategory;
     private final boolean rented;

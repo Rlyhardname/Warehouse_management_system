@@ -1,6 +1,6 @@
 package com.example.warehouses.Repository;
 
-import com.example.warehouses.Model.Warehouse;
+import com.example.warehouses.Model.warehouse.Warehouse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,8 +14,11 @@ public interface WarehouseRepository extends JpaRepository<Warehouse,Long> {
     Optional<Warehouse> findWarehouseByName(String name);
 
     @Query("Select s FROM Warehouse s WHERE s.owner.Id =?1")
-    List<Optional<Warehouse>> findWarehouseByOwnerId(Long id);
+    Optional<List<Warehouse>> findWarehousesByOwnerId(Long id);
+
+    @Query("Select s FROM Warehouse s WHERE s.owner.Id =?1 AND s.id =?2")
+    Optional<Warehouse> findWarehouseByOwnerIdAndWarehouseId(Long ownerId, Long warehouseId);
 
     @Query("Select s FROM Warehouse s WHERE s.rented =?1")
-    List<Optional<Warehouse>> findByRentStatus(boolean rented);
+    Optional<List<Warehouse>> findByRentStatus(boolean rented);
 }

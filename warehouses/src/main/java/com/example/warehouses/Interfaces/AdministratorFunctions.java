@@ -1,5 +1,6 @@
 package com.example.warehouses.Interfaces;
 
+import com.example.warehouses.Model.User.Client;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;

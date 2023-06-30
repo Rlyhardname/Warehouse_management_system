@@ -1,22 +1,26 @@
 package com.example.warehouses.Services;
 
+import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
+import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.RentFormDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
+import com.example.warehouses.Exception.Client.AgentHasNoContractsException;
+import com.example.warehouses.Exception.Client.OwnerDoesntOwnAnyWarehouseException;
 import com.example.warehouses.Exception.Client.UserNotExististingException;
 import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
-import com.example.warehouses.Interfaces.Client;
+import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
+import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.*;
-import com.example.warehouses.Repository.ClientRepository;
-import com.example.warehouses.Repository.RatingsRepository;
-import com.example.warehouses.Repository.RentalFormRepository;
-import com.example.warehouses.Repository.WarehouseRepository;
+import com.example.warehouses.Model.User.Agent;
+import com.example.warehouses.Model.User.Owner;
+import com.example.warehouses.Model.warehouse.*;
+import com.example.warehouses.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ClientFuncService {
@@ -26,18 +30,28 @@ public class ClientFuncService {
     private final WarehouseRepository warehouseRepository;
     private final RatingsRepository ratingsRepository;
     private final RentalFormRepository rentalFormRepository;
+    private final WarehouseAssignedToAgentRepository marketRepository;
+
+    private final AddressRepository addressRepository;
+    private final WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository;
 
     @Autowired
     public ClientFuncService(ClientRepository clientRepository,
                              GlobalService globalService,
                              WarehouseRepository warehouseRepository,
                              RatingsRepository ratingsRepository,
-                             RentalFormRepository rentalFormRepository) {
+                             RentalFormRepository rentalFormRepository,
+                             WarehouseAssignedToAgentRepository marketRepository,
+                             AddressRepository addressRepository,
+                             WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository) {
         this.clientRepository = clientRepository;
         this.globalService = globalService;
         this.warehouseRepository = warehouseRepository;
         this.ratingsRepository = ratingsRepository;
         this.rentalFormRepository = rentalFormRepository;
+        this.marketRepository = marketRepository;
+        this.addressRepository = addressRepository;
+        this.warehouseAssignedToAgentRepository = warehouseAssignedToAgentRepository;
     }
 
     public Optional<WarehouseDTO> createWarehouse(String email,
@@ -49,7 +63,7 @@ public class ClientFuncService {
                                                   String temperature,
                                                   String humidityPercent,
                                                   String stockedGoodsType,
-                                                  String warehouseCategory,
+                                                  WarehouseCategory warehouseCategory,
                                                   String rented) {
         System.out.println(email + " " + name);
         Warehouse warehouse = null;
@@ -61,7 +75,9 @@ public class ClientFuncService {
         if (warehouseOpt.isPresent() == false) {
             Owner owner = (Owner) ownerOpt.get();
             Address address = new Address();
-            address.init(county,town,streetName);
+            address.init(county, town, streetName);
+            addressRepository.save(address);
+
             warehouse = new Warehouse();
             warehouse.init(owner,
                     address,
@@ -70,11 +86,11 @@ public class ClientFuncService {
                     temperature,
                     humidityPercent,
                     stockedGoodsType,
-                    warehouseCategory,
-                    rented);
+                    warehouseCategory
+            );
             warehouseRepository.save(warehouse);
             warehouse = warehouseRepository.findWarehouseByName(name).get();
-            owner.CreatedWarehouse(warehouse);
+            //  owner.CreatedWarehouse(warehouse);
             clientRepository.save(owner);
             warehouseDTO = new WarehouseDTO(warehouse);
         } else {
@@ -86,22 +102,21 @@ public class ClientFuncService {
         return warehouseDTOOpt;
     }
 
-    public Optional<AgentAndRentFormDTO> agentReferenceByPeriod(Long agentId, LocalDate startDate, LocalDate endDate){
+    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(Long agentId, LocalDate startDate, LocalDate endDate) {
 
         AgentAndRentFormDTO agentDTO = new AgentAndRentFormDTO();
-        isAgentRated(agentDTO,agentId);
-        gatherFormData(agentDTO,agentId,startDate,endDate);
-        Optional agentDTOOpt = Optional.of(agentDTO);
-        for (RentFormDTO form: agentDTO.getRentalForms()
-             ) {
+        isAgentRated(agentDTO, agentId);
+        gatherFormData(agentDTO, agentId, startDate, endDate);
+        for (RentFormDTO form : agentDTO.getRentalForms()
+        ) {
             System.out.println("Form" + form);
         }
-        return agentDTOOpt;
+        return agentDTO;
     }
 
     public boolean isAgentRated(AgentAndRentFormDTO agentDTO, Long agentId) {
-        Agent agent = (Agent)clientRepository.findById(agentId).orElseThrow(
-                ()-> new UserNotExististingException()
+        Agent agent = (Agent) clientRepository.findById(agentId).orElseThrow(
+                () -> new UserNotExististingException()
         );
         agentDTO.setEmail(agent.getEmail());
         agentDTO.setFirstName(agent.getFirstName());
@@ -125,28 +140,139 @@ public class ClientFuncService {
         return true;
     }
 
-    public void gatherFormData(AgentAndRentFormDTO agentDTO, Long agentId, LocalDate startDate, LocalDate endDate){
+    public void gatherFormData(AgentAndRentFormDTO agentDTO, Long agentId, LocalDate startDate, LocalDate endDate) {
 
-       Optional<List<RentalForm>> rentalForms =
-               rentalFormRepository.findRentFormsByAgentIdAndStartDateEndDate(agentId,startDate,endDate);
+        List<RentalForm> rentalForms =
+                rentalFormRepository.findRentFormsByAgentIdAndStartDateEndDate(agentId, startDate, endDate).orElseThrow(
+                        ()-> new AgentHasNoContractsException()
+                );
 
 
-           for (RentalForm form: rentalForms.get()
-                ) {
+        for (RentalForm form : rentalForms
+        ) {
 
-               agentDTO.getRentalForms().add(new RentFormDTO(form.getId(),form.getAgent().getId(),form.getClient().getId(),
-                       form.getWarehouse().getId(),form.getStartDate(),form.getEndDate(),form.getRentPerMonth()));
-               System.out.println(form);
-           }
-
+            agentDTO.getRentalForms().add(new RentFormDTO(form.getId(), form.getAgent().getId(), form.getClient().getId(),
+                    form.getWarehouse().getId(), form.getStartDate(), form.getEndDate(), form.getContractFiatWorth()));
+            System.out.println(form);
+        }
 
 
     }
 
-    public List<Optional<Warehouse>> getWarehouseByOwnerId(Long ownerId) {
+    public Optional<List<Warehouse>> getWarehouseByOwnerId(Long ownerId) {
 
-        List<Optional<Warehouse>> warehouseOpt = warehouseRepository.findWarehouseByOwnerId(ownerId);
+        Optional<List<Warehouse>> warehouseOpt = warehouseRepository.findWarehousesByOwnerId(ownerId);
         return warehouseOpt;
+    }
+
+    public Optional<List<Warehouse>> getAllWarehouses(String rented) {
+
+        switch (rented) {
+            case "yes":
+                return warehouseRepository.findByRentStatus(true);
+            case "no":
+                return warehouseRepository.findByRentStatus(false);
+            default:
+                return Optional.of(warehouseRepository.findAll());
+        }
+
+    }
+
+    public Set<Agent> setAgentsToWarehouse(Long ownerId, List<Long> agentIds, Long warehouseId) { // AgentsWarehouse DTO // List<Warehouse> warehouses, List<Agent> agents
+
+        List<Agent> agents = getAllAgentsById(agentIds);
+        Warehouse warehouse = warehouseRepository.findWarehouseByOwnerIdAndWarehouseId(ownerId, warehouseId).get();
+        Owner owner = (Owner) clientRepository.findById(ownerId).get();
+        warehouseAssignedToAgentRepository.saveAll(owner.assignAgentsToWarehouse(agents, warehouse));
+
+        return getAllAgentsPairedToWarehouse(ownerId, warehouseId);
+    }
+
+    public Set<AgentDTO> RemoveAgentsFromWarehouse(Long ownerId,
+                                                                    List<Long> agents,
+                                                                    Long warehouseId) {
+        Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(
+                () -> new WarehouseNotExistingException()
+        );
+        Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
+                () -> new UserNotExististingException()
+        );
+        List<Agent> agentsToRemove = getAllAgentsById(agents);
+        List<WarehouseAssignedToAgent> assignedAgents = getAllAssignedAgentsToWarehouse(agentsToRemove, warehouse);
+        List<WarehouseAssignedToAgent> agentsLeft = owner.RemoveAgentsFromWarehouse(agentsToRemove, warehouse, assignedAgents);
+
+        Set<AgentDTO> agentDTOset = new HashSet<>();
+        List<Agent> agentList =getAllAgentsById(getAllAgentIds(agentsLeft));
+        for (Agent agent: agentList
+             ) {
+            agentDTOset.add(new AgentDTO(agent));
+        }
+
+        return agentDTOset;
+    }
+
+    public List<Long> getAllAgentIds(List<WarehouseAssignedToAgent> agentWarehousePair){
+       List<Long> agentIds = new ArrayList<>();
+        for (WarehouseAssignedToAgent pair: agentWarehousePair
+        ) {
+            agentIds.add(pair.getId().getAgentId());
+        }
+        return agentIds;
+    }
+
+    public List<WarehouseAssignedToAgent> getAllAssignedAgentsToWarehouse(List<Agent> agentList, Warehouse warehouse) {
+
+        List<WarehouseAssignedToAgent> assignedAgents = new ArrayList<>();
+        for (Agent agent : agentList
+        ) {
+            {
+                Optional<WarehouseAssignedToAgent> agentWarehousePair =
+                        warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agent.getId(), warehouse.getId());
+                if (agentWarehousePair != null) {
+                    assignedAgents.add(agentWarehousePair.get());
+                }
+
+            }
+
+        }
+        return assignedAgents;
+    }
+
+    public Set<Agent> getAllAgentsPairedToWarehouse(Long ownerId, Long warehouseId) {
+        Set<Agent> agentSet = new HashSet<>();
+        List<WarehouseAssignedToAgent> warehouseAgentPair = warehouseAssignedToAgentRepository.findWarehousesByOwnerIdAndWarehouseId(ownerId, warehouseId).get();
+        List<Agent> agents = new ArrayList<>();
+        for (WarehouseAssignedToAgent pair : warehouseAgentPair
+        ) {
+            Agent agent = (Agent) clientRepository.findById(pair.getId().getAgentId()).get();
+            agents.add(agent);
+        }
+
+        for (Agent agent : agents
+        ) {
+            agentSet.remove(agent);
+        }
+
+        return agentSet;
+    }
+
+    public List<Agent> getAllAgentsById(List<Long> agentIds) {
+        List<Agent> agents = new ArrayList<>();
+        for (Long agentId : agentIds
+        ) {
+            Agent agent = (Agent) clientRepository.findById(agentId).get();
+            if (agent != null) {
+                agents.add(agent);
+            }
+        }
+
+        return agents;
+    }
+
+    public List<Warehouse> fetchWarehouses(Long ownerId) {
+        return warehouseRepository.findWarehousesByOwnerId(ownerId).orElseThrow(
+                () -> new OwnerDoesntOwnAnyWarehouseException()
+        );
     }
 }
 

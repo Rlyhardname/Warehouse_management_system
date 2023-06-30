@@ -1,6 +1,5 @@
 package com.example.warehouses.DTO;
 
-import com.example.warehouses.Model.Warehouse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

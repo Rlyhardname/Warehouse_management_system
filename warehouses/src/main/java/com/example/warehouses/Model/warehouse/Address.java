@@ -1,11 +1,10 @@
-package com.example.warehouses.Model;
+package com.example.warehouses.Model.warehouse;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Setter
 @Getter
