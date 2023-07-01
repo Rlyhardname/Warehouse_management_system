@@ -18,4 +18,7 @@ public interface WarehouseAssignedToAgentRepository extends JpaRepository<Wareho
     @Query("Select s FROM WarehouseAssignedToAgent s WHERE s.id.agentId =?1 AND s.id.warehouseId =?2")
     Optional<WarehouseAssignedToAgent> findByAgentIdAndWarehouseId(Long agentId, Long warehouseId);
 
+    @Query("UPDATE WarehouseAssignedToAgent s SET s.relationshipStatus=?1 WHERE s.id.agentId =?2 AND s.id.warehouseId=?3")
+    void updateStatus(String status, Long agentId, Long warehouseId);
+
 }

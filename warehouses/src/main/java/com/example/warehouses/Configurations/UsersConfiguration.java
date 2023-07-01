@@ -131,7 +131,7 @@ public class UsersConfiguration {
                     ,rating4)
             );
             Optional<List<AgentRatings>> ratingsBasedOnOwnerID = ratingsRepository.findByOwnerId(1L);
-            Optional<List<AgentRatings>> ratingsBasedOnAgentID = ratingsRepository.findByAgentId(3L);
+            Optional<List<AgentRatings>> ratingsBasedOnAgentID = ratingsRepository.findAllByAgentId(3L);
 //
             for (AgentRatings item: ratingsBasedOnOwnerID.get()
               ) {
@@ -181,10 +181,10 @@ public class UsersConfiguration {
             );
 
 
-//            RentalForm rentalForm1 = new RentalForm(agent2,agent1,warehouse1,start,end,500.50);
-//            RentalForm rentalForm2 = new RentalForm(agent2,client1,warehouse1,start1,end1,444);
-//            rentalFormRepository.save(rentalForm1);
-//            rentalFormRepository.save(rentalForm2);
+            RentalForm rentalForm1 = new RentalForm(agent2,agent1,warehouse1,start,end,500.50,0.2);
+            RentalForm rentalForm2 = new RentalForm(agent2,client1,warehouse1,start1,end1,444,0.5);
+            rentalFormRepository.save(rentalForm1);
+            rentalFormRepository.save(rentalForm2);
 
 
         };

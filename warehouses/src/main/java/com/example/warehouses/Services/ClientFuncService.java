@@ -6,15 +6,20 @@ import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.RentFormDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
 import com.example.warehouses.Exception.Client.AgentHasNoContractsException;
+import com.example.warehouses.Exception.Client.AgentNotAssignedWarehouseException;
 import com.example.warehouses.Exception.Client.OwnerDoesntOwnAnyWarehouseException;
 import com.example.warehouses.Exception.Client.UserNotExististingException;
+import com.example.warehouses.Exception.Warehouse.AlreadyRentedException;
 import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
-import com.example.warehouses.Model.User.Client;
-import com.example.warehouses.Model.*;
+import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.User.Agent;
+import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.User.Owner;
-import com.example.warehouses.Model.warehouse.*;
+import com.example.warehouses.Model.warehouse.Address;
+import com.example.warehouses.Model.warehouse.RentalForm;
+import com.example.warehouses.Model.warehouse.Warehouse;
+import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
 import com.example.warehouses.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,52 +59,99 @@ public class ClientFuncService {
         this.warehouseAssignedToAgentRepository = warehouseAssignedToAgentRepository;
     }
 
-    public Optional<WarehouseDTO> createWarehouse(String email,
-                                                  String county,
-                                                  String town,
-                                                  String streetName,
-                                                  String name,
-                                                  String squareFeet,
-                                                  String temperature,
-                                                  String humidityPercent,
-                                                  String stockedGoodsType,
-                                                  WarehouseCategory warehouseCategory,
-                                                  String rented) {
+    public WarehouseDTO createWarehouse(String email,
+                                        String county,
+                                        String town,
+                                        String streetName,
+                                        String name,
+                                        String squareFeet,
+                                        String temperature,
+                                        String humidityPercent,
+                                        String stockedGoodsType,
+                                        WarehouseCategory warehouseCategory,
+                                        String rented) {
         System.out.println(email + " " + name);
         Warehouse warehouse = null;
         WarehouseDTO warehouseDTO = null;
-        Optional<Warehouse> warehouseOpt = warehouseRepository.findWarehouseByName(name);
-        Optional<Client> ownerOpt = Optional.of(clientRepository.findClientByEmail(email).orElseThrow(
+
+        Client ownerOpt = clientRepository.findClientByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
-        ));
-        if (warehouseOpt.isPresent() == false) {
-            Owner owner = (Owner) ownerOpt.get();
+        );
+        if (warehouseRepository.findWarehouseByName(name).isPresent() == false) {
+            Owner owner = (Owner) ownerOpt;
             Address address = new Address();
             address.init(county, town, streetName);
             addressRepository.save(address);
 
-            warehouse = new Warehouse();
-            warehouse.init(owner,
-                    address,
+            warehouse = owner.CreatedWarehouse(address,
                     name,
                     squareFeet,
                     temperature,
                     humidityPercent,
                     stockedGoodsType,
-                    warehouseCategory
-            );
+                    warehouseCategory);
             warehouseRepository.save(warehouse);
-            warehouse = warehouseRepository.findWarehouseByName(name).get();
-            //  owner.CreatedWarehouse(warehouse);
-            clientRepository.save(owner);
             warehouseDTO = new WarehouseDTO(warehouse);
         } else {
             throw new WarehouseAlreadyExistsException();
         }
-        System.out.println(warehouse);
-
-        Optional<WarehouseDTO> warehouseDTOOpt = Optional.of(warehouseDTO);
+        WarehouseDTO warehouseDTOOpt = warehouseDTO;
         return warehouseDTOOpt;
+    }
+
+    public void rentWarehouse(Long ownerId,
+                              Long agentId,
+                              Long clientId,
+                              Long warehouseId,
+                              LocalDate startDate,
+                              LocalDate endDate,
+                              double contractFiatWorth,
+                              double agentFee) {
+
+        Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
+                () -> new UserNotExististingException()
+        );
+        Agent agent = (Agent) clientRepository.findById(agentId).orElseThrow(
+                () -> new UserNotExististingException()
+        );
+        Client client = clientRepository.findById(clientId).orElseThrow(
+                () -> new UserNotExististingException()
+        );
+        Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(
+                () -> new WarehouseNotExistingException()
+        );
+       if (warehouse.isRented() == true) throw new AlreadyRentedException();
+
+        RentalForm contract = agent.createContract(agent,
+                client,
+                warehouse,
+                startDate,
+                endDate,
+                contractFiatWorth,
+                agentFee);
+        if(warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agentId,warehouseId).isPresent()==false){
+            throw new AgentNotAssignedWarehouseException();
+        }
+        rentalFormRepository.save(contract);
+        warehouseAssignedToAgentRepository.updateStatus("CONTRACTED",agentId,warehouseId);
+
+    }
+
+    public List<AgentRatings> rateAgent(Long ownerId, Long agentId, int stars) {
+
+        Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
+                () -> new UserNotExististingException()
+        );
+        Agent agent = (Agent) clientRepository.findById(agentId).orElseThrow(
+                () -> new UserNotExististingException()
+        );
+
+        AgentRatings rating = owner.rateAgent(agent, stars);
+        ratingsRepository.save(rating);
+
+        List<AgentRatings> allRatings = ratingsRepository.findAllByAgentId(agentId).get();
+
+        return allRatings;
     }
 
     public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(Long agentId, LocalDate startDate, LocalDate endDate) {
@@ -124,7 +176,7 @@ public class ClientFuncService {
 
         double ratingsTotal = 0;
         int numberOfVotes = 0;
-        Optional<List<AgentRatings>> ratingsOptList = ratingsRepository.findByAgentId(agentId);
+        Optional<List<AgentRatings>> ratingsOptList = ratingsRepository.findAllByAgentId(agentId);
         if (ratingsOptList.isPresent() == true) {
             numberOfVotes = ratingsOptList.get().size();
             for (AgentRatings rating : ratingsOptList.get()
@@ -144,7 +196,7 @@ public class ClientFuncService {
 
         List<RentalForm> rentalForms =
                 rentalFormRepository.findRentFormsByAgentIdAndStartDateEndDate(agentId, startDate, endDate).orElseThrow(
-                        ()-> new AgentHasNoContractsException()
+                        () -> new AgentHasNoContractsException()
                 );
 
 
@@ -189,8 +241,8 @@ public class ClientFuncService {
     }
 
     public Set<AgentDTO> RemoveAgentsFromWarehouse(Long ownerId,
-                                                                    List<Long> agents,
-                                                                    Long warehouseId) {
+                                                   List<Long> agents,
+                                                   Long warehouseId) {
         Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(
                 () -> new WarehouseNotExistingException()
         );
@@ -202,18 +254,18 @@ public class ClientFuncService {
         List<WarehouseAssignedToAgent> agentsLeft = owner.RemoveAgentsFromWarehouse(agentsToRemove, warehouse, assignedAgents);
 
         Set<AgentDTO> agentDTOset = new HashSet<>();
-        List<Agent> agentList =getAllAgentsById(getAllAgentIds(agentsLeft));
-        for (Agent agent: agentList
-             ) {
+        List<Agent> agentList = getAllAgentsById(getAllAgentIds(agentsLeft));
+        for (Agent agent : agentList
+        ) {
             agentDTOset.add(new AgentDTO(agent));
         }
 
         return agentDTOset;
     }
 
-    public List<Long> getAllAgentIds(List<WarehouseAssignedToAgent> agentWarehousePair){
-       List<Long> agentIds = new ArrayList<>();
-        for (WarehouseAssignedToAgent pair: agentWarehousePair
+    public List<Long> getAllAgentIds(List<WarehouseAssignedToAgent> agentWarehousePair) {
+        List<Long> agentIds = new ArrayList<>();
+        for (WarehouseAssignedToAgent pair : agentWarehousePair
         ) {
             agentIds.add(pair.getId().getAgentId());
         }

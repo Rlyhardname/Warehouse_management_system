@@ -19,15 +19,15 @@ public class RentFormDTO {
     private Long warehouseId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private double rentPerMonth;
+    private double contractFiatWorth;
 
-    public RentFormDTO(Long id, Long agentId, Long clientId, Long warehouseId, LocalDate startDate, LocalDate endDate, double rentPerMonth) {
+    public RentFormDTO(Long id, Long agentId, Long clientId, Long warehouseId, LocalDate startDate, LocalDate endDate, double contractFiatWorth) {
         Id = id;
         this.agentId = agentId;
         this.clientId = clientId;
         this.warehouseId = warehouseId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.rentPerMonth = rentPerMonth;
+        this.contractFiatWorth = contractFiatWorth;
     }
 }

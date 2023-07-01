@@ -23,15 +23,16 @@ import java.util.Optional;
 @Entity
 @RequiredArgsConstructor
 public class Owner extends Client {
-
+    private String accountType;
     public void init(String email, String password, String firstName, String lastName) {
         setEmail(email);
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
+        accountType = "owner";
     }
 
-    public Optional<Warehouse> CreatedWarehouse(Address address,
+    public Warehouse CreatedWarehouse(Address address,
                                                 String name,
                                                 String squareFeet,
                                                 String temperature,
@@ -48,7 +49,7 @@ public class Owner extends Client {
                 humidityPercent,
                 stockedGoodsType,
                 warehouseCategory);
-        return Optional.of(warehouse);
+        return warehouse;
     }
 
     public List<WarehouseAssignedToAgent> assignAgentsToWarehouse(List<Agent> agents, Warehouse warehouse) {
@@ -86,6 +87,7 @@ public class Owner extends Client {
     }
 
     public AgentRatings rateAgent(Agent agent, int stars) {
+
         AgentRatingsPK PK = new AgentRatingsPK(this.getId(), agent.getId());
         AgentRatings rating = new AgentRatings(PK, stars);
         return rating;

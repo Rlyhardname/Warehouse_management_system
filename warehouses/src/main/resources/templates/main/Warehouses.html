@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+  <style>
+    .dropbtn {
+      background-color: #04AA6D;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
+
+    .dropdown:hover .dropdown-content {display: block;}
+
+    .dropdown:hover .dropbtn {background-color: #3e8e41;}
+  </style>
+
+</head>
+<body>
+<div style="display:none" th:text="${dataList}"></div>
+
+<div class="dropdown" onmouseover="hello()">
+  <button class="dropbtn" onmouseover="hello()" >Dropdown</button>
+  <div id="addColumns" class="dropdown-content" onmouseover="hello()" >
+    <a href="#" id="firstButton">Link 1</a>
+    <a href="#" id="secondButton">Link 2</a>
+    <a href="#" id="thirdButton">Link 3</a>
+  </div>
+</div>
+
+<script>
+
+  function hello() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", 'http://localhost:8080/main/getwarehouses/2', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          var serverResponse = xhr.responseText;
+          var data1 = JSON.parse(serverResponse);
+          const arraySize = data1.length;
+          console.log(data1[0].warehouseName + data1[1].warehouseName);
+
+          const option = document.createElement("a");
+          option.textContent = "adding new dropdown!";
+          document.getElementById('addColumns').appendChild(option);
+
+          const warehouseName1 = data1[0].warehouseName;
+          const warehouseName2 = data1[1].warehouseName;
+          var firstButton = document.querySelector('#firstButton');
+          var secondButton = document.querySelector('#secondButton');
+
+          // Set initial value
+          firstButton.textContent = warehouseName1;
+          secondButton.textContent = warehouseName2;
+        } else {
+          // Handle error case
+          console.log('Error:', xhr.status);
+        }
+      }
+    };
+  //  xhr.send();
+  }
+
+</script>
+
+</body>
+</html>

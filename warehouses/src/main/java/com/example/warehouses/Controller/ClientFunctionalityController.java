@@ -4,6 +4,7 @@ import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
+import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.User.Agent;
 import com.example.warehouses.Model.warehouse.Address;
 import com.example.warehouses.Model.warehouse.Warehouse;
@@ -42,7 +43,7 @@ public class ClientFunctionalityController {
 
 
     @PostMapping("/createWarehouse")
-    public Optional<WarehouseDTO> createWarehouse(
+    public WarehouseDTO createWarehouse(
             @RequestParam(value = "owner") String email,
             @RequestParam(value = "county") String county,
             @RequestParam(value = "town") String town,
@@ -71,23 +72,42 @@ public class ClientFunctionalityController {
                 rented);
     }
 
+    @PostMapping("rentWarehouse")
+    public void rentWarehouse(@RequestParam Long ownerId,
+                              @RequestParam Long agentId,
+                              @RequestParam Long clientId,
+                              @RequestParam Long warehouseId,
+                              @RequestParam LocalDate startDate,
+                              @RequestParam LocalDate endDate,
+                              @RequestParam double contractFiatWorth,
+                              @RequestParam double agentFee) {
+        clientFuncService.rentWarehouse(ownerId,
+                agentId,
+                clientId,
+                warehouseId,
+                startDate,
+                endDate,
+                contractFiatWorth,
+                agentFee);
+    }
+
     @GetMapping("/agentDTO")
-    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(){
-        LocalDate startDate = LocalDate.of(2022,5,25);
-        LocalDate endDate = LocalDate.of(2022,6,26);
+    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod() {
+        LocalDate startDate = LocalDate.of(2022, 5, 25);
+        LocalDate endDate = LocalDate.of(2022, 6, 26);
         long testAgent = 4L;
-        return clientFuncService.getAgentContractsAndRatingsByPeriod(4L,startDate,endDate);
+        return clientFuncService.getAgentContractsAndRatingsByPeriod(4L, startDate, endDate);
     }
 
     @GetMapping("/getWarehouseDTO/")
-    public List<Optional<WarehouseDTO>> getAllWarehousesOwnedBy(){ // @RequestParam String ownerId
+    public List<Optional<WarehouseDTO>> getAllWarehousesOwnedBy() { // @RequestParam String ownerId
         List<Optional<WarehouseDTO>> warehouseDTOOpt = new ArrayList<>();
         System.out.println(2L); // Long.getLong(ownerId)
-        if(!clientFuncService.getWarehouseByOwnerId(2L).isEmpty()){ //Long.getLong(ownerId)
+        if (!clientFuncService.getWarehouseByOwnerId(2L).isEmpty()) { //Long.getLong(ownerId)
             for (Warehouse warehouse : clientFuncService.getWarehouseByOwnerId(2L).get()//Long.getLong(ownerId);
-                     ) {
-                        warehouseDTOOpt.add(Optional.of(new WarehouseDTO(warehouse)));
-                }
+            ) {
+                warehouseDTOOpt.add(Optional.of(new WarehouseDTO(warehouse)));
+            }
         }
 
 
@@ -95,10 +115,10 @@ public class ClientFunctionalityController {
     }
 
     @GetMapping("/getwarehouses/{status}")
-    public Optional<List<WarehouseDTO>> getWarehouseByStatus(@PathVariable(required = false) String status){
+    public Optional<List<WarehouseDTO>> getWarehouseByStatus(@PathVariable(required = false) String status) {
         List<WarehouseDTO> warehouseDTOlist = new ArrayList<>();
-        for (Warehouse warehouse: clientFuncService.getAllWarehouses(status).get()
-             ) {
+        for (Warehouse warehouse : clientFuncService.getAllWarehouses(status).get()
+        ) {
             warehouseDTOlist.add(new WarehouseDTO(warehouse));
         }
 
@@ -106,28 +126,37 @@ public class ClientFunctionalityController {
     }
 
     @GetMapping("/market/{ownerId}")
-    public ModelAndView fetchWarehouses(@PathVariable Long ownerId){
+    public ModelAndView fetchWarehouses(@PathVariable Long ownerId) {
         List<Warehouse> allOwnerWarehouses = clientFuncService.fetchWarehouses(ownerId);
         System.out.println(allOwnerWarehouses.size());
         ModelAndView modelAndView = new ModelAndView("main/Warehouses");
-        modelAndView.addObject("dataList",allOwnerWarehouses);
+        modelAndView.addObject("dataList", allOwnerWarehouses);
         return modelAndView;
     }
+
     @PostMapping("/market/warehouse")
-    public Set<Agent> setAgentsToWarehouse(Long ownerId, Long warehouseId, List<Long> agentIds){ // , List<Warehouse> warehouses, List<Agent> agents Long owner Id@RequestParam Long ownerId
+    public Set<Agent> setAgentsToWarehouse(Long ownerId, Long warehouseId, List<Long> agentIds) { // , List<Warehouse> warehouses, List<Agent> agents Long owner Id@RequestParam Long ownerId
 
-        List<Long> agentIdss = List.of(1L,2L,3L,4L);
+        List<Long> agentIdss = List.of(1L, 2L, 3L, 4L);
 
-        return  clientFuncService.setAgentsToWarehouse(3L, agentIdss, 1L);
+        return clientFuncService.setAgentsToWarehouse(3L, agentIdss, 1L);
     }
 
-    @GetMapping("main/removeagents")
-    public Set<AgentDTO> RemoveAgentsFromWarehouse(){
+    @GetMapping("removeagents")
+    public Set<AgentDTO> RemoveAgentsFromWarehouse() {
 
-        List<Long> agentIdss = List.of(1L,2L,3L,4L);
-        Set<AgentDTO> agentsLeftDTO = clientFuncService.RemoveAgentsFromWarehouse(2L,agentIdss,1L);
+        List<Long> agentIdss = List.of(1L, 2L, 3L, 4L);
+        Set<AgentDTO> agentsLeftDTO = clientFuncService.RemoveAgentsFromWarehouse(2L, agentIdss, 1L);
         return agentsLeftDTO;
 
+    }
+
+    @PostMapping("/rateagent")
+    public List<AgentRatings> rateAgent(@RequestParam Long ownerId,
+                                        @RequestParam Long agentId,
+                                        @RequestParam int stars) {
+
+        return clientFuncService.rateAgent(ownerId, agentId, stars);
     }
 
     @GetMapping("/zzz")
@@ -135,11 +164,10 @@ public class ClientFunctionalityController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Test"); // Name of your HTML template file without the extension
         Address address = new Address();
-        address.init("Varna","Varna", "HelloWorldSTREET");
-        modelAndView.addObject("jsonData",address);
+        address.init("Varna", "Varna", "HelloWorldSTREET");
+        modelAndView.addObject("jsonData", address);
         return modelAndView;
     }
-
 
 
 }

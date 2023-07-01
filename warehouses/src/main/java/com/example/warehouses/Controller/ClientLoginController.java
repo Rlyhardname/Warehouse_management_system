@@ -25,6 +25,7 @@ public class ClientLoginController {
         this.clientService = clientService;
     }
 
+    // For removal, implmented before Spring security implementation.
     @SneakyThrows
     @PostMapping
     public Optional<Client> isLoginClient(@RequestParam String email,

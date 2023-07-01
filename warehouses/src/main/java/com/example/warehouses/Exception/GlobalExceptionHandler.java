@@ -1,10 +1,8 @@
 package com.example.warehouses.Exception;
 
-import com.example.warehouses.Exception.Client.AgentHasNoContractsException;
-import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
-import com.example.warehouses.Exception.Client.OwnerDoesntOwnAnyWarehouseException;
-import com.example.warehouses.Exception.Client.UserNotExististingException;
+import com.example.warehouses.Exception.Client.*;
 import com.example.warehouses.Exception.Login.WrongPasswordException;
+import com.example.warehouses.Exception.Warehouse.AlreadyRentedException;
 import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,6 +66,24 @@ public class GlobalExceptionHandler {
     @SneakyThrows
     @ExceptionHandler(AgentHasNoContractsException.class)
     public ResponseEntity<Object> HandleAgentHasNoContractsException(HttpServletResponse response){
+
+        System.out.println("Owner doesn't own any warehouse!");
+//        response.sendRedirect("http://localhost:8080/createWarehouse.html");
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(AlreadyRentedException.class)
+    public ResponseEntity<Object> HandleAlreadyRentedException(HttpServletResponse response){
+
+        System.out.println("Owner doesn't own any warehouse!");
+//        response.sendRedirect("http://localhost:8080/createWarehouse.html");
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(AgentNotAssignedWarehouseException.class)
+    public ResponseEntity<Object> HandleAgentNotAssignedWarehouseException(HttpServletResponse response){
 
         System.out.println("Owner doesn't own any warehouse!");
 //        response.sendRedirect("http://localhost:8080/createWarehouse.html");

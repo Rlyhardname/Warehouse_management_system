@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface RatingsRepository extends JpaRepository<AgentRatings, AgentRatingsPK> {
 
     @Query("SELECT ar FROM AgentRatings ar WHERE ar.id.agentID = :agentId")
-    Optional<List<AgentRatings>> findByAgentId(@Param("agentId") Long agentId);
+    Optional<List<AgentRatings>> findAllByAgentId(@Param("agentId") Long agentId);
 
     @Query("SELECT ar FROM AgentRatings ar WHERE ar.id.ownerID = :ownerID")
     Optional<List<AgentRatings>> findByOwnerId(@Param("ownerID") Long ownerID);

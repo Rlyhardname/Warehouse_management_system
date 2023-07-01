@@ -8,20 +8,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class MasterAdmin extends Administrator{
+public class MasterAdmin extends Administrator {
 
-    private String yoyo;
-    public void init(String email, String password, String firstName, String lastName){
+    public void init(String email, String password, String firstName, String lastName) {
         setEmail(email);
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
-        yoyo = "0";
 
     }
 
-    public void createOwner(){
-
+    public Client createUser(String email,
+                            String password,
+                            String firstName,
+                            String lastName,
+                            String clientType) {
+        Client client = null;
+        if(clientType.toLowerCase().equals("owner")){
+            client =  new Owner();
+            ((Owner)client).init(email,password,firstName,lastName);
+        }else{
+            client = new Agent();
+            ((Agent)client).init(email,password,firstName,lastName);
+        }
+        return client;
     }
 
+    public Agent createAgent(String email,
+                             String password,
+                             String firstName,
+                             String lastName) {
+        Agent agent = new Agent();
+        agent.init(email,password,firstName,lastName);
+        return agent;
+    }
 }

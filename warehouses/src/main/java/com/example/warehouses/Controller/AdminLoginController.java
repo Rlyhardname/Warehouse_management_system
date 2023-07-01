@@ -38,11 +38,8 @@ public class AdminLoginController implements AdministratorFunctions {
     }
 
     @SneakyThrows
-    @PostMapping("createOwner")
+    @PostMapping("createClient")
     @Override
-
-
-
     public Optional<Client> createClient(@RequestParam String email,
                                          @RequestParam String password,
                                          @RequestParam String firstName,
@@ -55,4 +52,23 @@ public class AdminLoginController implements AdministratorFunctions {
 
         return clientOpt;
     }
+
+    @PostMapping("createUser")
+    public String createUser(@RequestParam Long adminId,
+                             @RequestParam String email,
+                             @RequestParam String password,
+                             @RequestParam String firstName,
+                             @RequestParam String lastName,
+                             @RequestParam String type
+    ) {
+        String attempt = adminService.createUser(adminId,
+                email,
+                password,
+                firstName,
+                lastName,
+                type);
+        return attempt;
+    }
+
+
 }

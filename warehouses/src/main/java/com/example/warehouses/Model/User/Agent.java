@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -30,8 +31,10 @@ public class Agent extends Client {
         }
     }
 
-    public void createContract() {
+    public RentalForm createContract(Agent agent, Client client, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
 
+        RentalForm rentalForm = new RentalForm(agent,client,warehouse,startDate,endDate,contractFiatWorth,agentFee);
+        return rentalForm;
     }
 
     public void init(String email, String password, String firstName, String lastName) {
@@ -42,14 +45,6 @@ public class Agent extends Client {
         accountType = "agent";
     }
 
-    public boolean isPaired(WarehouseAssignedToAgent pair) {
-
-        if (pair != null) {
-            return true;
-        }
-
-        return false;
-    }
 
     public boolean isRented(Warehouse warehouse) {
 

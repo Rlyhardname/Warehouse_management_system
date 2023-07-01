@@ -1,10 +1,13 @@
 package com.example.warehouses.Services;
 
+import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
 import com.example.warehouses.Exception.Client.UserNotExististingException;
 import com.example.warehouses.Exception.Login.WrongPasswordException;
+import com.example.warehouses.Exception.admin.AdminDoesntExistException;
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
 import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.MasterAdmin;
 import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Repository.ClientRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,17 +61,32 @@ public class AdminService implements AdministratorFunctions {
                 clientType,
                 response);
     }
+
+    public String createUser(Long adminId,
+                             String email,
+                             String password,
+                             String firstName,
+                             String lastName,
+                             String type) {
+
+        MasterAdmin admin = (MasterAdmin) adminRepository.findById(adminId).orElseThrow(
+                ()-> new AdminDoesntExistException()
+        );
+        String attempt ="Succesfully created an owner";
+        Client owner = admin.createUser( email,
+                 password,
+                 firstName,
+                 lastName,
+                type);
+        if(clientRepository.findById(owner.getId()).isPresent() == false){
+            clientRepository.save(owner);
+        }else{
+            throw new ClientAlreadyRegisteredException();
+        }
+        return attempt;
+
+    }
+
 }
 
-//                try {
-//                    response.sendRedirect("http://localhost:8080/hidden/admin/login/potato");
-//                    Връщане на резултата като json
-//                    response.setContentType("application/json;charset=UTF-8");
-//                    PrintWriter out = response.getWriter();
-//                    Gson gson = new Gson();
-//                    out.println(gson.toJson(admin)); //result обекта който щесе върне като резултат
-//                    out.flush();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
+

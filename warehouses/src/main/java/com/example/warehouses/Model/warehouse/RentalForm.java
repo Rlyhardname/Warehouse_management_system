@@ -42,11 +42,10 @@ public class RentalForm {
         this.contractFiatWorth = contractFiatWorth;
         this.agentFee = agentFee;
         warehouse.setRented(true);
-        calcContractInMonths();
-        System.out.println(contractInDays);
+        setContractDays();
     }
 
-    public void calcContractInMonths(){
+    public void setContractDays(){
         contractInDays = ChronoUnit.DAYS.between(startDate,endDate);
     }
 }
