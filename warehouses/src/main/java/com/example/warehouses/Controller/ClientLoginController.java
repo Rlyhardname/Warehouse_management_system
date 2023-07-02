@@ -2,6 +2,7 @@ package com.example.warehouses.Controller;
 
 import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Services.ClientService;
+import com.example.warehouses.Services.GlobalService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,16 @@ import java.util.Optional;
 public class ClientLoginController {
 
     private final ClientService clientService;
+    private final GlobalService globalService;
 
     @Autowired
-    public ClientLoginController(ClientService clientService) {
+    public ClientLoginController(ClientService clientService,
+                                 GlobalService globalService) {
         this.clientService = clientService;
+        this.globalService = globalService;
     }
 
-    // For removal, implmented before Spring security implementation.
+    // For removal, implemented before Spring security implementation.
     @SneakyThrows
     @PostMapping
     public Optional<Client> isLoginClient(@RequestParam String email,
@@ -40,7 +44,7 @@ public class ClientLoginController {
     }
 
     @SneakyThrows
-    @PostMapping("createOwner")
+    @PostMapping("createClient")
     public Optional<Client> registerClient(@RequestParam String email,
                                            @RequestParam String password,
                                            @RequestParam String firstName,
@@ -48,9 +52,11 @@ public class ClientLoginController {
                                            @RequestParam String clientType,
                                            HttpServletResponse response) {
 
-        Optional<Client> clientOpt = clientService.register(email, password, firstName, lastName, clientType, response);
-        response.sendRedirect("http://localhost:8080/MainPage.html");
-
+        Optional<Client> clientOpt = null;
+        if(!globalService.isUsernameTaken(email)){
+            clientOpt = clientService.register(email, password, firstName, lastName, clientType, response);
+            response.sendRedirect("http://localhost:8080/MainPage.html");
+        }
         return clientOpt;
     }
 

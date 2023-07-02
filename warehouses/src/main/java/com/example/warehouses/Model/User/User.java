@@ -1,8 +1,5 @@
 package com.example.warehouses.Model.User;
 
-import com.example.warehouses.Configurations.Enum.Role;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,20 +12,22 @@ import java.util.Set;
 
 @Data
 public class User implements UserDetails {
+    String ROLE_PREFIX = "ROLE_";
 
     private final String username;
     private final String password;
+    private String role;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNotExpired;
     private final boolean accountNotLocked;
     private final boolean credentialsNotExpired;
     private final boolean enabled;
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
-    public User(String username, String password, Set<? extends GrantedAuthority> authorities) {
+
+    public User(String username, String password, String role, Set<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
+        this.role = role;
         this.authorities = Collections.unmodifiableSet(authorities);
         this.accountNotExpired = true;
         this.accountNotLocked = true;
@@ -38,7 +37,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("Admin"));
+        return List.of(new SimpleGrantedAuthority(ROLE_PREFIX+role));
     }
 
     @Override

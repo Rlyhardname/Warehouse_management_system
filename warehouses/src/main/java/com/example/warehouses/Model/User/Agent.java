@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Agent extends Client {
-    private String accountType;
+
 
     public void rentWarehouse(WarehouseRepository repository, RentalForm receipt, Long warehouseId) {
 
@@ -42,7 +42,7 @@ public class Agent extends Client {
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
-        accountType = "agent";
+        setAccountType("agent");
     }
 
 

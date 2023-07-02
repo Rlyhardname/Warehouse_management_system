@@ -9,6 +9,7 @@ import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Repository.ClientRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -53,13 +54,6 @@ public class GlobalService {
         return clientOpt;
     }
 
-    public boolean isEmailInDatabase(String email){
-            if(clientRepository.findClientByEmail(email).isPresent()){
-                return true;
-            }
-            return false;
-    }
-
     public WarehouseCategory warehouseCategory(String category){
         switch (category.toLowerCase()){
             case "garage": return WarehouseCategory.GARAGE;
@@ -69,6 +63,15 @@ public class GlobalService {
             case "INDUSTRIAL":  return WarehouseCategory.INDUSTRIAL;
             default: return WarehouseCategory.EMPTY;
         }
+    }
+
+    public boolean isUsernameTaken(String username){
+        if(clientRepository.findClientByEmail(username).isPresent()){
+            return true;
+        }if(adminRepository.findAdminByEmail(username).isPresent()){
+            return true;
+        }
+        return false;
     }
 
 

@@ -33,6 +33,7 @@ public class AdminService implements AdministratorFunctions {
         this.globalService = globalService;
 
     }
+
     @Override
     public Optional<Administrator> isLoginAdmin(String email, String password, HttpServletResponse response) throws IOException {
 
@@ -54,7 +55,7 @@ public class AdminService implements AdministratorFunctions {
                                          String clientType,
                                          HttpServletResponse response) {
 
-       return globalService.register( email,
+        return globalService.register(email,
                 password,
                 firstName,
                 lastName,
@@ -70,20 +71,24 @@ public class AdminService implements AdministratorFunctions {
                              String type) {
 
         MasterAdmin admin = (MasterAdmin) adminRepository.findById(adminId).orElseThrow(
-                ()-> new AdminDoesntExistException()
+                () -> new AdminDoesntExistException()
         );
-        String attempt ="Succesfully created an owner";
-        Client owner = admin.createUser( email,
-                 password,
-                 firstName,
-                 lastName,
+        Client client = admin.createUser(email,
+                password,
+                firstName,
+                lastName,
                 type);
-        if(clientRepository.findById(owner.getId()).isPresent() == false){
-            clientRepository.save(owner);
-        }else{
+
+        String message = "Successfully created an ";
+        if (type.equals("owner")) message += "owner";
+        if (type.equals("agent")) message += "agent";
+
+        if (clientRepository.findById(client.getId()).isPresent() == false) {
+            clientRepository.save(client);
+        } else {
             throw new ClientAlreadyRegisteredException();
         }
-        return attempt;
+        return message;
 
     }
 

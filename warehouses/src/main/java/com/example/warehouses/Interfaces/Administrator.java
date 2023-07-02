@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table
 @Entity
-public abstract class Administrator {
+public class Administrator {
 
     @Id
     @GeneratedValue(

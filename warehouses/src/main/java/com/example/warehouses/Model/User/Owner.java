@@ -23,13 +23,12 @@ import java.util.Optional;
 @Entity
 @RequiredArgsConstructor
 public class Owner extends Client {
-    private String accountType;
     public void init(String email, String password, String firstName, String lastName) {
         setEmail(email);
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
-        accountType = "owner";
+        setAccountType("owner");
     }
 
     public Warehouse CreatedWarehouse(Address address,

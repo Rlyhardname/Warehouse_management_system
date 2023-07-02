@@ -48,21 +48,29 @@ public class UsersConfiguration {
                     "Jack",
                     "Daniels");
 
-           Client client = new Owner();
-            ((Owner) client).init(
+           Client client1 = new Owner();
+            ((Owner) client1).init(
                     "client1@gmail.com",
                     "hello",
                     "Black",
                     "Swan"
             );
 
-            Client client1 = new Owner();
-            ((Owner) client1).init(
+            Client client2 = new Owner();
+            ((Owner) client2).init(
                     "owner2@gmail.com",
                     "hello",
                     "White",
                     "Truffle"
             );
+            Client client3 = new Owner();
+            ((Owner) client3).init(
+                    "admin1@gmail.com",
+                    "hello",
+                    "White",
+                    "Truffle"
+            );
+
 
 
             Agent agent1 = new Agent();
@@ -84,9 +92,9 @@ public class UsersConfiguration {
 
             List<Client> clientList = new ArrayList<>();
 
-            for (Client item: List.of(client,client1,agent1,agent2)
+            for (Client item: List.of(client1,client2,client3,agent1,agent2)
                  ) {
-                if(globalService.isEmailInDatabase(item.getEmail())==false){
+                if(!globalService.isUsernameTaken(item.getEmail())){
                     clientList.add(item);
                 }
             }
@@ -105,21 +113,21 @@ public class UsersConfiguration {
             );
 
             Warehouse warehouse1 = new Warehouse();
-            warehouse1.init((Owner)client1,address1,"EcontVarnaMain", "1000","22","25","retail",
+            warehouse1.init((Owner)client2,address1,"EcontVarnaMain", "1000","22","25","retail",
                     WarehouseCategory.INDUSTRIAL);
 
             Warehouse warehouse2 = new Warehouse();
-            warehouse2.init((Owner)client1,address2,"SkladZaDrehi", "1000","17","33","clothes",
+            warehouse2.init((Owner)client2,address2,"SkladZaDrehi", "1000","17","33","clothes",
                     WarehouseCategory.GARAGE);
 
 
             warehouseRepository.save(warehouse1);
             warehouseRepository.save(warehouse2);
 
-            AgentRatingsPK pk1 = new AgentRatingsPK(client.getId(), agent1.getId());
-            AgentRatingsPK pk11 = new AgentRatingsPK(client.getId(),agent2.getId());
-            AgentRatingsPK pk2 = new AgentRatingsPK(client1.getId(),agent1.getId());
-            AgentRatingsPK pk22 = new AgentRatingsPK(client1.getId(),agent2.getId());
+            AgentRatingsPK pk1 = new AgentRatingsPK(client1.getId(), agent1.getId());
+            AgentRatingsPK pk11 = new AgentRatingsPK(client1.getId(),agent2.getId());
+            AgentRatingsPK pk2 = new AgentRatingsPK(client2.getId(),agent1.getId());
+            AgentRatingsPK pk22 = new AgentRatingsPK(client2.getId(),agent2.getId());
             AgentRatings rating1 = new AgentRatings(pk1, 5);
             AgentRatings rating2 = new AgentRatings(pk11, 2);
             AgentRatings rating3 = new AgentRatings(pk2, 4);
@@ -172,9 +180,9 @@ public class UsersConfiguration {
             }
 
 
-            Notification notificationToAgent = new Notification((Owner)client, agent1, warehouse1, ActivityType.ASIGNED_TO_AGENT);
-            Notification notificationToOwner = new Notification((Owner)client, agent1, warehouse1, ActivityType.RENTED_OUT);
-            Notification notificationContractExpire = new Notification((Owner)client, agent1, warehouse1, ActivityType.CONTRACT_EXPIRATION);
+            Notification notificationToAgent = new Notification((Owner)client1, agent1, warehouse1, ActivityType.ASIGNED_TO_AGENT);
+            Notification notificationToOwner = new Notification((Owner)client1, agent1, warehouse1, ActivityType.RENTED_OUT);
+            Notification notificationContractExpire = new Notification((Owner)client1, agent1, warehouse1, ActivityType.CONTRACT_EXPIRATION);
 
             notificationRepository.saveAll(
                     List.of(notificationToAgent,notificationToOwner,notificationContractExpire)
@@ -182,7 +190,7 @@ public class UsersConfiguration {
 
 
             RentalForm rentalForm1 = new RentalForm(agent2,agent1,warehouse1,start,end,500.50,0.2);
-            RentalForm rentalForm2 = new RentalForm(agent2,client1,warehouse1,start1,end1,444,0.5);
+            RentalForm rentalForm2 = new RentalForm(agent2,client2,warehouse1,start1,end1,444,0.5);
             rentalFormRepository.save(rentalForm1);
             rentalFormRepository.save(rentalForm2);
 

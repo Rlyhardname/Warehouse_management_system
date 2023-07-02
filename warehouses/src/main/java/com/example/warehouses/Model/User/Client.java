@@ -32,6 +32,7 @@ public class Client {
     private String firstName;
     @NotBlank
     private String lastName;
+    private String accountType;
 
 
 

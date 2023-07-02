@@ -4,6 +4,7 @@ import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
 import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Services.AdminService;
+import com.example.warehouses.Services.GlobalService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,16 @@ import java.util.Optional;
 @RestController
 @Validated
 @RequestMapping(path = "hidden/admin/")
-public class AdminLoginController implements AdministratorFunctions {
+public class AdminController implements AdministratorFunctions {
     private final AdminService adminService;
+    private final GlobalService globalService;
+
 
     @Autowired
-    public AdminLoginController(AdminService adminService) {
+    public AdminController(AdminService adminService,
+                           GlobalService globalService) {
         this.adminService = adminService;
+        this.globalService = globalService;
     }
 
     @SneakyThrows
@@ -61,12 +66,16 @@ public class AdminLoginController implements AdministratorFunctions {
                              @RequestParam String lastName,
                              @RequestParam String type
     ) {
-        String attempt = adminService.createUser(adminId,
-                email,
-                password,
-                firstName,
-                lastName,
-                type);
+        String attempt = "User is taken!";
+        if(!globalService.isUsernameTaken(email)){
+            attempt = adminService.createUser(adminId,
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    type);
+        }
+
         return attempt;
     }
 
