@@ -6,10 +6,7 @@ import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.RentFormDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
-import com.example.warehouses.Exception.Client.AgentHasNoContractsException;
-import com.example.warehouses.Exception.Client.AgentNotAssignedWarehouseException;
-import com.example.warehouses.Exception.Client.OwnerDoesntOwnAnyWarehouseException;
-import com.example.warehouses.Exception.Client.UserNotExististingException;
+import com.example.warehouses.Exception.Client.*;
 import com.example.warehouses.Exception.Warehouse.AlreadyRentedException;
 import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
@@ -22,6 +19,7 @@ import com.example.warehouses.Model.warehouse.RentalForm;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
 import com.example.warehouses.Repository.*;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +56,19 @@ public class ClientFuncService {
         this.marketRepository = marketRepository;
         this.addressRepository = addressRepository;
         this.warehouseAssignedToAgentRepository = warehouseAssignedToAgentRepository;
+    }
+    public Client register(String email,
+                                     String password,
+                                     String firstName,
+                                     String lastName,
+                                     String clientType,
+                                     HttpServletResponse response) {
+            return globalService.register(email,
+                    password,
+                    firstName,
+                    lastName,
+                    clientType,
+                    response);
     }
 
     public WarehouseDTO createWarehouse(String email,
@@ -168,9 +179,13 @@ public class ClientFuncService {
     }
 
     public boolean isAgentRated(AgentAndRentFormDTO agentDTO, Long agentId) {
-        Agent agent = (Agent) clientRepository.findById(agentId).orElseThrow(
+
+        Client agent = clientRepository.findById(agentId).orElseThrow(
                 () -> new UserNotExististingException()
         );
+        if(agent.getAccountType().equals("owner")){
+            throw new BadPathVariableException();
+        }
         agentDTO.setEmail(agent.getEmail());
         agentDTO.setFirstName(agent.getFirstName());
         agentDTO.setLastName(agent.getLastName());

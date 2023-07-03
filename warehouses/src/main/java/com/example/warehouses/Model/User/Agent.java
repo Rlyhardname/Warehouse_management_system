@@ -28,18 +28,18 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Agent extends Client {
 
-    @OneToMany()
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "agent_id")
-    private List<Notification> notificationList;
-    @OneToMany
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "agent_id")
-    private Set<RentalForm> rentalFormSet;
-    @OneToMany()
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "client_id")
-    private Set<RentalForm> rentalFormSet1;
+//    @OneToMany()
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "agent_id")
+//    private List<Notification> notificationList;
+//    @OneToMany
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "agent_id")
+//    private Set<RentalForm> rentalFormSet;
+//    @OneToMany()
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "client_id")
+//    private Set<RentalForm> rentalFormSet1;
 
     public void rentWarehouse(WarehouseRepository repository, RentalForm receipt, Long warehouseId) {
 

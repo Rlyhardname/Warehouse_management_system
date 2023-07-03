@@ -5,7 +5,13 @@
     <title>Title</title>
     <style>
         li {background-color: olive;
-        display:inline-block;}
+        display:block;
+        margin:5px;
+        display:inline-block;
+        background-color: aqua;
+        text: black;
+        font: 20px strong;}
+
     </style>
 </head>
 
@@ -13,6 +19,17 @@
     <li><a href="http://localhost:8080/adminLogin.html">ADMIN LOGIN</a></li>
     <li><a href="http://localhost:8080/createClient.html">CREATE OWNER</a></li>
     <li><a href="http://localhost:8080/createWarehouse.html">Create Warehouse</a></li>
+    <li><a href="http://localhost:8080/api/main/rentwarehouse">Rent Warehouse(missing html page to imput)</a></li>
+    <li><a href="http://localhost:8080/api/main/getAllAgents">getAgentContractsAndRatingsByPeriod</a></li>
+    <li><a href="http://localhost:8080/api/main/getwarehousedto/">getAllWarehousesOwnedBy</a></li>
+    <li><a href="http://localhost:8080/api/main/agentDTO/">getAgentContractsAndRatingsByPeriod(Agent Id:Path var +DATES are hardcoded)</a></li>
+    <li><a href="http://localhost:8080/api/main/getwarehouses/">getWarehouseByStatus{String yes or no for rented: Path var</a></li>
+    <li><a href="http://localhost:8080/api/main/market/">fetchWarehouses{Owner ID Long:Path var(there's some bug)</a></li>
+    <li><a href="http://localhost:8080/api/main/market/warehouse">setAgentsToWarehouse{Owner ID Long:Path var(there's some bug)</a></li>
+    <li><a href="http://localhost:8080/api/main/removeagents">RemoveAgentsFromWarehouse(HARD CODED)(bug)</a></li>
+    <li><a href="http://localhost:8080/api/main/rateagent">rateAgent(probably missing page or bug)</a></li>
+    <li><a href="http://localhost:8080/api/main/getAllAgents">getAllAgents</a></li>
+
 </ul></div>
 
 <body>

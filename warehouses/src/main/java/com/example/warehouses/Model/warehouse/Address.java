@@ -27,10 +27,10 @@ public class Address {
     private String county;
     private String town;
     private String streetName;
-    @OneToMany(orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "address_id")
-    private List<Warehouse> warehouseList;
+//    @OneToMany()
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "address_id")
+//    private List<Warehouse> warehouseList;
 
 
 

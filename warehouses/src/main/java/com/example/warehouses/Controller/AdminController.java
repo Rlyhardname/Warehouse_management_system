@@ -37,7 +37,8 @@ public class AdminController implements AdministratorFunctions {
 
         Optional<Administrator> adminOpt = null;
         adminOpt = adminService.isLoginAdmin(email, password, response);
-        response.sendRedirect("login");
+        if (adminOpt.isPresent())
+        response.sendRedirect("http://localhost:8080/");
 
         return adminOpt;
     }
@@ -45,14 +46,14 @@ public class AdminController implements AdministratorFunctions {
     @SneakyThrows
     @PostMapping("createClient")
     @Override
-    public Optional<Client> createClient(@RequestParam String email,
-                                         @RequestParam String password,
-                                         @RequestParam String firstName,
-                                         @RequestParam String lastName,
-                                         @RequestParam String clientType,
-                                         HttpServletResponse response) {
+    public Client createClient(@RequestParam String email,
+                               @RequestParam String password,
+                               @RequestParam String firstName,
+                               @RequestParam String lastName,
+                               @RequestParam String clientType,
+                               HttpServletResponse response) {
 
-        Optional<Client> clientOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
+        Client clientOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
         response.sendRedirect("http://localhost:8080/MainPage.html");
 
         return clientOpt;

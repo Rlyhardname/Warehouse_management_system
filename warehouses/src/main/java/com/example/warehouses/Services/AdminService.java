@@ -48,7 +48,7 @@ public class AdminService implements AdministratorFunctions {
     }
 
     @Override
-    public Optional<Client> createClient(String email,
+    public Client createClient(String email,
                                          String password,
                                          String firstName,
                                          String lastName,

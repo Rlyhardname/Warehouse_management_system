@@ -43,21 +43,5 @@ public class ClientLoginController {
         return adminOpt;
     }
 
-    @SneakyThrows
-    @PostMapping("createClient")
-    public Optional<Client> registerClient(@RequestParam String email,
-                                           @RequestParam String password,
-                                           @RequestParam String firstName,
-                                           @RequestParam String lastName,
-                                           @RequestParam String clientType,
-                                           HttpServletResponse response) {
-
-        Optional<Client> clientOpt = null;
-        if(!globalService.isUsernameTaken(email)){
-            clientOpt = clientService.register(email, password, firstName, lastName, clientType, response);
-            response.sendRedirect("http://localhost:8080/MainPage.html");
-        }
-        return clientOpt;
-    }
 
 }

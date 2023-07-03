@@ -195,10 +195,10 @@ public class UsersConfiguration {
             rentalFormRepository.save(rentalForm2);
 
 
-            rentalFormRepository.deleteAll();
-            addressRepository.deleteAll();
-            warehouseRepository.deleteAll();
-            clientRepository.deleteAll();
+//            rentalFormRepository.deleteAll();
+//            addressRepository.deleteAll();
+//            warehouseRepository.deleteAll();
+//            clientRepository.deleteAll();
 
 
 

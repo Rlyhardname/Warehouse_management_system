@@ -25,26 +25,26 @@ import java.util.Set;
 @Entity
 @RequiredArgsConstructor
 public class Owner extends Client {
-    @OneToMany(orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "owner_id")
-    private List<Notification> notificationList;
-    @OneToMany
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "owner_id")
-    private Set<RentalForm> rentalFormSet;
-    @OneToMany()
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "client_id")
-    private Set<RentalForm> rentalFormSet1;
-    @OneToMany()
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "owner_id")
-    private Set<Warehouse> warehouseSet;
-    @OneToMany()
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    @JoinColumn(name = "owner_id")
-    private Set<WarehouseAssignedToAgent> warehouseAssignedToAgentSet;
+//    @OneToMany(orphanRemoval = true)
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "owner_id")
+//    private List<Notification> notificationList;
+//    @OneToMany
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "owner_id")
+//    private Set<RentalForm> rentalFormSet;
+//    @OneToMany()
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "client_id")
+//    private Set<RentalForm> rentalFormSet1;
+//    @OneToMany()
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "owner_id")
+//    private Set<Warehouse> warehouseSet;
+//    @OneToMany()
+//    @OnDelete(action = OnDeleteAction.NO_ACTION)
+//    @JoinColumn(name = "owner_id")
+//    private Set<WarehouseAssignedToAgent> warehouseAssignedToAgentSet;
 
     public void init(String email, String password, String firstName, String lastName) {
         setEmail(email);

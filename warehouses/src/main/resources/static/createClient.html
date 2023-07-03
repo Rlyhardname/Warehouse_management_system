@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form action="http://localhost:8080/hidden/admin/createOwner" method="post">
+<form action="http://localhost:8080/api/main/createClient" method="post">
     <label for="email">Email:</label>
     <input type="text" id="email" name="email" value="admin1@gmail.com"><br><br>
     <label for="password">Password:</label>
@@ -18,8 +18,8 @@
 
     <label for="clientType">Client Type:</label>
     <select id="clientType" name="clientType">
-        <option type="text" value="Owner">Owner</option>
-        <option type="text" value="Agent">Agent</option>
+        <option type="text" value="owner">Owner</option>
+        <option type="text" value="agent">Agent</option>
     </select>
     <input type="submit" value="submit">
 </form>

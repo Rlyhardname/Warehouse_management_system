@@ -4,12 +4,16 @@ import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
+import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
 import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.User.Agent;
+import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.warehouse.Address;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Services.ClientFuncService;
 import com.example.warehouses.Services.GlobalService;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +43,26 @@ public class ClientFunctionalityController {
     @GetMapping("")
     public String visualizeMainPage() {
         return "HelloWorld";
+    }
+
+    @SneakyThrows
+    @PostMapping("createClient")
+    public Client registerClient(@RequestParam String email,
+                                 @RequestParam String password,
+                                 @RequestParam String firstName,
+                                 @RequestParam String lastName,
+                                 @RequestParam String clientType,
+                                 HttpServletResponse response) {
+
+        Client client;
+        if (!globalService.isUsernameTaken(email)) {
+            client = clientFuncService.register(email, password, firstName, lastName, clientType, response);
+            response.sendRedirect("http://localhost:8080/");
+        } else {
+            throw new ClientAlreadyRegisteredException();
+        }
+
+        return client;
     }
 
 
@@ -72,7 +96,8 @@ public class ClientFunctionalityController {
                 rented);
     }
 
-    @PostMapping("rentWarehouse")
+
+    @PostMapping("rentwarehouse")
     public void rentWarehouse(@RequestParam Long ownerId,
                               @RequestParam Long agentId,
                               @RequestParam Long clientId,
@@ -91,27 +116,24 @@ public class ClientFunctionalityController {
                 agentFee);
     }
 
-    @GetMapping("agentDTO")
-    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod() {
-        LocalDate startDate = LocalDate.of(2022, 5, 25);
-        LocalDate endDate = LocalDate.of(2022, 6, 26);
-        long testAgent = 4L;
-        return clientFuncService.getAgentContractsAndRatingsByPeriod(4L, startDate, endDate);
+    @GetMapping("agentDTO/{agent_id}")
+    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(@PathVariable Long agent_id) {
+        LocalDate startDate = LocalDate.of(2020, 5, 25);
+        LocalDate endDate = LocalDate.of(2023, 6, 26);
+        return clientFuncService.getAgentContractsAndRatingsByPeriod(agent_id, startDate, endDate);
     }
 
-    @GetMapping("getwarehousedto")
-    public List<Optional<WarehouseDTO>> getAllWarehousesOwnedBy() { // @RequestParam String ownerId
-        List<Optional<WarehouseDTO>> warehouseDTOOpt = new ArrayList<>();
-        System.out.println(2L); // Long.getLong(ownerId)
-        if (!clientFuncService.getWarehouseByOwnerId(2L).isEmpty()) { //Long.getLong(ownerId)
-            for (Warehouse warehouse : clientFuncService.getWarehouseByOwnerId(2L).get()//Long.getLong(ownerId);
+    @GetMapping("getwarehousedto/{owner_id}")
+    public List<WarehouseDTO> getAllWarehousesOwnedBy(@PathVariable Long owner_id) {
+        List<WarehouseDTO> warehouseList = new ArrayList<>();
+        Optional<List<Warehouse>> warehousesOpt  = clientFuncService.getWarehouseByOwnerId(owner_id);
+        if (warehousesOpt.isPresent()) {
+            for (Warehouse warehouse : warehousesOpt.get()
             ) {
-                warehouseDTOOpt.add(Optional.of(new WarehouseDTO(warehouse)));
+                warehouseList.add((new WarehouseDTO(warehouse)));
             }
         }
-
-
-        return warehouseDTOOpt;
+        return warehouseList;
     }
 
     @GetMapping("getwarehouses/{status}")

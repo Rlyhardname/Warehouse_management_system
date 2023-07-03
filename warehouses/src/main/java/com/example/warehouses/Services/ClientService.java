@@ -35,17 +35,5 @@ public class ClientService {
         return adminOpt;
     }
 
-    public Optional<Client> register(String email,
-                                     String password,
-                                     String firstName,
-                                     String lastName,
-                                     String clientType,
-                                     HttpServletResponse response) {
-       return globalService.register(email,
-                password,
-                firstName,
-                lastName,
-                clientType,
-                response);
-    }
+
 }

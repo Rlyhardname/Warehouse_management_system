@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface AdministratorFunctions {
     public Optional<Administrator> isLoginAdmin(String email, String password, HttpServletResponse response) throws IOException;
-    public Optional<Client> createClient(String email,
+    public Client createClient(String email,
                                          String password,
                                          String firstName,
                                          String lastName,

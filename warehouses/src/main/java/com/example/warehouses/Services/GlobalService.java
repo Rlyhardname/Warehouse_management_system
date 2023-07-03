@@ -27,7 +27,7 @@ public class GlobalService {
 
     }
 
-    public Optional<Client> register(String email,
+    public Client register(String email,
                                      String password,
                                      String firstName,
                                      String lastName,
@@ -35,23 +35,15 @@ public class GlobalService {
                                      HttpServletResponse response) {
 
         Client client = null;
-        if (clientType.equals("Owner")) {
+        if (clientType.equals("owner")) {
             client = new Owner();
             ((Owner) client).init(email, password, firstName, lastName);
-        } else if (clientType.equals("Agent")) {
+        } else if (clientType.equals("agent")) {
             client = new Agent();
             ((Agent) client).init(email, password, firstName, lastName);
         }
-
-
-        Optional<Client> clientOpt = clientRepository.findClientByEmail(email);
-        if (clientOpt.isPresent() == false) {
             clientRepository.save(client);
-        } else if (clientOpt != null) {
-            throw new ClientAlreadyRegisteredException();
-        }
-
-        return clientOpt;
+        return client;
     }
 
     public WarehouseCategory warehouseCategory(String category){
