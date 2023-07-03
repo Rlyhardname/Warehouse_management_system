@@ -23,7 +23,7 @@ import java.util.Set;
 
 @RestController
 @Validated
-@RequestMapping(path = "main")
+@RequestMapping(path = "/api/main/")
 public class ClientFunctionalityController {
 
     private final ClientFuncService clientFuncService;
@@ -42,7 +42,7 @@ public class ClientFunctionalityController {
     }
 
 
-    @PostMapping("/createWarehouse")
+    @PostMapping("createWarehouse")
     public WarehouseDTO createWarehouse(
             @RequestParam(value = "owner") String email,
             @RequestParam(value = "county") String county,
@@ -91,7 +91,7 @@ public class ClientFunctionalityController {
                 agentFee);
     }
 
-    @GetMapping("/agentDTO")
+    @GetMapping("agentDTO")
     public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod() {
         LocalDate startDate = LocalDate.of(2022, 5, 25);
         LocalDate endDate = LocalDate.of(2022, 6, 26);
@@ -99,7 +99,7 @@ public class ClientFunctionalityController {
         return clientFuncService.getAgentContractsAndRatingsByPeriod(4L, startDate, endDate);
     }
 
-    @GetMapping("/getWarehouseDTO/")
+    @GetMapping("getwarehousedto")
     public List<Optional<WarehouseDTO>> getAllWarehousesOwnedBy() { // @RequestParam String ownerId
         List<Optional<WarehouseDTO>> warehouseDTOOpt = new ArrayList<>();
         System.out.println(2L); // Long.getLong(ownerId)
@@ -114,7 +114,7 @@ public class ClientFunctionalityController {
         return warehouseDTOOpt;
     }
 
-    @GetMapping("/getwarehouses/{status}")
+    @GetMapping("getwarehouses/{status}")
     public Optional<List<WarehouseDTO>> getWarehouseByStatus(@PathVariable(required = false) String status) {
         List<WarehouseDTO> warehouseDTOlist = new ArrayList<>();
         for (Warehouse warehouse : clientFuncService.getAllWarehouses(status).get()
@@ -125,7 +125,7 @@ public class ClientFunctionalityController {
         return Optional.of(warehouseDTOlist);
     }
 
-    @GetMapping("/market/{ownerId}")
+    @GetMapping("market/{ownerId}")
     public ModelAndView fetchWarehouses(@PathVariable Long ownerId) {
         List<Warehouse> allOwnerWarehouses = clientFuncService.fetchWarehouses(ownerId);
         System.out.println(allOwnerWarehouses.size());
@@ -134,7 +134,7 @@ public class ClientFunctionalityController {
         return modelAndView;
     }
 
-    @PostMapping("/market/warehouse")
+    @PostMapping("market/warehouse")
     public Set<Agent> setAgentsToWarehouse(Long ownerId, Long warehouseId, List<Long> agentIds) { // , List<Warehouse> warehouses, List<Agent> agents Long owner Id@RequestParam Long ownerId
 
         List<Long> agentIdss = List.of(1L, 2L, 3L, 4L);
@@ -151,7 +151,7 @@ public class ClientFunctionalityController {
 
     }
 
-    @PostMapping("/rateagent")
+    @PostMapping("rateagent")
     public List<AgentRatings> rateAgent(@RequestParam Long ownerId,
                                         @RequestParam Long agentId,
                                         @RequestParam int stars) {
@@ -159,7 +159,12 @@ public class ClientFunctionalityController {
         return clientFuncService.rateAgent(ownerId, agentId, stars);
     }
 
-    @GetMapping("/zzz")
+    @GetMapping("getAllAgents")
+    public Set<AgentDTO> getAllAgents() {
+        return clientFuncService.getAllAgents();
+    }
+
+    @GetMapping("zzz")
     public ModelAndView myPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("Test"); // Name of your HTML template file without the extension

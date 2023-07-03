@@ -1,5 +1,6 @@
 package com.example.warehouses.Services;
 
+import com.example.warehouses.Configurations.Enum.Role;
 import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.AgentDTO;
@@ -325,6 +326,18 @@ public class ClientFuncService {
         return warehouseRepository.findWarehousesByOwnerId(ownerId).orElseThrow(
                 () -> new OwnerDoesntOwnAnyWarehouseException()
         );
+    }
+
+    public Set<AgentDTO> getAllAgents(){
+      Optional<List<Agent>> agents =  clientRepository.findAllClientsByType(Role.AGENT.name());
+      Set<AgentDTO> agentsDTO = new HashSet<>();
+       if(agents.isPresent()){
+           for (Agent agent: agents.get()
+           ) {
+                agentsDTO.add(new AgentDTO(agent));
+           }
+       }
+       return agentsDTO;
     }
 }
 

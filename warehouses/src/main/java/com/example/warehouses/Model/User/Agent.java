@@ -2,17 +2,23 @@ package com.example.warehouses.Model.User;
 
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
 import com.example.warehouses.Model.AgentRatings;
+import com.example.warehouses.Model.Notification;
 import com.example.warehouses.Model.warehouse.RentalForm;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
 import com.example.warehouses.Repository.WarehouseRepository;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
@@ -20,6 +26,18 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Agent extends Client {
 
+    @OneToMany
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "agent_id")
+    private List<Notification> notificationList;
+    @OneToMany
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "agent_id")
+    private Set<RentalForm> rentalFormSet;
+    @OneToMany
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "client_id")
+    private Set<RentalForm> rentalFormSet1;
 
     public void rentWarehouse(WarehouseRepository repository, RentalForm receipt, Long warehouseId) {
 

@@ -23,7 +23,7 @@ public class SecurityConfiguration {
 
                 .requestMatchers("/auth/**").permitAll()
 
-                .requestMatchers(HttpMethod.GET, "/api/somepath/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/main/**").permitAll()
 
                 .requestMatchers("/api/delete/**").hasAuthority("ADMIN")
 

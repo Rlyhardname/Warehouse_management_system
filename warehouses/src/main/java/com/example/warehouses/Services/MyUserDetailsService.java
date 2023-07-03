@@ -36,8 +36,8 @@ public class MyUserDetailsService implements UserDetailsService {
         String password = null;
         String ROLE = null;
         Optional<Administrator> admin;
-        Optional<Client> client = clientRepository.findByUsername(username); // .orElseThrow(() -> new UsernameNotFoundException(
-        //"User not found with username or email" + username));
+        Optional<Client> client = clientRepository.findByUsername(username);
+
         if (client.isPresent()) {
             email = client.get().getEmail();
             password = client.get().getPassword();

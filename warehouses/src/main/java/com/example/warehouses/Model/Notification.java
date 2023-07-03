@@ -6,6 +6,8 @@ import com.example.warehouses.Model.User.Owner;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 

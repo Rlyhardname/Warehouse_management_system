@@ -21,10 +21,9 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
     @Query("Select s FROM Client s WHERE s.email=?1") // duplicating method, remove 1 instance
     Optional<Client> findByUsername(String email);
 
+    @Query("Select s FROM Client s WHERE s.accountType =?1")
+    Optional<List<Agent>> findAllClientsByType (String accountType);
 
-//    @Transactional
-//    @Modifying
-//    @Query("UPDATE Owner o set o.warehousesOwned = ?1 where o.email = ?2")
-//    void updateOwnerWarehouses(Set<Warehouse> wareHousesOwned,String email);
+
 }
 

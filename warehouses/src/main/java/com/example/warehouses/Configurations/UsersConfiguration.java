@@ -92,7 +92,7 @@ public class UsersConfiguration {
 
             List<Client> clientList = new ArrayList<>();
 
-            for (Client item: List.of(client1,client2,client3,agent1,agent2)
+            for (Client item: List.of(client1,client2,agent1,agent2)
                  ) {
                 if(!globalService.isUsernameTaken(item.getEmail())){
                     clientList.add(item);
@@ -194,6 +194,8 @@ public class UsersConfiguration {
             rentalFormRepository.save(rentalForm1);
             rentalFormRepository.save(rentalForm2);
 
+            clientRepository.delete(agent1);
+            clientRepository.delete(agent2);
 
         };
     }
