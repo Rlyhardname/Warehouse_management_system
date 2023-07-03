@@ -3,19 +3,21 @@ package com.example.warehouses.Model.User;
 import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.AgentRatingsPK;
-import com.example.warehouses.Model.warehouse.Address;
-import com.example.warehouses.Model.warehouse.Warehouse;
-import com.example.warehouses.Model.warehouse.WarehouseAsignedToAgentPK;
-import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
+import com.example.warehouses.Model.Notification;
+import com.example.warehouses.Model.warehouse.*;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -23,6 +25,27 @@ import java.util.Optional;
 @Entity
 @RequiredArgsConstructor
 public class Owner extends Client {
+    @OneToMany(orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "owner_id")
+    private List<Notification> notificationList;
+    @OneToMany
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "owner_id")
+    private Set<RentalForm> rentalFormSet;
+    @OneToMany()
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "client_id")
+    private Set<RentalForm> rentalFormSet1;
+    @OneToMany()
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "owner_id")
+    private Set<Warehouse> warehouseSet;
+    @OneToMany()
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "owner_id")
+    private Set<WarehouseAssignedToAgent> warehouseAssignedToAgentSet;
+
     public void init(String email, String password, String firstName, String lastName) {
         setEmail(email);
         setPassword(password);

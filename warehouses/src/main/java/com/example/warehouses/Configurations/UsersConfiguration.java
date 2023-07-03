@@ -194,8 +194,15 @@ public class UsersConfiguration {
             rentalFormRepository.save(rentalForm1);
             rentalFormRepository.save(rentalForm2);
 
-            clientRepository.delete(agent1);
-            clientRepository.delete(agent2);
+
+            rentalFormRepository.deleteAll();
+            addressRepository.deleteAll();
+            warehouseRepository.deleteAll();
+            clientRepository.deleteAll();
+
+
+
+
 
         };
     }

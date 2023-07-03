@@ -1,14 +1,19 @@
 package com.example.warehouses.Model.warehouse;
 
 import com.example.warehouses.Configurations.Enum.WarehouseCategory;
+import com.example.warehouses.Model.Notification;
 import com.example.warehouses.Model.User.Owner;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -35,6 +40,15 @@ public class Warehouse implements Serializable {
     private String stockedGoodsType;
     private String warehouseCategory;
     private boolean rented;
+    @OneToMany()
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "warehouse_id")
+    private List<Notification> notificationList;
+    @OneToMany
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JoinColumn(name = "warehouse_id")
+    private Set<RentalForm> rentalFormSet;
+
 
     public void init(Owner owner,
                      Address address,

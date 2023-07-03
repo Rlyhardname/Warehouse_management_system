@@ -2,6 +2,7 @@ package com.example.warehouses.Model.warehouse;
 
 import com.example.warehouses.Model.User.Agent;
 import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.Owner;
 import jakarta.persistence.*;
 import lombok.*;
 
