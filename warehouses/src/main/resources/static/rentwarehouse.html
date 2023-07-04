@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create client form</title>
+</head>
+<body>
+
+<form id=myForm action="http://localhost:8080/api/main/rentwarehouse" method="post">
+  <label for="ownerId">ownerId:</label>
+  <input type="text" id="ownerId" th:name="ownerId" name="ownerId" value="2"><br><br>
+  <label for="agentId">agentId:</label>
+  <input type="text" id="agentId" th:name="agentId" name="agentId" value="3"><br><br>
+  <label for="clientId">clientId:</label>
+  <input type="text" id="clientId" th:name="clientId" name="clientId" value="4"><br><br>
+  <label for="warehouseId">warehouseId:</label>
+  <input type="text" id="warehouseId" th:name="warehouseId" name="warehouseId" value="5"><br><br>
+  <label for="startDate">startDate:</label>
+  <input type="text" id="startDate" th:name="startDate" name="startDate" value="2019-01-13"><br><br>
+  <label for="endDate">endDate:</label>
+  <input type="text" id="endDate" th:name="endDate" name="endDate" value="2023-01-13"><br><br>
+  <label for="contractFiatWorth">ContractTotal:</label>
+  <input type="text" id="contractFiatWorth" th:name="contractFiatWorth" name="contractFiatWorth" value="5499"><br><br>
+  <label for="agentFee">agentFee:</label>
+  <input type="text" id="agentFee" th:name="agentFee" name="agentFee" value="2.5"><br><br>
+  <input type="submit" value="submit">
+</form>
+
+<script>
+  $(document).ready(function() {
+    $('#myForm').submit(function(event) {
+      event.preventDefault();
+      });
+    });
+</script>
+
+
+</body>
+</html>

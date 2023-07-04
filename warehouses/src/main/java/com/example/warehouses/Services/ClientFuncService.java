@@ -141,7 +141,7 @@ public class ClientFuncService {
                 endDate,
                 contractFiatWorth,
                 agentFee);
-        if(warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agentId,warehouseId).isPresent()==false){
+        if(!warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agentId,warehouseId).isPresent()){
             throw new AgentNotAssignedWarehouseException();
         }
         rentalFormRepository.save(contract);

@@ -98,14 +98,16 @@ public class ClientFunctionalityController {
 
 
     @PostMapping("rentwarehouse")
-    public void rentWarehouse(@RequestParam Long ownerId,
+    public String rentWarehouse(@RequestParam Long ownerId,
                               @RequestParam Long agentId,
                               @RequestParam Long clientId,
                               @RequestParam Long warehouseId,
                               @RequestParam LocalDate startDate,
                               @RequestParam LocalDate endDate,
                               @RequestParam double contractFiatWorth,
-                              @RequestParam double agentFee) {
+                              @RequestParam double agentFee,
+                              HttpServletResponse response
+    ) {
         clientFuncService.rentWarehouse(ownerId,
                 agentId,
                 clientId,
@@ -114,6 +116,7 @@ public class ClientFunctionalityController {
                 endDate,
                 contractFiatWorth,
                 agentFee);
+        return "Success";
     }
 
     @GetMapping("agentDTO/{agent_id}")

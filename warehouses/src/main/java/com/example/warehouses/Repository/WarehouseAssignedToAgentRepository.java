@@ -2,7 +2,9 @@ package com.example.warehouses.Repository;
 
 import com.example.warehouses.Model.warehouse.WarehouseAsignedToAgentPK;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,8 @@ public interface WarehouseAssignedToAgentRepository extends JpaRepository<Wareho
     @Query("Select s FROM WarehouseAssignedToAgent s WHERE s.id.agentId =?1 AND s.id.warehouseId =?2")
     Optional<WarehouseAssignedToAgent> findByAgentIdAndWarehouseId(Long agentId, Long warehouseId);
 
+    @Transactional
+    @Modifying
     @Query("UPDATE WarehouseAssignedToAgent s SET s.relationshipStatus=?1 WHERE s.id.agentId =?2 AND s.id.warehouseId=?3")
     void updateStatus(String status, Long agentId, Long warehouseId);
 
