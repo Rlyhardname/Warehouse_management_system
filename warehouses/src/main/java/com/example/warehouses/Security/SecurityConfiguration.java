@@ -27,20 +27,16 @@ public class SecurityConfiguration {
 
                 .requestMatchers("/api/delete/**").hasAuthority("ADMIN")
 
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
 
-//Конфигурира вписването в приложението
-              //  .and().formLogin()
-           //     .and().httpBasic();
+                .and().formLogin()
+                .and().httpBasic();
 
-//Конфигурира изхода от приложението
         http.logout(logout -> logout.logoutUrl("api/auth/logout")
                 .invalidateHttpSession(true));
 
-//Задава политика за управление на сесията
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
-//и т.н.
         return http.build();
     }
 
@@ -48,10 +44,6 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();//new BCryptPasswordEncoder(); //
     }
-
-
-
-
 
 
 }

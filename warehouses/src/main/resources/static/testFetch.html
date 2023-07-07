@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="css/DropDownMenu.css">
+
+</head>
+<body>
+<div style="display:none" th:text="${dataList}"></div>
+
+<div class="dropdown">
+
+    <button class="dropbtn"  >Dropdown</button>
+    <div id="addColumns" class="dropdown-content" >
+
+    </div>
+</div>
+
+<div></div>
+
+<label>OWNER ID:</label>
+<input id="ownerId" value="2"></input>
+<input type="submit" value="GET WAREHOUSES" onclick="getWarehouses(document.getElementById('ownerId').value)">
+
+<script>
+
+    function getWarehouses(input){
+        console.log(input)
+        fetch(`http://localhost:8080/api/main/market/${input}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                data.forEach(item => {
+                    const warehouseName = document.createElement('a');
+                    warehouseName.textContent = item.warehouseName;
+                    const child =  document.getElementById('addColumns').appendChild(warehouseName);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+  <form id=myForm action="http://localhost:8080/api/main/rateagent" method="post">
+    <label for="ownerId">ownerId:</label>
+    <input type="text" id="ownerId" th:name="ownerId" name="ownerId" value="2"><br><br>
+    <label for="agentId">agentId:</label>
+    <input type="text" id="agentId" th:name="agentId" name="agentId" value="3"><br><br>
+    <label for="stars">stars:</label>
+    <input type="text" id="stars" th:name="stars" name="stars" value="4"><br><br>
+    <input type="submit" value="submit">
+  </form>
+
+
+
+</body>
+</html>

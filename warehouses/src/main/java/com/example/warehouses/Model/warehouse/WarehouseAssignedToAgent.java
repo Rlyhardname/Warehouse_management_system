@@ -17,8 +17,6 @@ import lombok.ToString;
 public class WarehouseAssignedToAgent {
     @EmbeddedId
     private WarehouseAsignedToAgentPK id;
-//    @ManyToOne
-//    private Owner owner;
     private String relationshipStatus;
 
     public WarehouseAssignedToAgent(WarehouseAsignedToAgentPK id) {
