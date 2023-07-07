@@ -14,8 +14,10 @@ import java.util.Optional;
 @Repository
 public interface WarehouseAssignedToAgentRepository extends JpaRepository<WarehouseAssignedToAgent, WarehouseAsignedToAgentPK> {
 
-    @Query("Select s FROM WarehouseAssignedToAgent s WHERE s.owner.Id =?1 AND s.id.warehouseId =?2")
-    Optional<List<WarehouseAssignedToAgent>> findWarehousesByOwnerIdAndWarehouseId(Long ownerId, Long warehouseId);
+//    @Query("Select s FROM WarehouseAssignedToAgent s WHERE s.owner.Id =?1 AND s.id.warehouseId =?2")
+//    Optional<List<WarehouseAssignedToAgent>> findWarehousesByOwnerIdAndWarehouseId(Long ownerId, Long warehouseId);
+@Query("Select s FROM WarehouseAssignedToAgent s WHERE s.id.warehouseId =?1")
+Optional<List<WarehouseAssignedToAgent>> findByWarehouseId(Long warehouseId);
 
     @Query("Select s FROM WarehouseAssignedToAgent s WHERE s.id.agentId =?1 AND s.id.warehouseId =?2")
     Optional<WarehouseAssignedToAgent> findByAgentIdAndWarehouseId(Long agentId, Long warehouseId);

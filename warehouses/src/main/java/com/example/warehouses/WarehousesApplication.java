@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-@ServletComponentScan
-//@EnableWebMvc
 public class WarehousesApplication {
 
 	public static void main(String[] args) {

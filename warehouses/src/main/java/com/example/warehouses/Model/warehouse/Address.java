@@ -27,12 +27,6 @@ public class Address {
     private String county;
     private String town;
     private String streetName;
-//    @OneToMany()
-//    @OnDelete(action = OnDeleteAction.NO_ACTION)
-//    @JoinColumn(name = "address_id")
-//    private List<Warehouse> warehouseList;
-
-
 
     public void init(  String county,
      String town,

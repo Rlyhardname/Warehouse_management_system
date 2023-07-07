@@ -141,6 +141,7 @@ public class ClientFuncService {
                 endDate,
                 contractFiatWorth,
                 agentFee);
+
         if(!warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agentId,warehouseId).isPresent()){
             throw new AgentNotAssignedWarehouseException();
         }
@@ -151,6 +152,7 @@ public class ClientFuncService {
 
     public List<AgentRatings> rateAgent(Long ownerId, Long agentId, int stars) {
 
+        System.out.println("hello"+stars);
         Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
                 () -> new UserNotExististingException()
         );
@@ -267,10 +269,15 @@ public class ClientFuncService {
         );
         List<Agent> agentsToRemove = getAllAgentsById(agents);
         List<WarehouseAssignedToAgent> assignedAgents = getAllAssignedAgentsToWarehouse(agentsToRemove, warehouse);
-        List<WarehouseAssignedToAgent> agentsLeft = owner.RemoveAgentsFromWarehouse(agentsToRemove, warehouse, assignedAgents);
+        List<WarehouseAssignedToAgent> agentDataList = owner.RemoveAgentsFromWarehouse(agentsToRemove, warehouse, assignedAgents);
+
+        warehouseAssignedToAgentRepository.deleteAll(agentDataList);
+
+        agentDataList = new ArrayList<>();
+        agentDataList = warehouseAssignedToAgentRepository.findByWarehouseId(warehouseId).get();
 
         Set<AgentDTO> agentDTOset = new HashSet<>();
-        List<Agent> agentList = getAllAgentsById(getAllAgentIds(agentsLeft));
+        List<Agent> agentList = getAllAgentsById(getAllAgentIds(agentDataList));
         for (Agent agent : agentList
         ) {
             agentDTOset.add(new AgentDTO(agent));
@@ -296,7 +303,7 @@ public class ClientFuncService {
             {
                 Optional<WarehouseAssignedToAgent> agentWarehousePair =
                         warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agent.getId(), warehouse.getId());
-                if (agentWarehousePair != null) {
+                if (agentWarehousePair.isPresent()) {
                     assignedAgents.add(agentWarehousePair.get());
                 }
 
@@ -308,7 +315,13 @@ public class ClientFuncService {
 
     public Set<Agent> getAllAgentsPairedToWarehouse(Long ownerId, Long warehouseId) {
         Set<Agent> agentSet = new HashSet<>();
-        List<WarehouseAssignedToAgent> warehouseAgentPair = warehouseAssignedToAgentRepository.findWarehousesByOwnerIdAndWarehouseId(ownerId, warehouseId).get();
+        Owner owner = (Owner)clientRepository.findById(ownerId).get(); //
+        Warehouse warehouse = warehouseRepository.findById(warehouseId).get(); //
+        List<WarehouseAssignedToAgent> warehouseAgentPair = new ArrayList<>();
+        if(warehouse.getOwner().getId()==owner.getId()){
+            warehouseAgentPair = warehouseAssignedToAgentRepository.findByWarehouseId(warehouseId).get();
+        }
+
         List<Agent> agents = new ArrayList<>();
         for (WarehouseAssignedToAgent pair : warehouseAgentPair
         ) {
@@ -328,9 +341,11 @@ public class ClientFuncService {
         List<Agent> agents = new ArrayList<>();
         for (Long agentId : agentIds
         ) {
-            Agent agent = (Agent) clientRepository.findById(agentId).get();
-            if (agent != null) {
-                agents.add(agent);
+            Client agent = clientRepository.findById(agentId).get();
+            if (agent!=null) {
+                if(agent.getAccountType().equals("agent")){
+                    agents.add((Agent)agent);
+                }
             }
         }
 

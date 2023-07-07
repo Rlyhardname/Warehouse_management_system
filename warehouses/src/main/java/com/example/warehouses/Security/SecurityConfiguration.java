@@ -27,11 +27,11 @@ public class SecurityConfiguration {
 
                 .requestMatchers("/api/delete/**").hasAuthority("ADMIN")
 
-                .anyRequest().authenticated()
+                .anyRequest().authenticated();
 
 //Конфигурира вписването в приложението
-                .and().formLogin()
-                .and().httpBasic();
+              //  .and().formLogin()
+           //     .and().httpBasic();
 
 //Конфигурира изхода от приложението
         http.logout(logout -> logout.logoutUrl("api/auth/logout")

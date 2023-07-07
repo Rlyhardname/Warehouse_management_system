@@ -4,7 +4,10 @@ import com.example.warehouses.Model.User.Owner;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -14,8 +17,8 @@ import lombok.*;
 public class WarehouseAssignedToAgent {
     @EmbeddedId
     private WarehouseAsignedToAgentPK id;
-    @ManyToOne
-    private Owner owner;
+//    @ManyToOne
+//    private Owner owner;
     private String relationshipStatus;
 
     public WarehouseAssignedToAgent(WarehouseAsignedToAgentPK id) {

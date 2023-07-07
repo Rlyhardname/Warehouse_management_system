@@ -151,26 +151,27 @@ public class ClientFunctionalityController {
     }
 
     @GetMapping("market/{ownerId}")
-    public ModelAndView fetchWarehouses(@PathVariable Long ownerId) {
+    public List<Warehouse> fetchWarehouses(@PathVariable Long ownerId) { //
         List<Warehouse> allOwnerWarehouses = clientFuncService.fetchWarehouses(ownerId);
         System.out.println(allOwnerWarehouses.size());
-        ModelAndView modelAndView = new ModelAndView("main/Warehouses");
+        ModelAndView modelAndView = new ModelAndView("/main/testFetch");
         modelAndView.addObject("dataList", allOwnerWarehouses);
-        return modelAndView;
+        return allOwnerWarehouses;
     }
 
-    @PostMapping("market/warehouse")
-    public Set<Agent> setAgentsToWarehouse(Long ownerId, Long warehouseId, List<Long> agentIds) { // , List<Warehouse> warehouses, List<Agent> agents Long owner Id@RequestParam Long ownerId
+    @GetMapping ("market/warehouse")
+    public Set<Agent> setAgentsToWarehouse() { // , List<Warehouse> warehouses, List<Agent> agents Long owner Id@RequestParam Long ownerId
+        //Long ownerId, Long warehouseId, List<Long> agentIds
 
         List<Long> agentIdss = List.of(1L, 2L, 3L, 4L);
 
-        return clientFuncService.setAgentsToWarehouse(3L, agentIdss, 1L);
+        return clientFuncService.setAgentsToWarehouse(2L, agentIdss, 2L);
     }
 
     @GetMapping("removeagents")
     public Set<AgentDTO> RemoveAgentsFromWarehouse() {
 
-        List<Long> agentIdss = List.of(1L, 2L, 3L, 4L);
+        List<Long> agentIdss = List.of(4L);
         Set<AgentDTO> agentsLeftDTO = clientFuncService.RemoveAgentsFromWarehouse(2L, agentIdss, 1L);
         return agentsLeftDTO;
 
@@ -189,15 +190,6 @@ public class ClientFunctionalityController {
         return clientFuncService.getAllAgents();
     }
 
-    @GetMapping("zzz")
-    public ModelAndView myPage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("Test"); // Name of your HTML template file without the extension
-        Address address = new Address();
-        address.init("Varna", "Varna", "HelloWorldSTREET");
-        modelAndView.addObject("jsonData", address);
-        return modelAndView;
-    }
 
 
 }

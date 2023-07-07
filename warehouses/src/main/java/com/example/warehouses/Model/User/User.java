@@ -13,7 +13,6 @@ import java.util.Set;
 @Data
 public class User implements UserDetails {
     String ROLE_PREFIX = "ROLE_";
-
     private final String username;
     private final String password;
     private String role;

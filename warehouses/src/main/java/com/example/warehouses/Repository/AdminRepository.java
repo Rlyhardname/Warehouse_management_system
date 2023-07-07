@@ -13,7 +13,4 @@ public interface AdminRepository extends JpaRepository<Administrator,Long> {
     @Query("Select s FROM Administrator s WHERE s.email =?1")
     Optional<Administrator> findAdminByEmail(String email);
 
-
-
-    // Optional<Administrator>
 }

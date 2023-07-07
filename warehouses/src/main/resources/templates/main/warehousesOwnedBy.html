@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="src/main/resources/static/DropDownMenu.css">
+
+</head>
+<body>
+<div style="display:none" th:text="${dataList}"></div>
+<h1 id="ownerId" >2</h1>
+<div class="dropdown" onclick="generateHTML()">
+
+  <button class="dropbtn" onmouseover="onClickEvent()" >Dropdown</button>
+  <div id="addColumns" class="dropdown-content" onmouseover="onClickEvent()" >
+
+  </div>
+</div>
+
+<script>
+
+    var manipulateData;
+    var serverResponse;
+    var model = "${allOwnerWarehouses}";
+
+    const ownerId = document.getElementById("ownerId").textContent;
+    const responseFetch = fetch(`http://localhost:8080/api/main/market/${ownerId}`);
+    console.log(responseFetch);
+    const xhr = new XMLHttpRequest();
+    serverResponse = xhr.response;
+    manipulateData = JSON.parse(serverResponse);
+
+    const body = responseFetch.then(x=>x.body);
+
+
+
+    function generateHTML() {
+        const size = manipulateData.length;
+        for (let i = 0; i < size; i++) {
+            let name = manipulateData[i].warehouseName;
+            const row = document.createElement("a");
+            row.textContent = name.value;
+            document.getElementById('addColumns').appendChild(row);
+        }
+    }
+
+    function onClickEvent() {
+        // Use the manipulateData variable here
+        if (manipulateData) {
+            // Perform actions with manipulateData
+            console.log(manipulateData);
+        } else {
+            console.log("manipulateData is not yet available");
+        }
+    }
+
+   // xhr.send();
+
+</script>
+
+</body>
+</html>
