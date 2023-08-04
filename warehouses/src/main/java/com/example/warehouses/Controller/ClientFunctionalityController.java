@@ -12,9 +12,16 @@ import com.example.warehouses.Model.warehouse.Address;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Services.ClientFuncService;
 import com.example.warehouses.Services.GlobalService;
+
+import javax.annotation.Resource;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,25 +31,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @RestController
 @Validated
 @RequestMapping(path = "/api/main/")
 public class ClientFunctionalityController {
 
+    private ExecutorService executorService;
     private final ClientFuncService clientFuncService;
     private final GlobalService globalService;
 
     @Autowired
     public ClientFunctionalityController(ClientFuncService clientFuncService,
                                          GlobalService globalService) {
+
         this.clientFuncService = clientFuncService;
         this.globalService = globalService;
     }
 
+    @PostConstruct
+    public void Init(){
+        this.executorService = Executors.newSingleThreadExecutor();
+    }
+
+    @PreDestroy
+    public void closeCustom(){
+        executorService.shutdown();
+    }
+
     @GetMapping("")
-    public String visualizeMainPage() {
-        return "HelloWorld";
+    public static String visualizeMainPage() {
+        return "Hello World";
     }
 
     @SneakyThrows
@@ -98,7 +121,7 @@ public class ClientFunctionalityController {
 
 
     @PostMapping("rentwarehouse")
-    public String rentWarehouse(@RequestParam Long ownerId,
+    public ResponseEntity<String> rentWarehouse(@RequestParam Long ownerId,
                               @RequestParam Long agentId,
                               @RequestParam Long clientId,
                               @RequestParam Long warehouseId,
@@ -108,7 +131,7 @@ public class ClientFunctionalityController {
                               @RequestParam double agentFee,
                               HttpServletResponse response
     ) {
-        clientFuncService.rentWarehouse(ownerId,
+        Runnable runnable = () -> clientFuncService.rentWarehouse(ownerId,
                 agentId,
                 clientId,
                 warehouseId,
@@ -116,9 +139,12 @@ public class ClientFunctionalityController {
                 endDate,
                 contractFiatWorth,
                 agentFee);
-        return "Success";
+        executorService.submit(runnable);
+
+        return new ResponseEntity<>("Server computing request",HttpStatus.ACCEPTED);
     }
 
+    @SneakyThrows
     @GetMapping("agentDTO/{agent_id}")
     public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(@PathVariable Long agent_id) {
         LocalDate startDate = LocalDate.of(2020, 5, 25);
@@ -126,8 +152,15 @@ public class ClientFunctionalityController {
         return clientFuncService.getAgentContractsAndRatingsByPeriod(agent_id, startDate, endDate);
     }
 
+    @PostMapping("response")
+    public AgentAndRentFormDTO returnDataToClient(AgentAndRentFormDTO object){
+
+        return object;
+    }
+
     @GetMapping("getwarehousedto/{owner_id}")
     public List<WarehouseDTO> getAllWarehousesOwnedBy(@PathVariable Long owner_id) {
+        System.out.println("hmm?");
         List<WarehouseDTO> warehouseList = new ArrayList<>();
         Optional<List<Warehouse>> warehousesOpt  = clientFuncService.getWarehouseByOwnerId(owner_id);
         if (warehousesOpt.isPresent()) {
@@ -190,6 +223,15 @@ public class ClientFunctionalityController {
         return clientFuncService.getAllAgents();
     }
 
+    @PostMapping("test")
+    public ResponseEntity<String> test(@RequestParam Long ownerId,
+                                       @RequestParam Long agentId){
+
+        if(ownerId!=null && agentId!=null){
+            return new ResponseEntity<>("Success",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Bad params or smth went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 }

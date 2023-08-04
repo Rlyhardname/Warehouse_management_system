@@ -22,6 +22,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
 
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/api/main/**").permitAll()
 

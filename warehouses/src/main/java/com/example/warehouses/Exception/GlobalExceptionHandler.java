@@ -5,6 +5,7 @@ import com.example.warehouses.Exception.Login.WrongPasswordException;
 import com.example.warehouses.Exception.Warehouse.AlreadyRentedException;
 import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,9 @@ public class GlobalExceptionHandler {
 
     @SneakyThrows
     @ExceptionHandler(UserNotExististingException.class)
-    public ResponseEntity<Object> HandleUserNotExistingException() {
+    public ResponseEntity<Object> HandleUserNotExistingException(HttpServletResponse response) {
 
+        response.sendRedirect("http://localhost:8080/");
         return new ResponseEntity<>("User doesn't exist", HttpStatus.NOT_FOUND);
     }
 
@@ -60,9 +62,11 @@ public class GlobalExceptionHandler {
 
     @SneakyThrows
     @ExceptionHandler(AgentHasNoContractsException.class)
-    public ResponseEntity<Object> HandleAgentHasNoContractsException() {
+    public ResponseEntity<Object> HandleAgentHasNoContractsException(String s) {
 
-        return new ResponseEntity<>("No contracts signed yet", HttpStatus.NOT_FOUND);
+
+
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
     }
 
     @SneakyThrows

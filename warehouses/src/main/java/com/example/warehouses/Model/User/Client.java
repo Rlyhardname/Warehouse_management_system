@@ -25,7 +25,7 @@ public class Client {
     @Email(message ="Email must be valid")
     @Column(unique=true)
     private String email;
-    @Size(min = 5, message = "Password is too short")
+    @Size(min = 4, message = "Password is too short")
     private String password;
     @NotBlank
     private String firstName;

@@ -21,7 +21,7 @@ public class Administrator {
     @Email
     @Column(unique = true)
     private String email;
-    @Size(min = 5)
+    @Size(min = 4)
     private String password;
     @NotBlank
     private String firstName;

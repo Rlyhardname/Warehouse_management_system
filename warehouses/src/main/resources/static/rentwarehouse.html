@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form id=myForm action="http://localhost:8080/api/main/rentwarehouse" method="post">
+<form id="myForm" action="http://localhost:8080/api/main/rentwarehouse" method="post">
   <label for="ownerId">ownerId:</label>
   <input type="text" id="ownerId" th:name="ownerId" name="ownerId" value="2"><br><br>
   <label for="agentId">agentId:</label>
@@ -23,16 +23,31 @@
   <input type="text" id="contractFiatWorth" th:name="contractFiatWorth" name="contractFiatWorth" value="5499"><br><br>
   <label for="agentFee">agentFee:</label>
   <input type="text" id="agentFee" th:name="agentFee" name="agentFee" value="2.5"><br><br>
-  <input type="submit" value="submit">
+  <input type="submit" onclick="fetchData()"  value="submit">
 </form>
 
-<script>
-  $(document).ready(function() {
-    $('#myForm').submit(function(event) {
+  <script>
+    /// basically try to send a new response until we get x code / returned value that's not null then stop
+    // sending requests, and that's after we receive a first succesful request.
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      // Prevent the default form submission behavior
       event.preventDefault();
-      });
-    });
-</script>
+    function fetchData(){
+      const response = fetch("http://localhost:8080/api/main/rentwarehouse");
+      let stat;
+      response.then(s => stat = s.status)
+      while(stat<300 && stat>200){
+        setTimeout(poll,1000)
+      }
+    }
+
+    function poll(){
+      let owner = document.querySelector("#ownerId");
+      let agent = document.querySelector("#agentId");
+      const response = fetch("http://localhost:8080/api/main/test");
+      return
+    }
+  </script>
 
 
 </body>
