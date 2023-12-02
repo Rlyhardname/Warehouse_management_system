@@ -120,6 +120,7 @@ public class ClientFuncService {
                               double contractFiatWorth,
                               double agentFee) {
 
+
         Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
                 () -> new UserNotExististingException()
         );

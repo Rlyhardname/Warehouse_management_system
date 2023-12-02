@@ -19,7 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-public abstract class Client {
+public class Client {
 
     @Id
     @GeneratedValue(
