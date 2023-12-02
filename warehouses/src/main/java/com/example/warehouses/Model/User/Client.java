@@ -3,38 +3,45 @@ package com.example.warehouses.Model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Table
+
 @Entity
 @DynamicUpdate
-public class Client {
+public abstract class Client {
 
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
     private Long Id;
-    @Email(message ="Email must be valid")
+    @Email(message ="Email doesn't exists or is not in valid format")
+    @NotNull
     @Column(unique=true)
     private String email;
-    @Size(min = 4, message = "Password is too short")
+    @NotNull
+    @Size(min = 4, max = 20, message = "Passwords needs to be between 4 and 20 characters")
     private String password;
     @NotBlank
+    @NotNull
+    @Size(min = 2, max = 30, message = "Name is too short or too long" )
     private String firstName;
     @NotBlank
+    @NotNull
+    @Size(min = 2, max = 30, message = "Name is too short or too long" )
     private String lastName;
+    @NotNull
     private String accountType;
-
-
-
-
 
 }
