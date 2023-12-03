@@ -1,4 +1,4 @@
-package com.example.warehouses.Model.User;
+package com.example.warehouses.Security;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

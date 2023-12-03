@@ -1,10 +1,9 @@
-package com.example.warehouses.Services;
+package com.example.warehouses.Security;
 
 import com.example.warehouses.Configurations.Enum.Role;
 import com.example.warehouses.Exception.Client.UserNotExististingException;
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Model.User.Client;
-import com.example.warehouses.Model.User.User;
 import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;

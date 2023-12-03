@@ -1,4 +1,4 @@
-package com.example.warehouses.Services;
+package com.example.warehouses.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
