@@ -27,7 +27,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotExististingException.class)
     public ResponseEntity<Object> HandleUserNotExistingException(HttpServletResponse response) {
 
-        response.sendRedirect("http://localhost:8080/");
         return new ResponseEntity<>("User doesn't exist", HttpStatus.NOT_FOUND);
     }
 
