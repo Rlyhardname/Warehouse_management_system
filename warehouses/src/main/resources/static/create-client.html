@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create client form</title>
+</head>
+<body>
+<script>
+    function x() {
+        var JSONobj = {
+            "email": document.getElementById('email').value,
+            "password": document.getElementById('password').value,
+            "firstName": document.getElementById('firstName').value,
+            "lastName": document.getElementById('lastName').value,
+            "accountType": document.getElementById('accountType').value,
+        }
+        //$.ajax(
+        // works both ways..
+        fetch(form.action,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(JSONobj)
+        });
+    }
+
+    document.getElementById("formId").addEventListener('submit', function (event) {
+        event.preventDefault();
+        x();
+    });
+
+</script>
+
+<form id="formId" action="http://localhost:8080/api/main/register" method="post">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value="admin1@gmail.com"><br><br>
+    <label for="password">Password:</label>
+    <input type="text" id="password" name="password" value="Monkeyfingers"><br><br>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" value="John"><br><br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" value="Cena"><br><br>
+
+    <label for="accountType">Client Type:</label>
+    <select id="accountType" name="accountType">
+        <option type="text" value="owner">Owner</option>
+        <option type="text" value="agent">Agent</option>
+    </select>
+    <input type="submit" value="submit">
+</form>
+
+</body>
+</html>
