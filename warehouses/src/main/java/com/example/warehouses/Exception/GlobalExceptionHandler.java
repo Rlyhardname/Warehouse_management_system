@@ -20,59 +20,52 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WrongPasswordException.class)
     public ResponseEntity<Object> handleWrongPasswordException() {
 
-        return new ResponseEntity<>("password doesn't match user credentials", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Invalid Username or Password. Please try again...", HttpStatus.UNAUTHORIZED);
     }
 
     @SneakyThrows
     @ExceptionHandler(UserNotExististingException.class)
     public ResponseEntity<Object> HandleUserNotExistingException(HttpServletResponse response) {
 
-        return new ResponseEntity<>("User doesn't exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Something went wrong!", HttpStatus.BAD_REQUEST);
     }
 
     @SneakyThrows
     @ExceptionHandler(ClientAlreadyRegisteredException.class)
     public ResponseEntity<Object> HandleClientAlreadyRegisteredException(HttpServletResponse response) {
 
+        // TODO log request and return something general.
 
-        return new ResponseEntity<>("Client is already registered", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Registration failed. Please check your information and try again.", HttpStatus.UNAUTHORIZED);
     }
 
     @SneakyThrows
     @ExceptionHandler(WarehouseAlreadyExistsException.class)
     public ResponseEntity<Object> HandleWarehouseAlreadyExistsException() {
 
-        return new ResponseEntity<>("Warehouse with such a name already exists", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Warehouse with such a name already exists", HttpStatus.UNAUTHORIZED);
     }
 
     @SneakyThrows
     @ExceptionHandler(WarehouseNotExistingException.class)
     public ResponseEntity<Object> HandleWarehouseNotExistingException() {
 
-        return new ResponseEntity<>("Warehouse with this this id doesn't exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Warehouse doesn't exist!", HttpStatus.NOT_FOUND);
     }
 
     @SneakyThrows
     @ExceptionHandler(OwnerDoesntOwnAnyWarehouseException.class)
     public ResponseEntity<Object> HandleOwnerDoesntOwnAnyWarehouseException() {
 
-        return new ResponseEntity<>("This owner doesn't own any warehouse", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("This owner doesn't own any warehouse yet!", HttpStatus.NOT_FOUND);
     }
 
-    @SneakyThrows
-    @ExceptionHandler(AgentHasNoContractsException.class)
-    public ResponseEntity<Object> HandleAgentHasNoContractsException(String s) {
-
-
-
-        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
-    }
 
     @SneakyThrows
     @ExceptionHandler(AlreadyRentedException.class)
     public ResponseEntity<Object> HandleAlreadyRentedException() {
 
-        return new ResponseEntity<>("Warehouse is already rented out", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Warehouse is already rented out", HttpStatus.CONFLICT);
     }
 
     @SneakyThrows
@@ -88,7 +81,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> HandleBadPathVariableException() {
 
 
-        return new ResponseEntity<>("URL Path variable value doesn't exist in DB", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("URL Path variable value doesn't exist", HttpStatus.NOT_FOUND);
     }
     
 }
