@@ -27,10 +27,10 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class ClientFuncService {
+public class OwnerService {
 
     private final ClientRepository clientRepository;
-    private final GlobalService globalService;
+    private final ClientService globalService;
     private final WarehouseRepository warehouseRepository;
     private final RatingsRepository ratingsRepository;
     private final RentalFormRepository rentalFormRepository;
@@ -40,14 +40,14 @@ public class ClientFuncService {
     private final WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository;
 
     @Autowired
-    public ClientFuncService(ClientRepository clientRepository,
-                             GlobalService globalService,
-                             WarehouseRepository warehouseRepository,
-                             RatingsRepository ratingsRepository,
-                             RentalFormRepository rentalFormRepository,
-                             WarehouseAssignedToAgentRepository marketRepository,
-                             AddressRepository addressRepository,
-                             WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository) {
+    public OwnerService(ClientRepository clientRepository,
+                        ClientService globalService,
+                        WarehouseRepository warehouseRepository,
+                        RatingsRepository ratingsRepository,
+                        RentalFormRepository rentalFormRepository,
+                        WarehouseAssignedToAgentRepository marketRepository,
+                        AddressRepository addressRepository,
+                        WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository) {
         this.clientRepository = clientRepository;
         this.globalService = globalService;
         this.warehouseRepository = warehouseRepository;
