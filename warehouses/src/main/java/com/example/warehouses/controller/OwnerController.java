@@ -1,31 +1,20 @@
 package com.example.warehouses.controller;
 
 import com.example.warehouses.Configurations.Enum.WarehouseCategory;
-import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
-import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
 import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Services.OwnerService;
-import com.example.warehouses.Services.ClientService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,18 +23,12 @@ import java.util.concurrent.Executors;
 @Validated
 @RequestMapping(path = "/api/main/owners")
 public class OwnerController {
-
     private ExecutorService executorService;
     private final OwnerService ownerService;
-    private final ClientService clientService;
 
     @Autowired
-    public OwnerController(OwnerService clientFuncService,
-                           ClientService globalService) {
-
-
+    public OwnerController(OwnerService clientFuncService) {
         this.ownerService = clientFuncService;
-        this.clientService = globalService;
     }
 
     @PostConstruct
@@ -60,7 +43,7 @@ public class OwnerController {
 
     // Users
 
-    @GetMapping("warehouses/{owner_id}")
+    @GetMapping("/warehouses/{owner_id}")
     public List<WarehouseDTO> getAllWarehousesOwnedBy(@PathVariable @Min(value = 0, message = "Invalid id, input number is" +
             "lower than 1 or not a hall number") Long owner_id) {
         System.out.println("hmm?");
@@ -76,9 +59,8 @@ public class OwnerController {
     }
 
 
-
     // not finished...
-    @GetMapping("agents/remove/{id}")
+    @GetMapping("/agents/remove/{id}")
     public Set<AgentDTO> RemoveAgentsFromWarehouse(@PathVariable Long... id) {
         System.out.println(Arrays.toString(id));
         List<Long> agentIds = List.of(id);
@@ -86,7 +68,7 @@ public class OwnerController {
         return agentsLeftDTO;
     }
 
-    @GetMapping("market/warehouse")
+    @GetMapping("/market/warehouse")
     public Set<Agent> setAgentsToWarehouse() { // , List<Warehouse> warehouses, List<Agent> agents Long owner Id@RequestParam Long ownerId
         //Long ownerId, Long warehouseId, List<Long> agentIds
 
@@ -95,31 +77,13 @@ public class OwnerController {
         return ownerService.setAgentsToWarehouse(2L, agentIdss, 2L);
     }
 
-    @GetMapping("agents")
+    @GetMapping("//agents")
     public Set<AgentDTO> getAllAgents() {
         return ownerService.getAllAgents();
     }
 
-    @PostMapping("agent-form")
-    public AgentAndRentFormDTO returnDataToClient(AgentAndRentFormDTO object) {
 
-        return object;
-    }
-
-    @SneakyThrows
-    @PostMapping(path = "/register", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
-    )//"application/x-www-form-urlencoded")
-    public ResponseEntity<String> registerClient(@Valid @ModelAttribute Client client,
-                                                 HttpServletResponse response) {
-        if (!clientService.isUsernameTaken(client.getEmail())) {
-            ownerService.register(client.getEmail(), client.getPassword(), client.getFirstName(), client.getLastName(), client.getAccountType(), response);
-            return new ResponseEntity<>("User Successfully registered!", HttpStatus.ACCEPTED);
-        } else {
-            throw new ClientAlreadyRegisteredException();
-        }
-    }
-
-    @PostMapping("create/warehouse")
+    @PostMapping("/create/warehouse")
     public WarehouseDTO createWarehouse(
             @RequestParam(value = "owner") String email,
             @RequestParam(value = "county") String county,
@@ -133,7 +97,7 @@ public class OwnerController {
             @RequestParam(value = "warehouseCategory") String warehouseCategory,
             @RequestParam(value = "rented") String rented) {
 
-        WarehouseCategory category = clientService.warehouseCategory(warehouseCategory);
+        WarehouseCategory category = ownerService.warehouseCategory(warehouseCategory);
 
         return ownerService.createWarehouse(
                 email,
@@ -158,38 +122,6 @@ public class OwnerController {
     // edit/warehouse/agents func() { put - add/remove agents from db }
 
 
-    @PostMapping("rentwarehouse")
-    public ResponseEntity<String> rentWarehouse(@RequestParam Long ownerId,
-                                                @RequestParam Long agentId,
-                                                @RequestParam Long clientId,
-                                                @RequestParam Long warehouseId,
-                                                @RequestParam LocalDate startDate,
-                                                @RequestParam LocalDate endDate,
-                                                @RequestParam double contractFiatWorth,
-                                                @RequestParam double agentFee,
-                                                HttpServletResponse response
-    ) {
-
-        Runnable runnable = () -> ownerService.rentWarehouse(ownerId,
-                agentId,
-                clientId,
-                warehouseId,
-                startDate,
-                endDate,
-                contractFiatWorth,
-                agentFee);
-        executorService.submit(runnable);
-
-        return new ResponseEntity<>("Server computing request", HttpStatus.ACCEPTED);
-    }
-
-
-
-
-
-
-
-
     @GetMapping("rented-warehouses/{status}")
     public Optional<List<WarehouseDTO>> getWarehouseByStatus(@PathVariable(required = false) String status) {
         List<WarehouseDTO> warehouseDTOlist = new ArrayList<>();
@@ -201,7 +133,7 @@ public class OwnerController {
         return Optional.of(warehouseDTOlist);
     }
 
-    @GetMapping("market/{ownerId}")
+    @GetMapping("/market/{ownerId}")
     public List<Warehouse> fetchWarehouses(@PathVariable Long ownerId) { //
         List<Warehouse> allOwnerWarehouses = ownerService.fetchWarehouses(ownerId);
         System.out.println(allOwnerWarehouses.size());

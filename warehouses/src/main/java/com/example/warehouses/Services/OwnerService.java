@@ -2,9 +2,7 @@ package com.example.warehouses.Services;
 
 import com.example.warehouses.Configurations.Enum.Role;
 import com.example.warehouses.Configurations.Enum.WarehouseCategory;
-import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.AgentDTO;
-import com.example.warehouses.DTO.RentFormDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
 import com.example.warehouses.Exception.Client.*;
 import com.example.warehouses.Exception.Warehouse.AlreadyRentedException;
@@ -19,7 +17,6 @@ import com.example.warehouses.Model.warehouse.RentalForm;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
 import com.example.warehouses.Repository.*;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,19 +53,6 @@ public class OwnerService {
         this.marketRepository = marketRepository;
         this.addressRepository = addressRepository;
         this.warehouseAssignedToAgentRepository = warehouseAssignedToAgentRepository;
-    }
-    public Client register(String email,
-                                     String password,
-                                     String firstName,
-                                     String lastName,
-                                     String clientType,
-                                     HttpServletResponse response) {
-            return globalService.register(email,
-                    password,
-                    firstName,
-                    lastName,
-                    clientType,
-                    response);
     }
 
     public WarehouseDTO createWarehouse(String email,
@@ -111,45 +95,7 @@ public class OwnerService {
         return warehouseDTOOpt;
     }
 
-    public void rentWarehouse(Long ownerId,
-                              Long agentId,
-                              Long clientId,
-                              Long warehouseId,
-                              LocalDate startDate,
-                              LocalDate endDate,
-                              double contractFiatWorth,
-                              double agentFee) {
 
-
-        Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
-                () -> new UserNotExististingException()
-        );
-        Agent agent = (Agent) clientRepository.findById(agentId).orElseThrow(
-                () -> new UserNotExististingException()
-        );
-        Client client = clientRepository.findById(clientId).orElseThrow(
-                () -> new UserNotExististingException()
-        );
-        Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(
-                () -> new WarehouseNotExistingException()
-        );
-       if (warehouse.isRented() == true) throw new AlreadyRentedException();
-
-        RentalForm contract = agent.createContract(agent,
-                client,
-                warehouse,
-                startDate,
-                endDate,
-                contractFiatWorth,
-                agentFee);
-
-        if(!warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agentId,warehouseId).isPresent()){
-            throw new AgentNotAssignedWarehouseException();
-        }
-        rentalFormRepository.save(contract);
-        warehouseAssignedToAgentRepository.updateStatus("CONTRACTED",agentId,warehouseId);
-
-    }
 
     public List<AgentRatings> rateAgent(Long ownerId, Long agentId, int stars) {
 
@@ -167,67 +113,6 @@ public class OwnerService {
         List<AgentRatings> allRatings = ratingsRepository.findAllByAgentId(agentId).get();
 
         return allRatings;
-    }
-
-    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(Long agentId, LocalDate startDate, LocalDate endDate) {
-
-        AgentAndRentFormDTO agentDTO = new AgentAndRentFormDTO();
-        isAgentRated(agentDTO, agentId);
-        gatherFormData(agentDTO, agentId, startDate, endDate);
-        for (RentFormDTO form : agentDTO.getRentalForms()
-        ) {
-            System.out.println("Form" + form);
-        }
-        return agentDTO;
-    }
-
-    public boolean isAgentRated(AgentAndRentFormDTO agentDTO, Long agentId) {
-
-        Client agent = clientRepository.findById(agentId).orElseThrow(
-                () -> new UserNotExististingException()
-        );
-        if(agent.getAccountType().equals("owner")){
-            throw new BadPathVariableException();
-        }
-        agentDTO.setEmail(agent.getEmail());
-        agentDTO.setFirstName(agent.getFirstName());
-        agentDTO.setLastName(agent.getLastName());
-
-        double ratingsTotal = 0;
-        int numberOfVotes = 0;
-        Optional<List<AgentRatings>> ratingsOptList = ratingsRepository.findAllByAgentId(agentId);
-        if (ratingsOptList.isPresent() == true) {
-            numberOfVotes = ratingsOptList.get().size();
-            for (AgentRatings rating : ratingsOptList.get()
-            ) {
-                ratingsTotal += rating.getStars();
-            }
-        } else {
-            return false;
-        }
-        agentDTO.setStarsTotal(ratingsTotal);
-        agentDTO.setNumberOfVotes(numberOfVotes);
-
-        return true;
-    }
-
-    public void gatherFormData(AgentAndRentFormDTO agentDTO, Long agentId, LocalDate startDate, LocalDate endDate) {
-
-        List<RentalForm> rentalForms =
-                rentalFormRepository.findRentFormsByAgentIdAndStartDateEndDate(agentId, startDate, endDate).orElseThrow(
-                        () -> new AgentHasNoContractsException()
-                );
-
-
-        for (RentalForm form : rentalForms
-        ) {
-
-            agentDTO.getRentalForms().add(new RentFormDTO(form.getId(), form.getAgent().getId(), form.getClient().getId(),
-                    form.getWarehouse().getId(), form.getStartDate(), form.getEndDate(), form.getContractFiatWorth()));
-            System.out.println(form);
-        }
-
-
     }
 
     public Optional<List<Warehouse>> getWarehouseByOwnerId(Long ownerId) {
@@ -312,6 +197,17 @@ public class OwnerService {
 
         }
         return assignedAgents;
+    }
+
+    public WarehouseCategory warehouseCategory(String category){
+        switch (category.toLowerCase()){
+            case "garage": return WarehouseCategory.GARAGE;
+            case "SMALL": return WarehouseCategory.SMALL;
+            case "MEDIUM": return WarehouseCategory.MEDIUM;
+            case "LARGE": return WarehouseCategory.LARGE;
+            case "INDUSTRIAL":  return WarehouseCategory.INDUSTRIAL;
+            default: return WarehouseCategory.EMPTY;
+        }
     }
 
     public Set<Agent> getAllAgentsPairedToWarehouse(Long ownerId, Long warehouseId) {
