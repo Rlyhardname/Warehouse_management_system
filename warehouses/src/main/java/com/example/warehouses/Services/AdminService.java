@@ -24,10 +24,10 @@ public class AdminService implements AdministratorFunctions {
 
     private final AdminRepository adminRepository;
     private final ClientRepository clientRepository;
-    private final GlobalService globalService;
+    private final ClientService globalService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, GlobalService globalService) {
+    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, ClientService globalService) {
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
         this.globalService = globalService;

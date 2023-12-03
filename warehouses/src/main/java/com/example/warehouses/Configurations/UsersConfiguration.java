@@ -12,7 +12,7 @@ import com.example.warehouses.Model.User.MasterAdmin;
 import com.example.warehouses.Model.User.Owner;
 import com.example.warehouses.Model.warehouse.*;
 import com.example.warehouses.Repository.*;
-import com.example.warehouses.Services.GlobalService;
+import com.example.warehouses.Services.ClientService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +34,7 @@ public class UsersConfiguration {
                                         AddressRepository addressRepository,
                                         WarehouseAssignedToAgentRepository marketRepository,
                                         NotificationRepository notificationRepository,
-                                        GlobalService globalService){
+                                        ClientService globalService){
         return args -> {
             Administrator admin1 = new MasterAdmin();
             ((MasterAdmin) admin1).init( "admin1@gmail.com",

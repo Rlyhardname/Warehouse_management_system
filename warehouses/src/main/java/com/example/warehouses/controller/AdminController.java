@@ -1,21 +1,19 @@
-package com.example.warehouses.Controller;
+package com.example.warehouses.controller;
 
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
 import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Services.AdminService;
-import com.example.warehouses.Services.GlobalService;
+import com.example.warehouses.Services.ClientService;
 import com.google.common.io.ByteStreams;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.ClientHttpRequestFactories;
 import org.springframework.boot.web.client.ClientHttpRequestFactorySettings;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestInitializer;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 
@@ -34,12 +31,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @RequestMapping(path = "hidden/admin/")
 public class AdminController implements AdministratorFunctions {
     private final AdminService adminService;
-    private final GlobalService globalService;
+    private final ClientService globalService;
 
 
     @Autowired
     public AdminController(AdminService adminService,
-                           GlobalService globalService) {
+                           ClientService globalService) {
         this.adminService = adminService;
         this.globalService = globalService;
     }
@@ -104,7 +101,7 @@ public class AdminController implements AdministratorFunctions {
                 Duration.ofSeconds(1L),
                 true));
 
-       ClientHttpRequest request =  factory.createRequest(new URI("http://localhost:8080/api/main/getAllAgents"), HttpMethod.GET);
+       ClientHttpRequest request =  factory.createRequest(new URI("http://localhost:8080/api/main/agents"), HttpMethod.GET);
        ClientHttpResponse response = request.execute();
 
        request.getBody().write("{}".getBytes(UTF_8));

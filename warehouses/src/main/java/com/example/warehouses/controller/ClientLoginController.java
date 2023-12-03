@@ -1,8 +1,8 @@
-package com.example.warehouses.Controller;
+package com.example.warehouses.controller;
 
 import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Services.CustomClientService;
 import com.example.warehouses.Services.ClientService;
-import com.example.warehouses.Services.GlobalService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.Optional;
 @RequestMapping(path = "/login")
 public class ClientLoginController {
 
-    private final ClientService clientService;
-    private final GlobalService globalService;
+    private final CustomClientService clientService;
+    private final ClientService globalService;
 
     @Autowired
-    public ClientLoginController(ClientService clientService,
-                                 GlobalService globalService) {
+    public ClientLoginController(CustomClientService clientService,
+                                 ClientService globalService) {
         this.clientService = clientService;
         this.globalService = globalService;
     }
