@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> HandleBadPathVariableException() {
 
 
-        return new ResponseEntity<>("URL Path variable value doesn't exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Bad path variable!", HttpStatus.BAD_REQUEST);
     }
     
 }
