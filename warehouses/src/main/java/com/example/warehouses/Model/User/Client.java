@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.UUID;
-
 @Data
 @Getter
 @Setter
@@ -17,9 +15,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Table
 
 @Entity
+@Table(
+        name = "client",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "email_constraints", columnNames = "email")
+        }
+)
+
 @DynamicUpdate
 public class Client {
 
@@ -31,10 +35,13 @@ public class Client {
     // UUID
     private Long Id;
     @Email(message = "Email doesn't exists or is not in valid format")
-    @NotNull
-    @Column(unique = true)
+    @Column(
+            name = "email",
+            nullable = false,
+            unique = true
+    )
+
     private String email;
-    @NotNull
     @Size(min = 4, max = 20, message = "Passwords needs to be between 4 and 20 characters")
     private String password;
     @NotBlank
