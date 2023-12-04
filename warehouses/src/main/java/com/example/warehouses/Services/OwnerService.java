@@ -5,7 +5,6 @@ import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
 import com.example.warehouses.Exception.Client.*;
-import com.example.warehouses.Exception.Warehouse.AlreadyRentedException;
 import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsException;
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
 import com.example.warehouses.Model.AgentRatings;
@@ -13,14 +12,12 @@ import com.example.warehouses.Model.User.Agent;
 import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.User.Owner;
 import com.example.warehouses.Model.warehouse.Address;
-import com.example.warehouses.Model.warehouse.RentalForm;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
 import com.example.warehouses.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -70,7 +67,7 @@ public class OwnerService {
         Warehouse warehouse = null;
         WarehouseDTO warehouseDTO = null;
 
-        Client ownerOpt = clientRepository.findClientByEmail(email).orElseThrow(
+        Client ownerOpt = clientRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         );
         if (warehouseRepository.findWarehouseByName(name).isPresent() == false) {
@@ -240,7 +237,7 @@ public class OwnerService {
         ) {
             Client agent = clientRepository.findById(agentId).get();
             if (agent!=null) {
-                if(agent.getAccountType().equals("agent")){
+                if(agent.getDType().equals("agent")){
                     agents.add((Agent)agent);
                 }
             }
@@ -256,12 +253,12 @@ public class OwnerService {
     }
 
     public Set<AgentDTO> getAllAgents(){
-      Optional<List<Agent>> agents =  clientRepository.findAllClientsByType(Role.AGENT.name());
+      List<Client> agents =  clientRepository.findBydType(Role.AGENT.name());
       Set<AgentDTO> agentsDTO = new HashSet<>();
-       if(agents.isPresent()){
-           for (Agent agent: agents.get()
+       if(!agents.isEmpty()){
+           for (Client agent: agents
            ) {
-                agentsDTO.add(new AgentDTO(agent));
+                agentsDTO.add(new AgentDTO((Agent) agent));
            }
        }
        return agentsDTO;

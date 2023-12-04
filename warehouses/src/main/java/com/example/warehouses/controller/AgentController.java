@@ -20,6 +20,7 @@ public class AgentController {
 
     @SneakyThrows
     @GetMapping("/{agent_id}")
+    // TODO Maybe redesign to post?
     public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(@PathVariable Long agent_id) {
         LocalDate startDate = LocalDate.of(2020, 5, 25);
         LocalDate endDate = LocalDate.of(2023, 6, 26);

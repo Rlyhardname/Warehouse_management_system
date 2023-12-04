@@ -30,23 +30,23 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public User loadUserByUsername(String username) {
+    public User loadUserByUsername(String email1) {
         String email = null;
         String password = null;
         String ROLE = null;
         Optional<Administrator> admin;
-        Optional<Client> client = clientRepository.findByUsername(username);
+        Optional<Client> client = clientRepository.findByEmail(email1);
 
         if (client.isPresent()) {
             email = client.get().getEmail();
             password = client.get().getPassword();
-            if (client.get().getAccountType().equals("owner")) {
+            if (client.get().getDType().equals("owner")) {
                 ROLE = Role.OWNER.name();
             } else {
                 ROLE = Role.AGENT.name();
             }
         } else {
-            admin = adminRepository.findAdminByEmail(username);
+            admin = adminRepository.findAdminByEmail(email1);
             if (admin.isPresent() == true) {
                 email = admin.get().getEmail();
                 password = admin.get().getPassword();

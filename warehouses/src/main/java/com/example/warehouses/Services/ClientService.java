@@ -1,8 +1,7 @@
 package com.example.warehouses.Services;
 
-import com.example.warehouses.Configurations.Enum.WarehouseCategory;
-import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.User.Agent;
+import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Model.User.Owner;
 import com.example.warehouses.Repository.AdminRepository;
 import com.example.warehouses.Repository.ClientRepository;
@@ -44,7 +43,7 @@ public class ClientService {
 
 
     public boolean isUsernameTaken(String username){
-        if(clientRepository.findClientByEmail(username).isPresent()){
+        if(clientRepository.findByEmail(username).isPresent()){
             return true;
         }if(adminRepository.findAdminByEmail(username).isPresent()){
             return true;

@@ -25,7 +25,7 @@ public class AgentUtil {
         Client agent = clientRepository.findById(agentId).orElseThrow(
                 () -> new UserNotExististingException()
         );
-        if (agent.getAccountType().equals("owner")) {
+        if (agent.getDType().equals("owner")) {
             throw new BadPathVariableException();
         }
         agentDTO.setEmail(agent.getEmail());
