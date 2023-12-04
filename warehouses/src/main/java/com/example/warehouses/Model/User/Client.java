@@ -25,6 +25,8 @@ import org.hibernate.annotations.DynamicUpdate;
 )
 
 @DynamicUpdate
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class Client {
 
     @Id
@@ -52,7 +54,6 @@ public class Client {
     @NotNull
     @Size(min = 2, max = 30, message = "Name is too short or too long")
     private String lastName;
-    @NotNull
-    private String accountType;
-
+    @Column(name = "dtype", insertable = false, updatable = false)
+    private String dType;
 }

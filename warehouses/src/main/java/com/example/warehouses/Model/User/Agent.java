@@ -7,10 +7,7 @@ import com.example.warehouses.Model.warehouse.RentalForm;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
 import com.example.warehouses.Repository.WarehouseRepository;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +23,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("agent")
 public class Agent extends Client {
-
 
     public void rentWarehouse(WarehouseRepository repository, RentalForm receipt, Long warehouseId) {
 
@@ -50,7 +47,6 @@ public class Agent extends Client {
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
-        setAccountType("agent");
     }
 
 
