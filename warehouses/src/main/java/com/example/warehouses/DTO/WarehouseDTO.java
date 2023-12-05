@@ -1,7 +1,7 @@
 package com.example.warehouses.DTO;
 
-import com.example.warehouses.Model.warehouse.Address;
-import com.example.warehouses.Model.warehouse.Warehouse;
+import com.example.warehouses.model.warehouse.Address;
+import com.example.warehouses.model.warehouse.Warehouse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,12 +1,12 @@
 package com.example.warehouses.controller.user;
 
-import com.example.warehouses.Configurations.Enum.WarehouseCategory;
+import com.example.warehouses.configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
-import com.example.warehouses.Model.AgentRatings;
-import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.warehouse.Warehouse;
-import com.example.warehouses.Services.OwnerService;
+import com.example.warehouses.model.AgentRatings;
+import com.example.warehouses.model.user.Agent;
+import com.example.warehouses.model.warehouse.Warehouse;
+import com.example.warehouses.services.OwnerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.validation.constraints.Min;

@@ -1,6 +1,6 @@
 package com.example.warehouses.DTO;
 
-import com.example.warehouses.Model.User.Agent;
+import com.example.warehouses.model.user.Agent;
 import lombok.*;
 
 @Data

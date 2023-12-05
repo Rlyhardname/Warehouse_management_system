@@ -1,8 +1,8 @@
 package com.example.warehouses.controller.user;
 
-import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
-import com.example.warehouses.Model.User.User;
-import com.example.warehouses.Services.UsersService;
+import com.example.warehouses.exception.Client.ClientAlreadyRegisteredException;
+import com.example.warehouses.model.user.User;
+import com.example.warehouses.services.UsersService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.SneakyThrows;

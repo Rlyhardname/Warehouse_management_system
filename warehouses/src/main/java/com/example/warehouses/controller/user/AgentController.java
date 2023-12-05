@@ -1,7 +1,7 @@
 package com.example.warehouses.controller.user;
 
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
-import com.example.warehouses.Services.AgentService;
+import com.example.warehouses.services.AgentService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

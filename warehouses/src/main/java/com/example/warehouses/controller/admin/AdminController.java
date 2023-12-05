@@ -1,10 +1,10 @@
 package com.example.warehouses.controller.admin;
 
-import com.example.warehouses.Interfaces.Administrator;
-import com.example.warehouses.Interfaces.AdministratorFunctions;
-import com.example.warehouses.Model.User.User;
-import com.example.warehouses.Services.AdminService;
-import com.example.warehouses.Services.UsersService;
+import com.example.warehouses.interfaces.Administrator;
+import com.example.warehouses.interfaces.AdministratorFunctions;
+import com.example.warehouses.model.user.User;
+import com.example.warehouses.services.AdminService;
+import com.example.warehouses.services.UsersService;
 import com.google.common.io.ByteStreams;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;

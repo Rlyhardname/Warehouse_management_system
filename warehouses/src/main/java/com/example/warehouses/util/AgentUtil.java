@@ -2,17 +2,17 @@ package com.example.warehouses.util;
 
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.RentFormDTO;
-import com.example.warehouses.Exception.Client.AgentHasNoContractsException;
-import com.example.warehouses.Exception.Client.BadPathVariableException;
-import com.example.warehouses.Exception.Client.UserNotExististingException;
-import com.example.warehouses.Model.AgentRatings;
-import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.User.User;
-import com.example.warehouses.Model.warehouse.RentalForm;
-import com.example.warehouses.Model.warehouse.Warehouse;
-import com.example.warehouses.Repository.UsersRepository;
-import com.example.warehouses.Repository.RatingsRepository;
-import com.example.warehouses.Repository.RentalFormRepository;
+import com.example.warehouses.exception.Client.AgentHasNoContractsException;
+import com.example.warehouses.exception.Client.BadPathVariableException;
+import com.example.warehouses.exception.Client.UserNotExististingException;
+import com.example.warehouses.model.AgentRatings;
+import com.example.warehouses.model.user.Agent;
+import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.warehouse.RentalForm;
+import com.example.warehouses.model.warehouse.Warehouse;
+import com.example.warehouses.repository.UsersRepository;
+import com.example.warehouses.repository.RatingsRepository;
+import com.example.warehouses.repository.RentalFormRepository;
 
 import java.time.LocalDate;
 import java.util.List;

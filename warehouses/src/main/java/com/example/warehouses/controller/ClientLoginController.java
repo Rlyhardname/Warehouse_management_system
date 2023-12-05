@@ -1,8 +1,8 @@
 package com.example.warehouses.controller;
 
-import com.example.warehouses.Model.User.User;
-import com.example.warehouses.Services.CustomClientService;
-import com.example.warehouses.Services.UsersService;
+import com.example.warehouses.model.user.User;
+import com.example.warehouses.services.CustomClientService;
+import com.example.warehouses.services.UsersService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;

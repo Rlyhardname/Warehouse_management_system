@@ -1,14 +1,14 @@
 package com.example.warehouses.util;
 
-import com.example.warehouses.Configurations.Enum.WarehouseCategory;
-import com.example.warehouses.Model.AgentRatings;
-import com.example.warehouses.Model.AgentRatingsPK;
-import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.User.Owner;
-import com.example.warehouses.Model.warehouse.Address;
-import com.example.warehouses.Model.warehouse.Warehouse;
-import com.example.warehouses.Model.warehouse.WarehouseAsignedToAgentPK;
-import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
+import com.example.warehouses.configurations.Enum.WarehouseCategory;
+import com.example.warehouses.model.AgentRatings;
+import com.example.warehouses.model.AgentRatingsPK;
+import com.example.warehouses.model.user.Agent;
+import com.example.warehouses.model.user.Owner;
+import com.example.warehouses.model.warehouse.Address;
+import com.example.warehouses.model.warehouse.Warehouse;
+import com.example.warehouses.model.warehouse.WarehouseAsignedToAgentPK;
+import com.example.warehouses.model.warehouse.WarehouseAssignedToAgent;
 
 import java.util.ArrayList;
 import java.util.List;
