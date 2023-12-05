@@ -27,14 +27,14 @@ public class Warehouse implements Serializable {
     @ManyToOne()
     private Owner owner;
     @Column(unique=true)
-    private String warehouseName;
+    private String name;
     @ManyToOne
     private Address address;
     private String squareFeet;
     private String temperature;
     private String humidityPercent;
     private String stockedGoodsType;
-    private String warehouseCategory;
+    private String category;
     private boolean rented;
 
     public void init(Owner owner,
@@ -48,20 +48,20 @@ public class Warehouse implements Serializable {
                      ){
         setOwner(owner);
         setAddress(address);
-        setWarehouseName(name);
+        setName(name);
         setSquareFeet(squareFeet);
         setTemperature(temperature);
         setHumidityPercent(humidityPercent);
         setStockedGoodsType(stockedGoodsType);
-        setWarehouseCategory(warehouseCategory.name());
+        setCategory(warehouseCategory.name());
         rented = false;
     }
 
     @Override
     public String toString(){
 
-        return warehouseName + " " + id + " " + squareFeet + " " + temperature + " " +  humidityPercent +
-                " " + stockedGoodsType + " " + warehouseCategory + " " + rented;
+        return name + " " + id + " " + squareFeet + " " + temperature + " " +  humidityPercent +
+                " " + stockedGoodsType + " " + category + " " + rented;
     }
 
 }

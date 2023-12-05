@@ -14,10 +14,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class WarehouseAssignedToAgent {
     @EmbeddedId
-    private WarehouseAsignedToAgentPK id;
+    private WarehouseAssignedToAgentPK id;
     private String relationshipStatus;
 
-    public WarehouseAssignedToAgent(WarehouseAsignedToAgentPK id) {
+    public WarehouseAssignedToAgent(WarehouseAssignedToAgentPK id) {
         this.id = id;
         relationshipStatus = "NOT_CONTRACTED";
     }

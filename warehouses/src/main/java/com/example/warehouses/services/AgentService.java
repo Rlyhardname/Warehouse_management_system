@@ -97,7 +97,7 @@ public class AgentService {
                 contractFiatWorth,
                 agentFee);
 
-        if (!warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agentId, warehouseId).isPresent()) {
+        if (!warehouseAssignedToAgentRepository.findById_AgentIdAndId_WarehouseId(agentId, warehouseId).isPresent()) {
             throw new AgentNotAssignedWarehouseException();
         }
         rentalFormRepository.save(contract);

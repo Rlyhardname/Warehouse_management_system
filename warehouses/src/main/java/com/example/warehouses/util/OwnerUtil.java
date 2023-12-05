@@ -7,7 +7,7 @@ import com.example.warehouses.model.user.Agent;
 import com.example.warehouses.model.user.Owner;
 import com.example.warehouses.model.warehouse.Address;
 import com.example.warehouses.model.warehouse.Warehouse;
-import com.example.warehouses.model.warehouse.WarehouseAsignedToAgentPK;
+import com.example.warehouses.model.warehouse.WarehouseAssignedToAgentPK;
 import com.example.warehouses.model.warehouse.WarehouseAssignedToAgent;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class OwnerUtil {
         List<WarehouseAssignedToAgent> listOfAgentsAssignedToWarehouse = new ArrayList<>();
         for (Agent agentToAssign : agents
         ) {
-            WarehouseAsignedToAgentPK PK = new WarehouseAsignedToAgentPK(agentToAssign.getId(), warehouse.getId());
+            WarehouseAssignedToAgentPK PK = new WarehouseAssignedToAgentPK(agentToAssign.getId(), warehouse.getId());
             WarehouseAssignedToAgent agentAssigned = new WarehouseAssignedToAgent(PK);
             listOfAgentsAssignedToWarehouse.add(agentAssigned);
         }
@@ -60,7 +60,7 @@ public class OwnerUtil {
                 if (agent.getId() == assignedAgent.getId().getAgentId() &&
                         warehouse.getId() == assignedAgent.getId().getWarehouseId()
                         && assignedAgent.getRelationshipStatus().equals("CONTRACTED")) {
-                    WarehouseAsignedToAgentPK PK = new WarehouseAsignedToAgentPK(agent.getId(), warehouse.getId());
+                    WarehouseAssignedToAgentPK PK = new WarehouseAssignedToAgentPK(agent.getId(), warehouse.getId());
                     WarehouseAssignedToAgent agentWarehouse = new WarehouseAssignedToAgent(PK);
                     cleanAgentList.remove(agentWarehouse);
                 }

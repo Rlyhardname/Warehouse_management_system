@@ -16,7 +16,6 @@ import com.example.warehouses.repository.RentalFormRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class AgentUtil {
 
@@ -31,10 +30,10 @@ public class AgentUtil {
         agentDTO.setLastName(agent.getLastName());
         double ratingsTotal = 0;
         int numberOfVotes = 0;
-        Optional<List<AgentRatings>> ratingsOptList = ratingsRepository.findAllByAgentId(agentId);
-        if (ratingsOptList.isPresent() == true) {
-            numberOfVotes = ratingsOptList.get().size();
-            for (AgentRatings rating : ratingsOptList.get()) {
+        List<AgentRatings> ratingsOptList = ratingsRepository.findAllByIdAgentID(agentId);
+        if (!ratingsOptList.isEmpty()) {
+            numberOfVotes = ratingsOptList.size();
+            for (AgentRatings rating : ratingsOptList) {
                 ratingsTotal += rating.getStars();
             }
 

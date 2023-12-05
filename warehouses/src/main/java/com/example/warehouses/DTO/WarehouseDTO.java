@@ -26,12 +26,12 @@ public class WarehouseDTO {
     public WarehouseDTO(Warehouse warehouse) {
         this.id = warehouse.getId();
         this.address = warehouse.getAddress();
-        this.warehouseName = warehouse.getWarehouseName();
+        this.warehouseName = warehouse.getName();
         this.squareFeet = warehouse.getSquareFeet();
         this.temperature = warehouse.getTemperature();
         this.humidityPercent = warehouse.getHumidityPercent();
         this.stockedGoodsType = warehouse.getStockedGoodsType();
-        this.warehouseCategory = warehouse.getWarehouseCategory();
+        this.warehouseCategory = warehouse.getCategory();
         this.rented = warehouse.isRented();
     }
 }

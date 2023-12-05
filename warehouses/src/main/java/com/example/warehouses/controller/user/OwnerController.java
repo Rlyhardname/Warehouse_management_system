@@ -48,13 +48,14 @@ public class OwnerController {
             "lower than 1 or not a hall number") Long owner_id) {
         System.out.println("hmm?");
         List<WarehouseDTO> warehouseList = new ArrayList<>();
-        Optional<List<Warehouse>> warehousesOpt = ownerService.getWarehouseByOwnerId(owner_id);
-        if (warehousesOpt.isPresent()) {
-            for (Warehouse warehouse : warehousesOpt.get()
+        List<Warehouse> warehousesOpt = ownerService.getWarehouseByOwnerId(owner_id);
+        if (!warehousesOpt.isEmpty()) {
+            for (Warehouse warehouse : warehousesOpt
             ) {
                 warehouseList.add((new WarehouseDTO(warehouse)));
             }
         }
+
         return warehouseList;
     }
 

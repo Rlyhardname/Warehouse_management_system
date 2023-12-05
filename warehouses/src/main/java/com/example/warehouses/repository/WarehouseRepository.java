@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface WarehouseRepository extends JpaRepository<Warehouse,Long> {
-    @Query("Select s FROM Warehouse s WHERE s.warehouseName =?1")
-    Optional<Warehouse> findWarehouseByName(String name);
+public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
+    //@Query("Select s FROM Warehouse s WHERE s.warehouseName =?1")
+    Optional<Warehouse> findByName(String name);
 
     @Query("Select s FROM Warehouse s WHERE s.owner.Id =?1")
-    Optional<List<Warehouse>> findWarehousesByOwnerId(Long id);
+    List<Warehouse> findWarehousesByIdOwner(Long id);
 
     @Query("Select s FROM Warehouse s WHERE s.owner.Id =?1 AND s.id =?2")
-    Optional<Warehouse> findWarehouseByOwnerIdAndWarehouseId(Long ownerId, Long warehouseId);
+    Optional<Warehouse> findById_OwnerIdAndId_WarehouseId(Long ownerId, Long warehouseId);
 
     @Query("Select s FROM Warehouse s WHERE s.rented =?1")
     Optional<List<Warehouse>> findByRentStatus(boolean rented);

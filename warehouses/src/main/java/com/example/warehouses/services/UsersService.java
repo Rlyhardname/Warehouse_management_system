@@ -45,7 +45,7 @@ public class UsersService {
     public boolean isUsernameTaken(String username){
         if(usersRepository.findByEmail(username).isPresent()){
             return true;
-        }if(adminRepository.findAdminByEmail(username).isPresent()){
+        }if(adminRepository.findByEmail(username).isPresent()){
             return true;
         }
         return false;

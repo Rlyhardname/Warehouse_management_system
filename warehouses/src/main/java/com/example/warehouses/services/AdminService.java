@@ -37,7 +37,7 @@ public class AdminService implements AdministratorFunctions {
     @Override
     public Optional<Administrator> isLoginAdmin(String email, String password, HttpServletResponse response) throws IOException {
 
-        Optional<Administrator> adminOpt = Optional.of(adminRepository.findAdminByEmail(email).orElseThrow(
+        Optional<Administrator> adminOpt = Optional.of(adminRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         ));
         System.out.println(adminOpt.get().getEmail() + " " + adminOpt.get().getPassword());

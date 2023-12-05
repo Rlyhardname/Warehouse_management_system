@@ -34,21 +34,21 @@ public class UsersConfiguration {
                                         AddressRepository addressRepository,
                                         WarehouseAssignedToAgentRepository marketRepository,
                                         NotificationRepository notificationRepository,
-                                        UsersService globalService){
+                                        UsersService globalService) {
         return args -> {
             Administrator admin1 = new MasterAdmin();
-            ((MasterAdmin) admin1).init( "admin1@gmail.com",
+            ((MasterAdmin) admin1).init("admin1@gmail.com",
                     "Monkeyfingers",
                     "Ivan",
                     "Dimitrov");
 
             Administrator admin2 = new MasterAdmin();
-            ((MasterAdmin) admin2).init( "admin2@gmail.com",
+            ((MasterAdmin) admin2).init("admin2@gmail.com",
                     "LolipopsYeee",
                     "Jack",
                     "Daniels");
 
-           User user1 = new Owner();
+            User user1 = new Owner();
             ((Owner) user1).init(
                     "client1@gmail.com",
                     "hello",
@@ -72,29 +72,28 @@ public class UsersConfiguration {
             );
 
 
-
             Agent agent1 = new Agent();
-            agent1.init(  "agent1@gmail.com",
+            agent1.init("agent1@gmail.com",
                     "hello",
                     "Orange",
                     "Juice");
             Agent agent2 = new Agent();
-            agent2.init(  "agent2@gmail.com",
+            agent2.init("agent2@gmail.com",
                     "hello",
                     "Yellow",
                     "Lamborghini");
 
 
             repository.saveAll(
-                    List.of(admin1,admin2)
+                    List.of(admin1, admin2)
 
             );
 
             List<User> userList = new ArrayList<>();
 
-            for (User item: List.of(user1, user2,agent1,agent2)
-                 ) {
-                if(!globalService.isUsernameTaken(item.getEmail())){
+            for (User item : List.of(user1, user2, agent1, agent2)
+            ) {
+                if (!globalService.isUsernameTaken(item.getEmail())) {
                     userList.add(item);
                 }
             }
@@ -103,21 +102,21 @@ public class UsersConfiguration {
             );
 
             Address address1 = new Address();
-            address1.init("Varna","Varna","Dobrovnik 13, vh A");
+            address1.init("Varna", "Varna", "Dobrovnik 13, vh A");
             Address address2 = new Address();
-            address2.init("Targovishte","Opaka","Tsar osvoboditel 2");
+            address2.init("Targovishte", "Opaka", "Tsar osvoboditel 2");
 
 
             addressRepository.saveAll(
-                    List.of(address1,address2)
+                    List.of(address1, address2)
             );
 
             Warehouse warehouse1 = new Warehouse();
-            warehouse1.init((Owner) user2,address1,"EcontVarnaMain", "1000","22","25","retail",
+            warehouse1.init((Owner) user2, address1, "EcontVarnaMain", "1000", "22", "25", "retail",
                     WarehouseCategory.INDUSTRIAL);
 
             Warehouse warehouse2 = new Warehouse();
-            warehouse2.init((Owner) user2,address2,"SkladZaDrehi", "1000","17","33","clothes",
+            warehouse2.init((Owner) user2, address2, "SkladZaDrehi", "1000", "17", "33", "clothes",
                     WarehouseCategory.GARAGE);
 
 
@@ -125,9 +124,9 @@ public class UsersConfiguration {
             warehouseRepository.save(warehouse2);
 
             AgentRatingsPK pk1 = new AgentRatingsPK(user1.getId(), agent1.getId());
-            AgentRatingsPK pk11 = new AgentRatingsPK(user1.getId(),agent2.getId());
-            AgentRatingsPK pk2 = new AgentRatingsPK(user2.getId(),agent1.getId());
-            AgentRatingsPK pk22 = new AgentRatingsPK(user2.getId(),agent2.getId());
+            AgentRatingsPK pk11 = new AgentRatingsPK(user1.getId(), agent2.getId());
+            AgentRatingsPK pk2 = new AgentRatingsPK(user2.getId(), agent1.getId());
+            AgentRatingsPK pk22 = new AgentRatingsPK(user2.getId(), agent2.getId());
             AgentRatings rating1 = new AgentRatings(pk1, 5);
             AgentRatings rating2 = new AgentRatings(pk11, 2);
             AgentRatings rating3 = new AgentRatings(pk2, 4);
@@ -135,47 +134,47 @@ public class UsersConfiguration {
 
 
             ratingsRepository.saveAll(
-                    List.of(rating1,rating2,rating3
-                    ,rating4)
+                    List.of(rating1, rating2, rating3
+                            , rating4)
             );
-            Optional<List<AgentRatings>> ratingsBasedOnOwnerID = ratingsRepository.findByOwnerId(1L);
-            Optional<List<AgentRatings>> ratingsBasedOnAgentID = ratingsRepository.findAllByAgentId(3L);
+            List<AgentRatings> ratingsBasedOnOwnerID = ratingsRepository.findAllByIdOwnerID(1L);
+            List<AgentRatings> ratingsBasedOnAgentID = ratingsRepository.findAllByIdAgentID(3L);
 //
-            for (AgentRatings item: ratingsBasedOnOwnerID.get()
-              ) {
+            for (AgentRatings item : ratingsBasedOnOwnerID
+            ) {
                 System.out.println("Owner ratings with id's of 1L value " + item);
             }
 
-            for (AgentRatings item: ratingsBasedOnAgentID.get()
+            for (AgentRatings item : ratingsBasedOnAgentID
             ) {
                 System.out.println("Agent ratings with id's of 3L value " + item);
             }
 
-            LocalDate start = LocalDate.of(2021,4,24);
-            LocalDate end = LocalDate.of(2023,6,26);
-            LocalDate start1 = LocalDate.of(2020,1,24);
-            LocalDate end1 = LocalDate.of(2024,1,26);
+            LocalDate start = LocalDate.of(2021, 4, 24);
+            LocalDate end = LocalDate.of(2023, 6, 26);
+            LocalDate start1 = LocalDate.of(2020, 1, 24);
+            LocalDate end1 = LocalDate.of(2024, 1, 26);
 
             warehouseRepository.save(warehouse1);
             Optional<List<Warehouse>> warehouses = warehouseRepository.findByRentStatus(true);
             for (Warehouse item : warehouses.get()
-                 ) {
+            ) {
                 System.out.print(item);
             }
 
-            WarehouseAsignedToAgentPK rentPK1 = new WarehouseAsignedToAgentPK(agent1.getId(),warehouse1.getId());
-            WarehouseAsignedToAgentPK rentPK2 = new WarehouseAsignedToAgentPK(agent2.getId(),warehouse1.getId());
-            WarehouseAsignedToAgentPK rentPK22 = new WarehouseAsignedToAgentPK(agent2.getId(),warehouse2.getId());
+            WarehouseAssignedToAgentPK rentPK1 = new WarehouseAssignedToAgentPK(agent1.getId(), warehouse1.getId());
+            WarehouseAssignedToAgentPK rentPK2 = new WarehouseAssignedToAgentPK(agent2.getId(), warehouse1.getId());
+            WarehouseAssignedToAgentPK rentPK22 = new WarehouseAssignedToAgentPK(agent2.getId(), warehouse2.getId());
             WarehouseAssignedToAgent rent1 = new WarehouseAssignedToAgent(rentPK1);
             WarehouseAssignedToAgent rent2 = new WarehouseAssignedToAgent(rentPK2);
             WarehouseAssignedToAgent rent22 = new WarehouseAssignedToAgent(rentPK22);
             marketRepository.saveAll(
-                    List.of(rent1,rent2,rent22)
+                    List.of(rent1, rent2, rent22)
             );
 
 
-            if(marketRepository.findById(new WarehouseAsignedToAgentPK(4L,2L)).isPresent()){
-                RentalForm rentalForm1 = new RentalForm(agent2,agent1,warehouse1,start,end,5000,0.02);
+            if (marketRepository.findById(new WarehouseAssignedToAgentPK(4L, 2L)).isPresent()) {
+                RentalForm rentalForm1 = new RentalForm(agent2, agent1, warehouse1, start, end, 5000, 0.02);
                 rentalFormRepository.save(rentalForm1);
             }
 
@@ -185,12 +184,12 @@ public class UsersConfiguration {
             Notification notificationContractExpire = new Notification((Owner) user1, agent1, warehouse1, ActivityType.CONTRACT_EXPIRATION);
 
             notificationRepository.saveAll(
-                    List.of(notificationToAgent,notificationToOwner,notificationContractExpire)
+                    List.of(notificationToAgent, notificationToOwner, notificationContractExpire)
             );
 
 
-            RentalForm rentalForm1 = new RentalForm(agent2,agent1,warehouse1,start,end,500.50,0.2);
-            RentalForm rentalForm2 = new RentalForm(agent2, user2,warehouse1,start1,end1,444,0.5);
+            RentalForm rentalForm1 = new RentalForm(agent2, agent1, warehouse1, start, end, 500.50, 0.2);
+            RentalForm rentalForm2 = new RentalForm(agent2, user2, warehouse1, start1, end1, 444, 0.5);
             rentalFormRepository.save(rentalForm1);
             rentalFormRepository.save(rentalForm2);
 
@@ -204,6 +203,11 @@ public class UsersConfiguration {
 //         System.out.println("TEST spring data function " + (clientRepository.readBydType("owner")).toString());
 //         System.out.println("TEST spring data function " + clientRepository.existsBydType("agent"));
 //         System.out.println("TEST spring data function " + clientRepository.existsByEmail(client1.getEmail()));
+//            marketRepository.updateStatus("SUCCESSFUL",agent1.getId(), warehouse1.getId());
+//            System.out.println("TEST spring data function " + marketRepository.findById_AgentIdAndId_WarehouseId(agent1.getId(), warehouse1.getId()));
+//            System.out.println("TEST spring data function " + marketRepository.findAllByIdWarehouseId(warehouse1.getId()));
+//            System.out.println("TEST spring data function " + ratingsRepository.findAllByIdOwnerID(user1.getId()));
+//            System.out.println("TEST spring data function " + ratingsRepository.findAllByIdAgentID(agent1.getId()));
 
 
 

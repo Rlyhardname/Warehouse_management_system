@@ -13,8 +13,6 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     // @Query("Select s FROM Client s WHERE s.email =?1")
     Optional<User> findByEmail(String email);
 
-    User readByEmail(String email);
-
     boolean existsByEmail(String email);
 
     void deleteByEmail(String email);

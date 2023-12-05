@@ -45,7 +45,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 ROLE = Role.AGENT.name();
             }
         } else {
-            admin = adminRepository.findAdminByEmail(email1);
+            admin = adminRepository.findByEmail(email1);
             if (admin.isPresent() == true) {
                 email = admin.get().getEmail();
                 password = admin.get().getPassword();

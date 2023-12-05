@@ -70,7 +70,7 @@ public class OwnerService {
         User ownerOpt = usersRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         );
-        if (warehouseRepository.findWarehouseByName(name).isPresent() == false) {
+        if (warehouseRepository.findByName(name).isPresent() == false) {
             // TODO possibly not need owner object here, make repo method for boolean check
             Owner owner = (Owner) ownerOpt;
             Address address = new Address();
@@ -104,17 +104,17 @@ public class OwnerService {
                 () -> new UserNotExististingException()
         );
 
-        AgentRatings rating = OwnerUtil.rateAgent(owner.getId(),agent, stars);
+        AgentRatings rating = OwnerUtil.rateAgent(owner.getId(), agent, stars);
         ratingsRepository.save(rating);
 
-        List<AgentRatings> allRatings = ratingsRepository.findAllByAgentId(agentId).get();
+        List<AgentRatings> allRatings = ratingsRepository.findAllByIdAgentID(agentId);
 
         return allRatings;
     }
 
-    public Optional<List<Warehouse>> getWarehouseByOwnerId(Long ownerId) {
+    public List<Warehouse> getWarehouseByOwnerId(Long ownerId) {
 
-        Optional<List<Warehouse>> warehouseOpt = warehouseRepository.findWarehousesByOwnerId(ownerId);
+        List<Warehouse> warehouseOpt = warehouseRepository.findWarehousesByIdOwner(ownerId);
         return warehouseOpt;
     }
 
@@ -134,7 +134,7 @@ public class OwnerService {
     public Set<Agent> setAgentsToWarehouse(Long ownerId, List<Long> agentIds, Long warehouseId) { // AgentsWarehouse DTO // List<Warehouse> warehouses, List<Agent> agents
 
         List<Agent> agents = getAllAgentsById(agentIds);
-        Warehouse warehouse = warehouseRepository.findWarehouseByOwnerIdAndWarehouseId(ownerId, warehouseId).get();
+        Warehouse warehouse = warehouseRepository.findById_OwnerIdAndId_WarehouseId(ownerId, warehouseId).get();
         // TODO possibly not need owner object here, make repo method for boolean check
         Owner owner = (Owner) usersRepository.findById(ownerId).get();
         warehouseAssignedToAgentRepository.saveAll(OwnerUtil.assignAgentsToWarehouse(agents, warehouse));
@@ -159,7 +159,7 @@ public class OwnerService {
         warehouseAssignedToAgentRepository.deleteAll(agentDataList);
 
         agentDataList = new ArrayList<>();
-        agentDataList = warehouseAssignedToAgentRepository.findByWarehouseId(warehouseId).get();
+        agentDataList = warehouseAssignedToAgentRepository.findAllByIdWarehouseId(warehouseId);
 
         Set<AgentDTO> agentDTOset = new HashSet<>();
         List<Agent> agentList = getAllAgentsById(getAllAgentIds(agentDataList));
@@ -187,7 +187,7 @@ public class OwnerService {
         ) {
             {
                 Optional<WarehouseAssignedToAgent> agentWarehousePair =
-                        warehouseAssignedToAgentRepository.findByAgentIdAndWarehouseId(agent.getId(), warehouse.getId());
+                        warehouseAssignedToAgentRepository.findById_AgentIdAndId_WarehouseId(agent.getId(), warehouse.getId());
                 if (agentWarehousePair.isPresent()) {
                     assignedAgents.add(agentWarehousePair.get());
                 }
@@ -221,7 +221,7 @@ public class OwnerService {
         Warehouse warehouse = warehouseRepository.findById(warehouseId).get(); //
         List<WarehouseAssignedToAgent> warehouseAgentPair = new ArrayList<>();
         if (warehouse.getOwner().getId() == owner.getId()) {
-            warehouseAgentPair = warehouseAssignedToAgentRepository.findByWarehouseId(warehouseId).get();
+            warehouseAgentPair = warehouseAssignedToAgentRepository.findAllByIdWarehouseId(warehouseId);
         }
 
         List<Agent> agents = new ArrayList<>();
@@ -255,9 +255,11 @@ public class OwnerService {
     }
 
     public List<Warehouse> fetchWarehouses(Long ownerId) {
-        return warehouseRepository.findWarehousesByOwnerId(ownerId).orElseThrow(
-                () -> new OwnerDoesntOwnAnyWarehouseException()
-        );
+        List<Warehouse> warehouses = warehouseRepository.findWarehousesByIdOwner(ownerId);
+        if (warehouses.size() == 0) {
+            new OwnerDoesntOwnAnyWarehouseException();
+        }
+        return warehouses;
     }
 
     public Set<AgentDTO> getAllAgents() {

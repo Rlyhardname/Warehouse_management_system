@@ -11,12 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Embeddable
-public class WarehouseAsignedToAgentPK implements Serializable {
+public class WarehouseAssignedToAgentPK implements Serializable {
 
     private Long agentId;
     private Long warehouseId;
 
-    public WarehouseAsignedToAgentPK(Long agentId, Long warehouseId) {
+    public WarehouseAssignedToAgentPK(Long agentId, Long warehouseId) {
         this.agentId = agentId;
         this.warehouseId = warehouseId;
     }
