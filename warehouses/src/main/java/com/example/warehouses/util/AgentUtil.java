@@ -1,4 +1,4 @@
-package com.example.warehouses.Services;
+package com.example.warehouses.util;
 
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.DTO.RentFormDTO;

@@ -27,6 +27,7 @@ public class Warehouse implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
+    // TODO revisit attributes structure, do we need Owner or ownerId is good enough? ect..
     private Long id;
     @ManyToOne()
     private Owner owner;
