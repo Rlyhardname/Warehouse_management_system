@@ -88,7 +88,7 @@ public class AgentService {
         );
         if (warehouse.isRented() == true) throw new AlreadyRentedException();
 
-        RentalForm contract = agent.createContract(agent,
+        RentalForm contract = AgentUtil.createContract(agent,
                 client,
                 warehouse,
                 startDate,
