@@ -7,7 +7,6 @@ import com.example.warehouses.Model.warehouse.Address;
 import com.example.warehouses.Model.warehouse.Warehouse;
 import com.example.warehouses.Model.warehouse.WarehouseAsignedToAgentPK;
 import com.example.warehouses.Model.warehouse.WarehouseAssignedToAgent;
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -24,7 +23,7 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @DiscriminatorValue("owner")
-public class Owner extends Client {
+public class Owner extends User {
 
     public void init(String email, String password, String firstName, String lastName) {
         setEmail(email);

@@ -6,10 +6,10 @@ import com.example.warehouses.Exception.Login.WrongPasswordException;
 import com.example.warehouses.Exception.admin.AdminDoesntExistException;
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
-import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.User;
 import com.example.warehouses.Model.User.MasterAdmin;
 import com.example.warehouses.Repository.AdminRepository;
-import com.example.warehouses.Repository.ClientRepository;
+import com.example.warehouses.Repository.UsersRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ import java.util.Optional;
 public class AdminService implements AdministratorFunctions {
 
     private final AdminRepository adminRepository;
-    private final ClientRepository clientRepository;
-    private final ClientService globalService;
+    private final UsersRepository usersRepository;
+    private final UsersService globalService;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, ClientService globalService) {
+    public AdminService(AdminRepository adminRepository, UsersRepository usersRepository, UsersService globalService) {
         this.adminRepository = adminRepository;
-        this.clientRepository = clientRepository;
+        this.usersRepository = usersRepository;
         this.globalService = globalService;
 
     }
@@ -48,12 +48,12 @@ public class AdminService implements AdministratorFunctions {
     }
 
     @Override
-    public Client createClient(String email,
-                                         String password,
-                                         String firstName,
-                                         String lastName,
-                                         String clientType,
-                                         HttpServletResponse response) {
+    public User createClient(String email,
+                             String password,
+                             String firstName,
+                             String lastName,
+                             String clientType,
+                             HttpServletResponse response) {
 
         return globalService.register(email,
                 password,
@@ -73,7 +73,7 @@ public class AdminService implements AdministratorFunctions {
         MasterAdmin admin = (MasterAdmin) adminRepository.findById(adminId).orElseThrow(
                 () -> new AdminDoesntExistException()
         );
-        Client client = admin.createUser(email,
+        User user = admin.createUser(email,
                 password,
                 firstName,
                 lastName,
@@ -83,8 +83,8 @@ public class AdminService implements AdministratorFunctions {
         if (type.equals("owner")) message += "owner";
         if (type.equals("agent")) message += "agent";
 
-        if (clientRepository.findById(client.getId()).isPresent() == false) {
-            clientRepository.save(client);
+        if (usersRepository.findById(user.getId()).isPresent() == false) {
+            usersRepository.save(user);
         } else {
             throw new ClientAlreadyRegisteredException();
         }

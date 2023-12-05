@@ -1,8 +1,7 @@
 package com.example.warehouses.Model.warehouse;
 
 import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.User.Client;
-import com.example.warehouses.Model.User.Owner;
+import com.example.warehouses.Model.User.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +24,7 @@ public class RentalForm {
     @ManyToOne
     private Agent agent;
     @ManyToOne
-    private Client client;
+    private User user;
     @ManyToOne
     private Warehouse warehouse;
     private LocalDate startDate;
@@ -34,9 +33,9 @@ public class RentalForm {
     private double agentFee;
     private Long contractInDays;
 
-    public RentalForm(Agent agent, Client client, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
+    public RentalForm(Agent agent, User user, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
         this.agent = agent;
-        this.client = client;
+        this.user = user;
         this.warehouse = warehouse;
         this.startDate = startDate;
         this.endDate = endDate;

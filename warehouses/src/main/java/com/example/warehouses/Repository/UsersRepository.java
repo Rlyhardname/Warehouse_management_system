@@ -1,6 +1,6 @@
 package com.example.warehouses.Repository;
 
-import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface UsersRepository extends JpaRepository<User, Long> {
 
     // @Query("Select s FROM Client s WHERE s.email =?1")
-    Optional<Client> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
-    Client readByEmail(String email);
+    User readByEmail(String email);
 
     boolean existsByEmail(String email);
 
@@ -23,7 +23,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     boolean existsBydType(String type);
 
-    List<Client> findBydType(String dType);
+    List<User> findBydType(String dType);
 
 
 }

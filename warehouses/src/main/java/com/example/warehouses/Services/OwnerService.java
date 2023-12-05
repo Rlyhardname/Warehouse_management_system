@@ -9,7 +9,7 @@ import com.example.warehouses.Exception.Warehouse.WarehouseAlreadyExistsExceptio
 import com.example.warehouses.Exception.Warehouse.WarehouseNotExistingException;
 import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.User;
 import com.example.warehouses.Model.User.Owner;
 import com.example.warehouses.Model.warehouse.Address;
 import com.example.warehouses.Model.warehouse.Warehouse;
@@ -23,8 +23,8 @@ import java.util.*;
 @Service
 public class OwnerService {
 
-    private final ClientRepository clientRepository;
-    private final ClientService globalService;
+    private final UsersRepository usersRepository;
+    private final UsersService globalService;
     private final WarehouseRepository warehouseRepository;
     private final RatingsRepository ratingsRepository;
     private final RentalFormRepository rentalFormRepository;
@@ -34,15 +34,15 @@ public class OwnerService {
     private final WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository;
 
     @Autowired
-    public OwnerService(ClientRepository clientRepository,
-                        ClientService globalService,
+    public OwnerService(UsersRepository usersRepository,
+                        UsersService globalService,
                         WarehouseRepository warehouseRepository,
                         RatingsRepository ratingsRepository,
                         RentalFormRepository rentalFormRepository,
                         WarehouseAssignedToAgentRepository marketRepository,
                         AddressRepository addressRepository,
                         WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository) {
-        this.clientRepository = clientRepository;
+        this.usersRepository = usersRepository;
         this.globalService = globalService;
         this.warehouseRepository = warehouseRepository;
         this.ratingsRepository = ratingsRepository;
@@ -67,7 +67,7 @@ public class OwnerService {
         Warehouse warehouse = null;
         WarehouseDTO warehouseDTO = null;
 
-        Client ownerOpt = clientRepository.findByEmail(email).orElseThrow(
+        User ownerOpt = usersRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         );
         if (warehouseRepository.findWarehouseByName(name).isPresent() == false) {
@@ -97,10 +97,10 @@ public class OwnerService {
     public List<AgentRatings> rateAgent(Long ownerId, Long agentId, int stars) {
 
         System.out.println("hello"+stars);
-        Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
+        Owner owner = (Owner) usersRepository.findById(ownerId).orElseThrow(
                 () -> new UserNotExististingException()
         );
-        Agent agent = (Agent) clientRepository.findById(agentId).orElseThrow(
+        Agent agent = (Agent) usersRepository.findById(agentId).orElseThrow(
                 () -> new UserNotExististingException()
         );
 
@@ -135,7 +135,7 @@ public class OwnerService {
 
         List<Agent> agents = getAllAgentsById(agentIds);
         Warehouse warehouse = warehouseRepository.findWarehouseByOwnerIdAndWarehouseId(ownerId, warehouseId).get();
-        Owner owner = (Owner) clientRepository.findById(ownerId).get();
+        Owner owner = (Owner) usersRepository.findById(ownerId).get();
         warehouseAssignedToAgentRepository.saveAll(owner.assignAgentsToWarehouse(agents, warehouse));
 
         return getAllAgentsPairedToWarehouse(ownerId, warehouseId);
@@ -147,7 +147,7 @@ public class OwnerService {
         Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(
                 () -> new WarehouseNotExistingException()
         );
-        Owner owner = (Owner) clientRepository.findById(ownerId).orElseThrow(
+        Owner owner = (Owner) usersRepository.findById(ownerId).orElseThrow(
                 () -> new UserNotExististingException()
         );
         List<Agent> agentsToRemove = getAllAgentsById(agents);
@@ -209,7 +209,7 @@ public class OwnerService {
 
     public Set<Agent> getAllAgentsPairedToWarehouse(Long ownerId, Long warehouseId) {
         Set<Agent> agentSet = new HashSet<>();
-        Owner owner = (Owner)clientRepository.findById(ownerId).get(); //
+        Owner owner = (Owner) usersRepository.findById(ownerId).get(); //
         Warehouse warehouse = warehouseRepository.findById(warehouseId).get(); //
         List<WarehouseAssignedToAgent> warehouseAgentPair = new ArrayList<>();
         if(warehouse.getOwner().getId()==owner.getId()){
@@ -219,7 +219,7 @@ public class OwnerService {
         List<Agent> agents = new ArrayList<>();
         for (WarehouseAssignedToAgent pair : warehouseAgentPair
         ) {
-            Agent agent = (Agent) clientRepository.findById(pair.getId().getAgentId()).get();
+            Agent agent = (Agent) usersRepository.findById(pair.getId().getAgentId()).get();
             agents.add(agent);
         }
 
@@ -235,7 +235,7 @@ public class OwnerService {
         List<Agent> agents = new ArrayList<>();
         for (Long agentId : agentIds
         ) {
-            Client agent = clientRepository.findById(agentId).get();
+            User agent = usersRepository.findById(agentId).get();
             if (agent!=null) {
                 if(agent.getDType().equals("agent")){
                     agents.add((Agent)agent);
@@ -253,10 +253,10 @@ public class OwnerService {
     }
 
     public Set<AgentDTO> getAllAgents(){
-      List<Client> agents =  clientRepository.findBydType(Role.AGENT.name());
+      List<User> agents =  usersRepository.findBydType(Role.AGENT.name());
       Set<AgentDTO> agentsDTO = new HashSet<>();
        if(!agents.isEmpty()){
-           for (Client agent: agents
+           for (User agent: agents
            ) {
                 agentsDTO.add(new AgentDTO((Agent) agent));
            }

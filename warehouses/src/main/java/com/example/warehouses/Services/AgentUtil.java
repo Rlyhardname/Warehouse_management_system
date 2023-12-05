@@ -7,10 +7,10 @@ import com.example.warehouses.Exception.Client.BadPathVariableException;
 import com.example.warehouses.Exception.Client.UserNotExististingException;
 import com.example.warehouses.Model.AgentRatings;
 import com.example.warehouses.Model.User.Agent;
-import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.User;
 import com.example.warehouses.Model.warehouse.RentalForm;
 import com.example.warehouses.Model.warehouse.Warehouse;
-import com.example.warehouses.Repository.ClientRepository;
+import com.example.warehouses.Repository.UsersRepository;
 import com.example.warehouses.Repository.RatingsRepository;
 import com.example.warehouses.Repository.RentalFormRepository;
 
@@ -20,8 +20,8 @@ import java.util.Optional;
 
 public class AgentUtil {
 
-    public static boolean isAgentRated(ClientRepository clientRepository, RatingsRepository ratingsRepository, AgentAndRentFormDTO agentDTO, Long agentId) {
-        Client agent = clientRepository.findById(agentId).orElseThrow(() -> new UserNotExististingException());
+    public static boolean isAgentRated(UsersRepository usersRepository, RatingsRepository ratingsRepository, AgentAndRentFormDTO agentDTO, Long agentId) {
+        User agent = usersRepository.findById(agentId).orElseThrow(() -> new UserNotExististingException());
         if (agent.getDType().equals("owner")) {
             throw new BadPathVariableException();
         }
@@ -50,14 +50,14 @@ public class AgentUtil {
     public static void gatherFormData(RentalFormRepository rentalFormRepository, AgentAndRentFormDTO agentDTO, Long agentId, LocalDate startDate, LocalDate endDate) {
         List<RentalForm> rentalForms = rentalFormRepository.findRentFormsByAgentIdAndStartDateEndDate(agentId, startDate, endDate).orElseThrow(() -> new AgentHasNoContractsException());
         for (RentalForm form : rentalForms) {
-            agentDTO.getRentalForms().add(new RentFormDTO(form.getId(), form.getAgent().getId(), form.getClient().getId(), form.getWarehouse().getId(), form.getStartDate(), form.getEndDate(), form.getContractFiatWorth()));
+            agentDTO.getRentalForms().add(new RentFormDTO(form.getId(), form.getAgent().getId(), form.getUser().getId(), form.getWarehouse().getId(), form.getStartDate(), form.getEndDate(), form.getContractFiatWorth()));
             System.out.println(form);
         }
 
     }
 
-    public static RentalForm createContract(Agent agent, Client client, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
-        RentalForm rentalForm = new RentalForm(agent, client, warehouse, startDate, endDate, contractFiatWorth, agentFee);
+    public static RentalForm createContract(Agent agent, User user, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
+        RentalForm rentalForm = new RentalForm(agent, user, warehouse, startDate, endDate, contractFiatWorth, agentFee);
         return rentalForm;
     }
 

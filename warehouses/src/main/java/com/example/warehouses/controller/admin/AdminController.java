@@ -2,9 +2,9 @@ package com.example.warehouses.controller.admin;
 
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
-import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.User;
 import com.example.warehouses.Services.AdminService;
-import com.example.warehouses.Services.ClientService;
+import com.example.warehouses.Services.UsersService;
 import com.google.common.io.ByteStreams;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -31,12 +31,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @RequestMapping(path = "hidden/admin/")
 public class AdminController implements AdministratorFunctions {
     private final AdminService adminService;
-    private final ClientService globalService;
+    private final UsersService globalService;
 
 
     @Autowired
     public AdminController(AdminService adminService,
-                           ClientService globalService) {
+                           UsersService globalService) {
         this.adminService = adminService;
         this.globalService = globalService;
     }
@@ -59,17 +59,17 @@ public class AdminController implements AdministratorFunctions {
     @SneakyThrows
     @PostMapping("createClient")
     @Override
-    public Client createClient(@RequestParam String email,
-                               @RequestParam String password,
-                               @RequestParam String firstName,
-                               @RequestParam String lastName,
-                               @RequestParam String clientType,
-                               HttpServletResponse response) {
+    public User createClient(@RequestParam String email,
+                             @RequestParam String password,
+                             @RequestParam String firstName,
+                             @RequestParam String lastName,
+                             @RequestParam String clientType,
+                             HttpServletResponse response) {
 
-        Client clientOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
+        User userOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
         response.sendRedirect("http://localhost:8080/MainPage.html");
 
-        return clientOpt;
+        return userOpt;
     }
 
     @PostMapping("createUser")

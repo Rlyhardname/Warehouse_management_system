@@ -3,9 +3,8 @@ package com.example.warehouses.Security;
 import com.example.warehouses.Configurations.Enum.Role;
 import com.example.warehouses.Exception.Client.UserNotExististingException;
 import com.example.warehouses.Interfaces.Administrator;
-import com.example.warehouses.Model.User.Client;
 import com.example.warehouses.Repository.AdminRepository;
-import com.example.warehouses.Repository.ClientRepository;
+import com.example.warehouses.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,23 +18,23 @@ import java.util.stream.Collectors;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    private ClientRepository clientRepository;
+    private UsersRepository usersRepository;
     private AdminRepository adminRepository;
 
     @Autowired
-    public MyUserDetailsService(ClientRepository clientRepository,
+    public MyUserDetailsService(UsersRepository usersRepository,
                                 AdminRepository adminRepository) {
-        this.clientRepository = clientRepository;
+        this.usersRepository = usersRepository;
         this.adminRepository = adminRepository;
     }
 
     @Override
-    public User loadUserByUsername(String email1) {
+    public UserDetailsClass loadUserByUsername(String email1) {
         String email = null;
         String password = null;
         String ROLE = null;
         Optional<Administrator> admin;
-        Optional<Client> client = clientRepository.findByEmail(email1);
+        Optional<com.example.warehouses.Model.User.User> client = usersRepository.findByEmail(email1);
 
         if (client.isPresent()) {
             email = client.get().getEmail();
@@ -64,7 +63,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 .map((role) -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toSet());
 
-        User user1 = new User(email, password, ROLE, authorities);
+        UserDetailsClass user1 = new UserDetailsClass(email, password, ROLE, authorities);
 
         return user1;
 

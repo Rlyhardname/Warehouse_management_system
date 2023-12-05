@@ -1,8 +1,8 @@
 package com.example.warehouses.controller;
 
-import com.example.warehouses.Model.User.Client;
+import com.example.warehouses.Model.User.User;
 import com.example.warehouses.Services.CustomClientService;
-import com.example.warehouses.Services.ClientService;
+import com.example.warehouses.Services.UsersService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,11 @@ import java.util.Optional;
 public class ClientLoginController {
 
     private final CustomClientService clientService;
-    private final ClientService globalService;
+    private final UsersService globalService;
 
     @Autowired
     public ClientLoginController(CustomClientService clientService,
-                                 ClientService globalService) {
+                                 UsersService globalService) {
         this.clientService = clientService;
         this.globalService = globalService;
     }
@@ -32,11 +32,11 @@ public class ClientLoginController {
     // For removal, implemented before Spring security implementation.
     @SneakyThrows
     @PostMapping
-    public Optional<Client> isLoginClient(@RequestParam String email,
-                                          @RequestParam String password,
-                                          HttpServletResponse response) {
+    public Optional<User> isLoginClient(@RequestParam String email,
+                                        @RequestParam String password,
+                                        HttpServletResponse response) {
 
-        Optional<Client> adminOpt = null;
+        Optional<User> adminOpt = null;
         adminOpt = clientService.isLoginClient(email, password, response);
         response.sendRedirect("login");
 

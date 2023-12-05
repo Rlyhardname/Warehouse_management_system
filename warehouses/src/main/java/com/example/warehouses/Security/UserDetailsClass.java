@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-public class User implements UserDetails {
+public class UserDetailsClass implements UserDetails {
     String ROLE_PREFIX = "ROLE_";
     private final String username;
     private final String password;
@@ -23,7 +23,7 @@ public class User implements UserDetails {
     private final boolean enabled;
 
 
-    public User(String username, String password, String role, Set<? extends GrantedAuthority> authorities) {
+    public UserDetailsClass(String username, String password, String role, Set<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.role = role;

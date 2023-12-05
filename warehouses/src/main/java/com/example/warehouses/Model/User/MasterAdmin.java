@@ -18,20 +18,20 @@ public class MasterAdmin extends Administrator {
 
     }
 
-    public Client createUser(String email,
-                            String password,
-                            String firstName,
-                            String lastName,
-                            String clientType) {
-        Client client = null;
+    public User createUser(String email,
+                           String password,
+                           String firstName,
+                           String lastName,
+                           String clientType) {
+        User user = null;
         if(clientType.toLowerCase().equals("owner")){
-            client =  new Owner();
-            ((Owner)client).init(email,password,firstName,lastName);
+            user =  new Owner();
+            ((Owner) user).init(email,password,firstName,lastName);
         }else{
-            client = new Agent();
-            ((Agent)client).init(email,password,firstName,lastName);
+            user = new Agent();
+            ((Agent) user).init(email,password,firstName,lastName);
         }
-        return client;
+        return user;
     }
 
     public Agent createAgent(String email,

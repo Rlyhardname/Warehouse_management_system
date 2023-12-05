@@ -27,7 +27,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
-public class Client {
+public class User {
 
     @Id
     @GeneratedValue(
