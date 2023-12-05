@@ -6,7 +6,6 @@ import com.example.warehouses.exception.Client.AgentHasNoContractsException;
 import com.example.warehouses.exception.Client.BadPathVariableException;
 import com.example.warehouses.exception.Client.UserNotExististingException;
 import com.example.warehouses.model.AgentRatings;
-import com.example.warehouses.model.user.Agent;
 import com.example.warehouses.model.user.User;
 import com.example.warehouses.model.warehouse.RentalForm;
 import com.example.warehouses.model.warehouse.Warehouse;
@@ -49,13 +48,13 @@ public class AgentUtil {
     public static void gatherFormData(RentalFormRepository rentalFormRepository, AgentAndRentFormDTO agentDTO, Long agentId, LocalDate startDate, LocalDate endDate) {
         List<RentalForm> rentalForms = rentalFormRepository.findRentFormsByAgentIdAndStartDateEndDate(agentId, startDate, endDate).orElseThrow(() -> new AgentHasNoContractsException());
         for (RentalForm form : rentalForms) {
-            agentDTO.getRentalForms().add(new RentFormDTO(form.getId(), form.getAgent().getId(), form.getUser().getId(), form.getWarehouse().getId(), form.getStartDate(), form.getEndDate(), form.getContractFiatWorth()));
+            agentDTO.getRentalForms().add(new RentFormDTO(form.getId(), form.getAgent().getId(), form.getCustomer().getId(), form.getWarehouse().getId(), form.getStartDate(), form.getEndDate(), form.getContractFiatWorth()));
             System.out.println(form);
         }
 
     }
 
-    public static RentalForm createContract(Agent agent, User user, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
+    public static RentalForm createContract(User agent, User user, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
         RentalForm rentalForm = new RentalForm(agent, user, warehouse, startDate, endDate, contractFiatWorth, agentFee);
         return rentalForm;
     }

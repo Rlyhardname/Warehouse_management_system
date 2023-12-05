@@ -24,7 +24,7 @@ public class RentalForm {
     @ManyToOne
     private Agent agent;
     @ManyToOne
-    private User user;
+    private User customer;
     @ManyToOne
     private Warehouse warehouse;
     private LocalDate startDate;
@@ -33,9 +33,9 @@ public class RentalForm {
     private double agentFee;
     private Long contractInDays;
 
-    public RentalForm(Agent agent, User user, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
-        this.agent = agent;
-        this.user = user;
+    public RentalForm(User agent, User customer, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
+        this.agent = (Agent) agent;
+        this.customer = customer;
         this.warehouse = warehouse;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -45,7 +45,7 @@ public class RentalForm {
         setContractDays();
     }
 
-    public void setContractDays(){
-        contractInDays = ChronoUnit.DAYS.between(startDate,endDate);
+    public void setContractDays() {
+        contractInDays = ChronoUnit.DAYS.between(startDate, endDate);
     }
 }
