@@ -20,6 +20,7 @@ public interface WarehouseAssignedToAgentRepository extends JpaRepository<Wareho
 
     //@Query("Select s FROM WarehouseAssignedToAgent s WHERE s.id.agentId =?1 AND s.id.warehouseId =?2")
     Optional<WarehouseAssignedToAgent> findById_AgentIdAndId_WarehouseId(@Param("agentId") Long agentId, @Param ("warehouseId") Long warehouseId);
+    boolean existsById_AgentIdAndId_WarehouseId(@Param("agentId") Long agentId, @Param ("warehouseId") Long warehouseId);
 
     @Transactional
     @Modifying
