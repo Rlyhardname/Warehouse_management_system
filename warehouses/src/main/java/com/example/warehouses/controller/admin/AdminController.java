@@ -1,4 +1,4 @@
-package com.example.warehouses.controller;
+package com.example.warehouses.controller.admin;
 
 import com.example.warehouses.Interfaces.Administrator;
 import com.example.warehouses.Interfaces.AdministratorFunctions;
@@ -19,7 +19,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
+import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Optional;

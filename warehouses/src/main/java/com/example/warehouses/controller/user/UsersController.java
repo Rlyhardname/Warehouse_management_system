@@ -1,4 +1,4 @@
-package com.example.warehouses.controller;
+package com.example.warehouses.controller.user;
 
 import com.example.warehouses.Exception.Client.ClientAlreadyRegisteredException;
 import com.example.warehouses.Model.User.Client;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/api/main")
-public class ClientController {
+public class UsersController {
     private final ClientService clientService;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public UsersController(ClientService clientService) {
         this.clientService = clientService;
     }
 
@@ -31,7 +31,7 @@ public class ClientController {
     public ResponseEntity<String> registerClient(@Valid @ModelAttribute Client client,
                                                  HttpServletResponse response) {
         if (!clientService.isUsernameTaken(client.getEmail())) {
-            clientService.register(client.getEmail(), client.getPassword(), client.getFirstName(), client.getLastName(), client.getAccountType(), response);
+            clientService.register(client.getEmail(), client.getPassword(), client.getFirstName(), client.getDType(), client.getLastName(), response); //,
             return new ResponseEntity<>("User Successfully registered!", HttpStatus.ACCEPTED);
         } else {
             throw new ClientAlreadyRegisteredException();

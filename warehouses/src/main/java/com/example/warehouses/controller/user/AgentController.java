@@ -1,4 +1,4 @@
-package com.example.warehouses.controller;
+package com.example.warehouses.controller.user;
 
 import com.example.warehouses.DTO.AgentAndRentFormDTO;
 import com.example.warehouses.Services.AgentService;

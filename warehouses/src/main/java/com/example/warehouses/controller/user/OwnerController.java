@@ -1,4 +1,4 @@
-package com.example.warehouses.controller;
+package com.example.warehouses.controller.user;
 
 import com.example.warehouses.Configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentDTO;
