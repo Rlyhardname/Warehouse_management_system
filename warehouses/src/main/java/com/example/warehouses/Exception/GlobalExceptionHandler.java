@@ -25,20 +25,21 @@ public class GlobalExceptionHandler {
 
     @SneakyThrows
     @ExceptionHandler(UserNotExististingException.class)
-    public ResponseEntity<Object> HandleUserNotExistingException(HttpServletResponse response) {
+    public ResponseEntity<Object> HandleUserNotExistingException() {
 
         return new ResponseEntity<>("Something went wrong!", HttpStatus.BAD_REQUEST);
     }
 
     @SneakyThrows
     @ExceptionHandler(ClientAlreadyRegisteredException.class)
-    public ResponseEntity<Object> HandleClientAlreadyRegisteredException(HttpServletResponse response) {
+    public ResponseEntity<Object> HandleClientAlreadyRegisteredException() {
 
         // TODO log request and return something general.
 
         return new ResponseEntity<>("Registration failed. Please check your information and try again.", HttpStatus.UNAUTHORIZED);
     }
 
+    // TODO WarehouseAlreadyExistsException and WarehouseNotExistingException potentially overlapping
     @SneakyThrows
     @ExceptionHandler(WarehouseAlreadyExistsException.class)
     public ResponseEntity<Object> HandleWarehouseAlreadyExistsException() {
