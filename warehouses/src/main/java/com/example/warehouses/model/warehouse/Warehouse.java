@@ -2,15 +2,12 @@ package com.example.warehouses.model.warehouse;
 
 import com.example.warehouses.configurations.Enum.WarehouseCategory;
 import com.example.warehouses.model.user.Owner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.checkerframework.checker.units.qual.N;
 
 import java.io.Serializable;
 
@@ -20,7 +17,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table
-public class Warehouse implements Serializable,IAddress {
+public class Warehouse implements Serializable {
 
     @Id()
     @GeneratedValue(
