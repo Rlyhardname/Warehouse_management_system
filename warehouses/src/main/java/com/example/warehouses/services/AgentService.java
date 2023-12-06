@@ -93,7 +93,7 @@ public class AgentService {
         rentalFormRepository.save(contract);
         warehouseAssignedToAgentRepository.updateStatus("CONTRACTED", agentId, warehouseId);
 
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Successfully rented out!",HttpStatus.ACCEPTED);
     }
 
 }
