@@ -132,7 +132,7 @@ public class OwnerService {
 
     public Set<Agent> setAgentsToWarehouse(Long ownerId, List<Long> agentIds, Long warehouseId) { // AgentsWarehouse DTO // List<Warehouse> warehouses, List<Agent> agents
 
-        List<Agent> agents = getAllAgentsById(agentIds);
+        List<Agent> agents = OwnerUtil.getAllAgentsById(usersRepository, agentIds);
         Warehouse warehouse = warehouseRepository.findById_OwnerIdAndId_WarehouseId(ownerId, warehouseId).get();
         // TODO possibly not need owner object here, make repo method for boolean check
         Owner owner = (Owner) usersRepository.findById(ownerId).get();
@@ -147,21 +147,20 @@ public class OwnerService {
         Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(
                 () -> new WarehouseNotExistingException()
         );
+
         // TODO possibly not need owner object here, make repo method for boolean check
         Owner owner = (Owner) usersRepository.findById(ownerId).orElseThrow(
                 () -> new UserNotExististingException()
         );
-        List<Agent> agentsToRemove = getAllAgentsById(agents);
+
+        List<Agent> agentsToRemove = OwnerUtil.getAllAgentsById(usersRepository, agents);
         List<WarehouseAssignedToAgent> assignedAgents = getAllAssignedAgentsToWarehouse(agentsToRemove, warehouse);
         List<WarehouseAssignedToAgent> agentDataList = OwnerUtil.RemoveAgentsFromWarehouse(agentsToRemove, warehouse, assignedAgents);
-
         warehouseAssignedToAgentRepository.deleteAll(agentDataList);
-
         agentDataList = new ArrayList<>();
         agentDataList = warehouseAssignedToAgentRepository.findAllByIdWarehouseId(warehouseId);
-
         Set<AgentDTO> agentDTOset = new HashSet<>();
-        List<Agent> agentList = getAllAgentsById(getAllAgentIds(agentDataList));
+        List<Agent> agentList = OwnerUtil.getAllAgentsById(usersRepository, OwnerUtil.getAllAgentIds(agentDataList));
         for (Agent agent : agentList
         ) {
             agentDTOset.add(new AgentDTO(agent));
@@ -170,14 +169,6 @@ public class OwnerService {
         return agentDTOset;
     }
 
-    public List<Long> getAllAgentIds(List<WarehouseAssignedToAgent> agentWarehousePair) {
-        List<Long> agentIds = new ArrayList<>();
-        for (WarehouseAssignedToAgent pair : agentWarehousePair
-        ) {
-            agentIds.add(pair.getId().getAgentId());
-        }
-        return agentIds;
-    }
 
     public List<WarehouseAssignedToAgent> getAllAssignedAgentsToWarehouse(List<Agent> agentList, Warehouse warehouse) {
 
@@ -238,21 +229,6 @@ public class OwnerService {
         return agentSet;
     }
 
-    public List<Agent> getAllAgentsById(List<Long> agentIds) {
-        List<Agent> agents = new ArrayList<>();
-        for (Long agentId : agentIds
-        ) {
-            User agent = usersRepository.findById(agentId).get();
-            if (agent != null) {
-                if (agent.getDType().equals("agent")) {
-                    agents.add((Agent) agent);
-                }
-            }
-        }
-
-        return agents;
-    }
-
     public List<Warehouse> fetchWarehouses(Long ownerId) {
         List<Warehouse> warehouses = warehouseRepository.findWarehousesByIdOwner(ownerId);
         if (warehouses.size() == 0) {
@@ -274,7 +250,7 @@ public class OwnerService {
     }
 
     public AgentDTO getAgent(Long id) {
-        AgentDTO agent = new AgentDTO((Agent)usersRepository.findById(id).orElseThrow(() -> new UserNotExististingException()));
+        AgentDTO agent = new AgentDTO((Agent) usersRepository.findById(id).orElseThrow(() -> new UserNotExististingException()));
         return agent;
     }
 }
