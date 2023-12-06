@@ -20,5 +20,5 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
     Optional<Warehouse> findById_OwnerIdAndId_WarehouseId(Long ownerId, Long warehouseId);
 
     @Query("Select s FROM Warehouse s WHERE s.rented =?1")
-    Optional<List<Warehouse>> findByRentStatus(boolean rented);
+    List<Warehouse> findByRentStatus(boolean rented);
 }
