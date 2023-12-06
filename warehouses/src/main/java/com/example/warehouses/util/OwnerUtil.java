@@ -5,10 +5,12 @@ import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.AgentRatingsPK;
 import com.example.warehouses.model.user.Agent;
 import com.example.warehouses.model.user.Owner;
+import com.example.warehouses.model.user.User;
 import com.example.warehouses.model.warehouse.Address;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.model.warehouse.WarehouseAssignedToAgentPK;
 import com.example.warehouses.model.warehouse.WarehouseAssignedToAgent;
+import com.example.warehouses.repository.UsersRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,5 +76,29 @@ public class OwnerUtil {
         AgentRatingsPK PK = new AgentRatingsPK(ownerId, agent.getId());
         AgentRatings rating = new AgentRatings(PK, stars);
         return rating;
+    }
+
+    public static List<Agent> getAllAgentsById(UsersRepository usersRepository, List<Long> agentIds) {
+        List<Agent> agents = new ArrayList<>();
+        for (Long agentId : agentIds
+        ) {
+            User agent = usersRepository.findById(agentId).get();
+            if (agent != null) {
+                if (agent.getDType().equals("agent")) {
+                    agents.add((Agent) agent);
+                }
+            }
+        }
+
+        return agents;
+    }
+
+    public static List<Long> getAllAgentIds(List<WarehouseAssignedToAgent> agentWarehousePair) {
+        List<Long> agentIds = new ArrayList<>();
+        for (WarehouseAssignedToAgent pair : agentWarehousePair
+        ) {
+            agentIds.add(pair.getId().getAgentId());
+        }
+        return agentIds;
     }
 }
