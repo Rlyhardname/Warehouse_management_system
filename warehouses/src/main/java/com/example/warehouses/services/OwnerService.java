@@ -117,7 +117,7 @@ public class OwnerService {
         return warehouseOpt;
     }
 
-    public Optional<List<Warehouse>> getAllWarehouses(String rented) {
+    public List<Warehouse> getAllWarehouses(String rented) {
 
         switch (rented) {
             case "yes":
@@ -125,7 +125,7 @@ public class OwnerService {
             case "no":
                 return warehouseRepository.findByRentStatus(false);
             default:
-                return Optional.of(warehouseRepository.findAll());
+                return warehouseRepository.findAll();
         }
 
     }
@@ -271,6 +271,11 @@ public class OwnerService {
             }
         }
         return agentsDTO;
+    }
+
+    public AgentDTO getAgent(Long id) {
+        AgentDTO agent = new AgentDTO((Agent)usersRepository.findById(id).orElseThrow(() -> new UserNotExististingException()));
+        return agent;
     }
 }
 

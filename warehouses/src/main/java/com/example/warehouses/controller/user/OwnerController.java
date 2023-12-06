@@ -13,6 +13,8 @@ import com.example.warehouses.services.OwnerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -82,9 +84,14 @@ public class OwnerController {
         return ownerService.setAgentsToWarehouse(2L, agentIdss, 2L);
     }
 
-    @GetMapping("//agents")
+    @GetMapping("/agents")
     public Set<AgentDTO> getAllAgents() {
         return ownerService.getAllAgents();
+    }
+
+    @GetMapping("/agent/{id}")
+    public AgentDTO getAgent(@PathVariable @Min(value = 1) Long id) {
+        return ownerService.getAgent(id);
     }
 
     @PostMapping("/create/warehouse")
@@ -108,7 +115,6 @@ public class OwnerController {
     }
 
 
-
     // TODO
     // edit/warehouses func() { return edit page view from which to send new post request
     //  to make individual agent or list of agents pick to represent it - > edit/warehouse/agents}
@@ -118,18 +124,18 @@ public class OwnerController {
 
 
     @GetMapping("rented-warehouses/{status}")
-    public Optional<List<WarehouseDTO>> getWarehouseByStatus(@PathVariable(required = false) String status) {
+    public List<WarehouseDTO> getWarehouseByStatus(@PathVariable(required = false) String status) {
         List<WarehouseDTO> warehouseDTOlist = new ArrayList<>();
-        for (Warehouse warehouse : ownerService.getAllWarehouses(status).get()
+        for (Warehouse warehouse : ownerService.getAllWarehouses(status)
         ) {
             warehouseDTOlist.add(new WarehouseDTO(warehouse));
         }
 
-        return Optional.of(warehouseDTOlist);
+        return warehouseDTOlist;
     }
 
     @GetMapping("/market/{ownerId}")
-    public List<Warehouse> fetchWarehouses(@PathVariable Long ownerId) { //
+    public List<Warehouse> fetchWarehouses(@PathVariable @Min(value = 1) Long ownerId) { //
         List<Warehouse> allOwnerWarehouses = ownerService.fetchWarehouses(ownerId);
         System.out.println(allOwnerWarehouses.size());
         ModelAndView modelAndView = new ModelAndView("/main/testFetch");
@@ -138,10 +144,9 @@ public class OwnerController {
     }
 
     @PostMapping("rate-agent")
-    public List<AgentRatings> rateAgent(@RequestParam Long ownerId,
-                                        @RequestParam Long agentId,
-                                        @RequestParam int stars) {
-
+    public List<AgentRatings> rateAgent(@RequestParam @Min(value = 1) Long ownerId,
+                                        @RequestParam @Min(value = 1) Long agentId,
+                                        @RequestParam @Min(value = 1) @Max(value = 5) int stars) {
         return ownerService.rateAgent(ownerId, agentId, stars);
     }
 
