@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RatingsRepository extends JpaRepository<AgentRatings, AgentRatingsPK> {
@@ -16,6 +17,10 @@ public interface RatingsRepository extends JpaRepository<AgentRatings, AgentRati
 
     // @Query("SELECT ar FROM AgentRatings ar WHERE ar.id.ownerID = :ownerID")
     List<AgentRatings> findAllByIdAgentID(Long agentID);
+
+    Optional<AgentRatings> findByIdAgentID(Long agentID);
+
+    boolean existsByIdAgentID(Long AgentID);
 
 
 }
