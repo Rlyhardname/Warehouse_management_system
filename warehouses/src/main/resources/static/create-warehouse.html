@@ -7,55 +7,52 @@
 <body>
 
 <form action="http://localhost:8080/api/main/owners/create/warehouse" method="post">
-    <label for="owner">Owner:</label>
-    <input type="text" id="owner" th:name="owner" name="owner" value="user1@gmail.com"><br><br>
+    <label for="ownerId">Owner:</label>
+    <input type="text" id="ownerId" name="ownerId" value="user1@gmail.com"><br><br>
     <label for="county">County:</label>
-    <input type="text" id="county" th:name="county" name="county" value="Sofia"><br><br>
+    <input type="text" id="county" name="county" value="Sofia"><br><br>
     <label for="town">Town:</label>
-    <input type="text" id="town" th:name="town" name="town" value="Sofia"><br><br>
+    <input type="text" id="town"  name="town" value="Sofia"><br><br>
     <label for="streetName">Street:</label>
-    <input type="text" id="streetName" th:name="streetName" name="streetName" value="Bul general Scobalev 55"><br><br>
-    <label for="warehouseName">WareHouseName:</label>
-    <input type="text" id="warehouseName" th:name="warehouseName" name="warehouseName" value="MyFirstWarehouse"><br><br>
-    <label for="squareFeet">Owner:</label>
-    <input type="text" id="squareFeet" th:name="squareFeet" name="squareFeet" value="55.5"><br><br>
+    <input type="text" id="streetName" name="streetName" value="Bul general Scobalev 55"><br><br>
+    <label for="name">WareHouseName:</label>
+    <input type="text" id="name" name="name" value="MyFirstWarehouse"><br><br>
+    <label for="squareFeet">name:</label>
+    <input type="text" id="squareFeet" name="squareFeet" value="55.5"><br><br>
     <label for="temperature">WareHouseName:</label>
-    <input type="text" id="temperature" th:name="temperature" name="temperature" value="25.2c"><br><br>
-    <label for="humidityPercent">Owner:</label>
-    <input type="text" id="humidityPercent" th:name="humidityPercent" name="humidityPercent" value="72.5%"><br><br>
-    <label for="stockedGoodsType">WareHouseName:</label>
-    <input type="text" id="stockedGoodsType" th:name="stockedGoodsType" name="stockedGoodsType" value="Plants"><br><br>
-    <label for="warehouseCategory">Owner:</label>
-    <input type="text" id="warehouseCategory" th:name="warehouseCategory" name="warehouseCategory" value="Garage"><br><br>
-    <select id="rented" th:name="rented" name="rented" >
-        <option type="text" value="yes"> RENTED</option>
-        <option type="text" value="no"> NOT RENTED</option>
+    <input type="text" id="temperature" name="temperature" value="25.2c"><br><br>
+    <label for="humidityPercent">temperature:</label>
+    <input type="text" id="humidityPercent" name="humidityPercent" value="72.5%"><br><br>
+    <label for="stockedGoodsType">stockedGoodsType:</label>
+    <input type="text" id="stockedGoodsType" name="stockedGoodsType" value="Plants"><br><br>
+    <label for="category">stockedGoodsType:</label>
+    <input type="text" id="category" name="category" value="SMALL"><br><br>
     </select>
     <input type="submit" value="submit">
 </form>
 
-<script>
+<!--<script>-->
 
-    const form = document.querySelector('form');
-    const submit = document.querySelector('#submit');
-    const owner = document.querySelector('#owner');
-    const warehouseName = document.querySelector('#warehouseName');
-    submit.addEventListener("click", function (e) {
+<!--    const form = document.querySelector('form');-->
+<!--    const submit = document.querySelector('#submit');-->
+<!--    const owner = document.querySelector('#ownerId');-->
+<!--    const warehouseName = document.querySelector('#warehouseName');-->
+<!--    submit.addEventListener("click", function (e) {-->
 
-        e.preventDefault();
-        fetch(form.action, {
-            method: 'POST',
-            body: JSON.stringify({
-                "owner": owner.value,
-                "warehouseName": warehouseName.value
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
-    });
+<!--        e.preventDefault();-->
+<!--        fetch(form.action, {-->
+<!--            method: 'POST',-->
+<!--            body: JSON.stringify({-->
+<!--                "owner": ownerId.value,-->
+<!--                "warehouseName": warehouseName.value-->
+<!--            }),-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json"-->
+<!--            },-->
+<!--        })-->
+<!--    });-->
 
-</script>
+<!--</script>-->
 
 </body>
 </html>
