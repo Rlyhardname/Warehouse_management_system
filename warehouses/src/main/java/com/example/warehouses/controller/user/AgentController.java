@@ -23,10 +23,10 @@ public class AgentController {
 
     @SneakyThrows
     @GetMapping("/{agent_id}")
-    // TODO Maybe redesign to post?
+    // TODO Maybe redesign to post? Also still hardcoded dates...
     public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(@PathVariable @Min(value = 1) Long agent_id) {
-        LocalDate startDate = LocalDate.of(2020, 5, 25);
-        LocalDate endDate = LocalDate.of(2023, 6, 26);
+        LocalDate startDate = LocalDate.of(2024, 5, 25);
+        LocalDate endDate = LocalDate.of(2027, 6, 26);
 
         return agentService.getAgentContractsAndRatingsByPeriod(agent_id, startDate, endDate);
     }
