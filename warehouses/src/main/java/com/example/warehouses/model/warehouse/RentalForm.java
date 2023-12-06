@@ -39,10 +39,8 @@ public class RentalForm {
     @NotNull(message = "Date cannot be left blank")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    @NotNull(message = "Fill out fee contract field")
     @DecimalMin(value = "997.0")
     private double contractFiatWorth;
-    @NotNull(message = "Fill out fee field")
     @DecimalMin(value = "0.1")
     private double agentFee;
     private Long contractInDays;

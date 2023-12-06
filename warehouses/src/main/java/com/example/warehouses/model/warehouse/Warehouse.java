@@ -2,11 +2,15 @@ package com.example.warehouses.model.warehouse;
 
 import com.example.warehouses.configurations.Enum.WarehouseCategory;
 import com.example.warehouses.model.user.Owner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.N;
 
 import java.io.Serializable;
 
@@ -16,9 +20,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table
-public class Warehouse implements Serializable {
+public class Warehouse implements Serializable,IAddress {
 
-    @Id
+    @Id()
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
@@ -27,13 +31,19 @@ public class Warehouse implements Serializable {
     @ManyToOne()
     private Owner owner;
     @Column(unique=true)
+    @NotBlank
     private String name;
     @ManyToOne
     private Address address;
+    @NotBlank
     private String squareFeet;
+    @NotBlank
     private String temperature;
+    @NotBlank
     private String humidityPercent;
+    @NotBlank
     private String stockedGoodsType;
+    @NotBlank
     private String category;
     private boolean rented;
 

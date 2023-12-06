@@ -47,11 +47,9 @@ public class User {
     @Size(min = 4, max = 20, message = "Passwords needs to be between 4 and 20 characters")
     private String password;
     @NotBlank
-    @NotNull
     @Size(min = 2, max = 30, message = "Name is too short or too long")
     private String firstName;
     @NotBlank
-    @NotNull
     @Size(min = 2, max = 30, message = "Name is too short or too long")
     private String lastName;
     @Column(name = "dtype", insertable = false, updatable = false)
