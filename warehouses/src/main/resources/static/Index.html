@@ -27,18 +27,18 @@
     <li class="good"><a href="http://localhost:8080/create-user.html">CREATE OWNER</a></li>
     <li class="good"><a href="http://localhost:8080/create-warehouse.html">Create Warehouse</a></li>
     <li class="good"><a href="http://localhost:8080/rent-warehouse.html">Rent Warehouse[DB Warehouse_assigned_to_agent/rental_form/warehouse)</a></li>
-    <li class="good"><a href="http://localhost:8080/api/main/market/warehouse">setAgentsToWarehouse[HARDCODE - DB Warehouse_assigned_to_agent</a></li>
+    <li class="good"><a href="http://localhost:8080/api/main/owners/market/warehouse/owner/{ownerId}/warehouse/{warehouseId}/agentsId" >setAgentsToWarehouse[HARDCODE - DB Warehouse_assigned_to_agent</a></li>
     <li class="good"><a href="http://localhost:8080/rate-agent.html">rateAgent</a></li><br><br>
 
 
     <label>GET REQUEST ENDPOINTS:</label>
-    <li class="good"><a href="http://localhost:8080/api/main/agents">getAgentContractsAndRatingsByPeriod[HARDCODED]</a></li>
-    <li class="good"><a href="http://localhost:8080/api/main/warehouses/">getAllWarehousesOwnedBy(Onwerid Path var)</a></li>
+    <li class="good"><a href="http://localhost:8080/api/main/owners/warehouses/">getAllWarehousesOwnedBy(Onwerid Path var)</a></li>
     <li class="good"><a href="http://localhost:8080/api/main/agents/">getAgentContractsAndRatingsByPeriod(Agent Id:Path var +DATES are hardcoded)</a></li>
-    <li class="good"><a href="http://localhost:8080/api/main/getwarehouses/">getWarehouseByStatus{String yes or no for rented: Path var</a></li>
-    <li class="same"><a href="http://localhost:8080/api/main/market/2">fetchWarehouses{Owner ID Long:Path var)</a></li>
-    <li class="good"><a href="http://localhost:8080/api/main/agents/remove/{id}">RemoveAgentsFromWarehouse(HARD CODED - returns agents left responsible for warehouse)</a></li>
-    <li class="good"><a href="http://localhost:8080/api/main/agents">getAllAgents</a></li><br><br>
+    <li class="good"><a href="http://localhost:8080/api/main/owners/rented-warehouses/">getWarehouseByStatus{String yes or no for rented: Path var</a></li>
+    <li class="same"><a href="http://localhost:8080/api/main/owners/market/2">fetchWarehouses{Owner ID Long:Path var)</a></li>
+    <li class="good"><a href="http://localhost:8080/api/main/owners/agents/remove/owners/1/warehouses/1/agents?agents=3&agents=4">RemoveAgentsFromWarehouse(2 PathVariables 1 Request param, returns Agents left..)</a></li>
+    <li class="good"><a href="http://localhost:8080/api/main/owners/agents">getAllAgents</a></li><br><br>
+    <li class="good"><a href="http://localhost:8080/api/main/owners/agents/1">getSingleAgent</a></li><br><br>
 
 
 </ul></div>
