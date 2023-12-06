@@ -5,10 +5,14 @@ import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
 import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.user.Agent;
+import com.example.warehouses.model.warehouse.Address;
+import com.example.warehouses.model.warehouse.AddressStepTwo;
+import com.example.warehouses.model.warehouse.IAddress;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.services.OwnerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -62,7 +66,7 @@ public class OwnerController {
 
     // not finished...
     @GetMapping("/agents/remove/{id}")
-    public Set<AgentDTO> RemoveAgentsFromWarehouse(@PathVariable Long... id) {
+    public Set<AgentDTO> RemoveAgentsFromWarehouse(@PathVariable @Min(value = 1) Long... id) {
         System.out.println(Arrays.toString(id));
         List<Long> agentIds = List.of(id);
         Set<AgentDTO> agentsLeftDTO = ownerService.RemoveAgentsFromWarehouse(2L, agentIds, 1L);
@@ -83,37 +87,27 @@ public class OwnerController {
         return ownerService.getAllAgents();
     }
 
-
     @PostMapping("/create/warehouse")
     public WarehouseDTO createWarehouse(
-            @RequestParam(value = "owner") String email,
-            @RequestParam(value = "county") String county,
-            @RequestParam(value = "town") String town,
-            @RequestParam(value = "streetName") String streetName,
-            @RequestParam(value = "warehouseName") String name,
-            @RequestParam(value = "squareFeet") String squareFeet,
-            @RequestParam(value = "temperature") String temperature,
-            @RequestParam(value = "humidityPercent") String humidityPercent,
-            @RequestParam(value = "stockedGoodsType") String stockedGoodsType,
-            @RequestParam(value = "warehouseCategory") String warehouseCategory,
-            @RequestParam(value = "rented") String rented) {
-
-        WarehouseCategory category = ownerService.warehouseCategory(warehouseCategory);
-
+            @RequestParam("ownerId") String email,
+            @Valid @ModelAttribute Address address,
+            @Valid @ModelAttribute Warehouse warehouse) {
+        WarehouseCategory category = ownerService.warehouseCategory(warehouse.getCategory());
         return ownerService.createWarehouse(
                 email,
-                county,
-                town,
-                streetName,
-                name,
-                squareFeet,
-                temperature,
-                humidityPercent,
-                stockedGoodsType,
-                category,
-                rented);
+                address.getCounty(),
+                address.getTown(),
+                address.getStreetName(),
+                warehouse.getName(),
+                warehouse.getSquareFeet(),
+                warehouse.getTemperature(),
+                warehouse.getHumidityPercent(),
+                warehouse.getStockedGoodsType(),
+                category);
         // possibly return a view with a list of agents to pick from.
     }
+
+
 
     // TODO
     // edit/warehouses func() { return edit page view from which to send new post request

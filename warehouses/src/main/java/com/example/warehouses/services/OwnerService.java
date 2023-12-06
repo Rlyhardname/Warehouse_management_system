@@ -62,8 +62,7 @@ public class OwnerService {
                                         String temperature,
                                         String humidityPercent,
                                         String stockedGoodsType,
-                                        WarehouseCategory warehouseCategory,
-                                        String rented) {
+                                        WarehouseCategory warehouseCategory) {
         Warehouse warehouse = null;
         WarehouseDTO warehouseDTO = null;
 
