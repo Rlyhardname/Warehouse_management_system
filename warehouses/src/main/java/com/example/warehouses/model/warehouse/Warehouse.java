@@ -34,7 +34,7 @@ public class Warehouse implements Serializable {
     @Column(unique=true)
     @NotBlank(message = "warehouse must a name!")
     private String name;
-    @ManyToOne
+    @ManyToOne()
     private Address address;
     @NotNull(message = "input square feet in field!")
     private Double squareFeet;
@@ -65,6 +65,11 @@ public class Warehouse implements Serializable {
         setHumidityPercent(humidityPercent);
         setInventory(stockedGoodsType);
         setCategory(warehouseCategory.name());
+        rented = false;
+    }
+
+    public Warehouse(Address address){
+        setAddress(address);
         rented = false;
     }
 

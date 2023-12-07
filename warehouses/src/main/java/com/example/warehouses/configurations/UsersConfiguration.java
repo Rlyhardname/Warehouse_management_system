@@ -50,7 +50,7 @@ public class UsersConfiguration {
 
             User owner1 = new Owner();
             ((Owner) owner1).init(
-                    "client1@gmail.com",
+                    "owner1@gmail.com",
                     "hello",
                     "Black",
                     "Swan"
@@ -65,7 +65,7 @@ public class UsersConfiguration {
             );
             User owner3 = new Owner();
             ((Owner) owner3).init(
-                    "admin1@gmail.com",
+                    "owner3@gmail.com",
                     "hello",
                     "White",
                     "Truffle"
@@ -107,10 +107,10 @@ public class UsersConfiguration {
             );
 
             Warehouse warehouse1 = new Warehouse();
-            warehouse1.init((Owner) owner2, address1, "EcontVarnaMain", "1000", "22", "25", "retail",
+            warehouse1.init((Owner) owner2, address1, "EcontVarnaMain", 1000.0, 22.0, 25.0, "retail",
                     WarehouseCategory.INDUSTRIAL);
             Warehouse warehouse2 = new Warehouse();
-            warehouse2.init((Owner) owner2, address2, "SkladZaDrehi", "1000", "17", "33", "clothes",
+            warehouse2.init((Owner) owner2, address2, "SkladZaDrehi", 1000.0, 17.0, 33.0, "clothes",
                     WarehouseCategory.GARAGE);
             warehouseRepository.save(warehouse1);
             warehouseRepository.save(warehouse2);

@@ -20,9 +20,9 @@ public class OwnerUtil {
     public static Warehouse CreatedWarehouse(Owner owner,
                                              Address address,
                                              String name,
-                                             String squareFeet,
-                                             String temperature,
-                                             String humidityPercent,
+                                             Double squareFeet,
+                                             Double temperature,
+                                             Double humidityPercent,
                                              String stockedGoodsType,
                                              WarehouseCategory warehouseCategory
     ) {

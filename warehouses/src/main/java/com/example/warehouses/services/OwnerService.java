@@ -11,9 +11,7 @@ import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.user.Agent;
 import com.example.warehouses.model.user.User;
 import com.example.warehouses.model.user.Owner;
-import com.example.warehouses.model.warehouse.Address;
-import com.example.warehouses.model.warehouse.Warehouse;
-import com.example.warehouses.model.warehouse.WarehouseAssignedToAgent;
+import com.example.warehouses.model.warehouse.*;
 import com.example.warehouses.repository.*;
 import com.example.warehouses.util.OwnerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +56,12 @@ public class OwnerService {
                                         String town,
                                         String streetName,
                                         String name,
-                                        String squareFeet,
-                                        String temperature,
-                                        String humidityPercent,
-                                        String stockedGoodsType,
+                                        Double squareFeet,
+                                        Double temperature,
+                                        Double humidityPercent,
+                                        String inventory,
                                         WarehouseCategory warehouseCategory) {
-        Warehouse warehouse = null;
+
         WarehouseDTO warehouseDTO = null;
 
         User ownerOpt = usersRepository.findByEmail(email).orElseThrow(
@@ -76,14 +74,25 @@ public class OwnerService {
             address.init(county, town, streetName);
             addressRepository.save(address);
 
-            warehouse = OwnerUtil.CreatedWarehouse(owner,
-                    address,
-                    name,
-                    squareFeet,
-                    temperature,
-                    humidityPercent,
-                    stockedGoodsType,
-                    warehouseCategory);
+            Warehouse warehouse = new WarehouseBuilderImpl(new Warehouse(address))
+                    .name(name)
+                    .area(squareFeet)
+                    .celsiusTemp(temperature)
+                    .humidityPercent(humidityPercent)
+                    .inventory(inventory)
+                    .category(warehouseCategory.name())
+                    .build();
+
+
+//            warehouse = OwnerUtil.CreatedWarehouse(owner,
+//                    address,
+//                    name,
+//                    squareFeet,
+//                    temperature,
+//                    humidityPercent,
+//                    inventory,
+//                    warehouseCategory);
+
             warehouseRepository.save(warehouse);
             warehouseDTO = new WarehouseDTO(warehouse);
         } else {
@@ -163,7 +172,7 @@ public class OwnerService {
         List<Agent> agentList = OwnerUtil.getAllAgentsById(usersRepository, OwnerUtil.getAllAgentIds(agentDataList));
         for (Agent agent : agentList
         ) {
-            agentDTOset.add(new AgentDTO(agent));
+            agentDTOset.add(new AgentDTO(agent.getId(), agent.getFirstName(), agent.getLastName()));
         }
 
         return agentDTOset;
@@ -243,15 +252,16 @@ public class OwnerService {
         if (!agents.isEmpty()) {
             for (User agent : agents
             ) {
-                agentsDTO.add(new AgentDTO((Agent) agent));
+                agentsDTO.add(new AgentDTO(agent.getId(), agent.getFirstName(), agent.getLastName()));
             }
         }
         return agentsDTO;
     }
 
     public AgentDTO getAgent(Long id) {
-        AgentDTO agent = new AgentDTO((Agent) usersRepository.findById(id).orElseThrow(() -> new UserNotExististingException()));
-        return agent;
+        Agent agent = (Agent) usersRepository.findById(id).orElseThrow(() -> new UserNotExististingException());
+        AgentDTO agentDTO = new AgentDTO(agent.getId(), agent.getFirstName(), agent.getLastName());
+        return agentDTO;
     }
 }
 

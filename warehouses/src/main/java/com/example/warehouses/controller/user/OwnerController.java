@@ -1,20 +1,16 @@
 package com.example.warehouses.controller.user;
 
-import com.example.warehouses.configurations.Enum.WarehouseCategory;
 import com.example.warehouses.DTO.AgentDTO;
 import com.example.warehouses.DTO.WarehouseDTO;
+import com.example.warehouses.configurations.Enum.WarehouseCategory;
 import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.user.Agent;
-import com.example.warehouses.model.user.User;
 import com.example.warehouses.model.warehouse.Address;
-import com.example.warehouses.model.warehouse.AddressStepTwo;
-import com.example.warehouses.model.warehouse.IAddress;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.services.OwnerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,7 +19,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -54,7 +52,6 @@ public class OwnerController {
     @GetMapping("/warehouses/{owner_id}")
     public List<WarehouseDTO> getAllWarehousesOwnedBy(@PathVariable @Min(value = 0, message = "Invalid id, input number is" +
             "lower than 1 or not a hall number") long owner_id) {
-        System.out.println("hmm?");
         List<WarehouseDTO> warehouseList = new ArrayList<>();
         List<Warehouse> warehousesOpt = ownerService.getWarehouseByOwnerId(owner_id);
         if (!warehousesOpt.isEmpty()) {
@@ -112,7 +109,7 @@ public class OwnerController {
                 warehouse.getSquareFeet(),
                 warehouse.getTemperature(),
                 warehouse.getHumidityPercent(),
-                warehouse.getStockedGoodsType(),
+                warehouse.getInventory(),
                 category);
         // possibly return a view with a list of agents to pick from.
     }
