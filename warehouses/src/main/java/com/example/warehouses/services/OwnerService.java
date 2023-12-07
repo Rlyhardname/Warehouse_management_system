@@ -75,6 +75,7 @@ public class OwnerService {
             addressRepository.save(address);
 
             Warehouse warehouse = new WarehouseBuilderImpl(new Warehouse(address))
+                    .owner(owner)
                     .name(name)
                     .area(squareFeet)
                     .celsiusTemp(temperature)
@@ -82,17 +83,6 @@ public class OwnerService {
                     .inventory(inventory)
                     .category(warehouseCategory.name())
                     .build();
-
-
-//            warehouse = OwnerUtil.CreatedWarehouse(owner,
-//                    address,
-//                    name,
-//                    squareFeet,
-//                    temperature,
-//                    humidityPercent,
-//                    inventory,
-//                    warehouseCategory);
-
             warehouseRepository.save(warehouse);
             warehouseDTO = new WarehouseDTO(warehouse);
         } else {

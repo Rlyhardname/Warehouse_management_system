@@ -15,8 +15,16 @@ import com.example.warehouses.repository.UsersRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OwnerUtil {
 
+public class OwnerUtil {
+    /**
+     * Creates a warehouse object instance <pre>
+     * @Deprecated Not recommended to use.
+     * This method isn't flexible enough. Replaced by
+     * {@link com.example.warehouses.model.warehouse.WarehouseBuilder} interface
+     * {@link com.example.warehouses.model.warehouse.WarehouseBuilderImpl} implementation</pre>
+     */
+    @Deprecated
     public static Warehouse CreatedWarehouse(Owner owner,
                                              Address address,
                                              String name,

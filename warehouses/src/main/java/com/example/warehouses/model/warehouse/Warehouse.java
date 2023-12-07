@@ -5,20 +5,16 @@ import com.example.warehouses.model.user.Owner;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table
 public class Warehouse implements Serializable {
@@ -68,10 +64,21 @@ public class Warehouse implements Serializable {
         rented = false;
     }
 
+    public Warehouse(Address address,Owner owner){
+        setOwner(owner);
+        setAddress(address);
+        rented = false;
+    }
+
     public Warehouse(Address address){
         setAddress(address);
         rented = false;
     }
+
+    public Warehouse() {
+        rented = false;
+    }
+
 
     @Override
     public String toString(){
