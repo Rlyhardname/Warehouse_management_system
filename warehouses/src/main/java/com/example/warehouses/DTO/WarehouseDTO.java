@@ -4,11 +4,9 @@ import com.example.warehouses.model.warehouse.Address;
 import com.example.warehouses.model.warehouse.Warehouse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
 @ToString
 @EqualsAndHashCode
 public class WarehouseDTO {
