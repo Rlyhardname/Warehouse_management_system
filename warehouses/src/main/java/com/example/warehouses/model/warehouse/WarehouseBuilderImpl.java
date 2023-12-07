@@ -4,7 +4,7 @@ import com.example.warehouses.model.user.Owner;
 
 public class WarehouseBuilderImpl implements WarehouseBuilder {
 
-    private Warehouse warehouse;
+    private final Warehouse warehouse;
 
     public WarehouseBuilderImpl(Warehouse warehouse) {
         this.warehouse = warehouse;

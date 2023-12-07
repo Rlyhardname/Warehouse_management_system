@@ -4,27 +4,25 @@ import com.example.warehouses.model.user.Owner;
 
 public interface WarehouseBuilder {
 
-    public WarehouseBuilder owner(Owner owner);
+    WarehouseBuilder owner(Owner owner);
 
-    public WarehouseBuilder name(String name);
+    WarehouseBuilder name(String name);
 
-    public WarehouseBuilder area(Double squareFeet);
+    WarehouseBuilder area(Double squareFeet);
 
-    public WarehouseBuilder celsiusTemp(Double temp);
+    WarehouseBuilder celsiusTemp(Double temp);
 
-    public WarehouseBuilder humidityPercent(Double percent);
+    WarehouseBuilder humidityPercent(Double percent);
 
-    public WarehouseBuilder inventory(String inventory);
+    WarehouseBuilder inventory(String inventory);WarehouseBuilder category(String category);
 
-    public WarehouseBuilder category(String category);
+    WarehouseBuilder country(String country);
 
-    public WarehouseBuilder country(String country);
+    WarehouseBuilder town(String town);
 
-    public WarehouseBuilder town(String town);
+    WarehouseBuilder street(String street);
 
-    public WarehouseBuilder street(String street);
-
-    public Warehouse build();
+    Warehouse build();
 
 
 }
