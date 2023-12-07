@@ -51,12 +51,12 @@ public class OwnerService {
                                         Double humidityPercent,
                                         String inventory,
                                         WarehouseCategory warehouseCategory) {
-        WarehouseDTO warehouseDTO = null;
+        WarehouseDTO warehouseDTO;
         User ownerOpt = usersRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         );
 
-        if (warehouseRepository.findByName(name).isPresent() == false) {
+        if (!warehouseRepository.findByName(name).isPresent()) {
             // TODO possibly not need owner object here, make repo method for boolean check
             Owner owner = (Owner) ownerOpt;
             Address address = new Address();
@@ -78,9 +78,7 @@ public class OwnerService {
             throw new WarehouseAlreadyExistsException();
         }
 
-        WarehouseDTO warehouseDTOOpt = warehouseDTO;
-
-        return warehouseDTOOpt;
+        return warehouseDTO;
     }
 
 
@@ -102,13 +100,12 @@ public class OwnerService {
     }
 
     public List<Warehouse> getWarehouseByOwnerId(Long ownerId) {
+        List<Warehouse> warehouseList = warehouseRepository.findWarehousesByIdOwner(ownerId);
 
-        List<Warehouse> warehouseOpt = warehouseRepository.findWarehousesByIdOwner(ownerId);
-        return warehouseOpt;
+        return warehouseList;
     }
 
     public List<Warehouse> getAllWarehouses(String rented) {
-
         switch (rented) {
             case "yes":
                 return warehouseRepository.findByRentStatus(true);
@@ -124,6 +121,9 @@ public class OwnerService {
 
         List<Agent> agents = OwnerUtil.getAllAgentsById(usersRepository, agentIds);
         Warehouse warehouse = warehouseRepository.findById_OwnerIdAndId_WarehouseId(ownerId, warehouseId).get();
+        if (warehouse == null) {
+
+        }
         // TODO possibly not need owner object here, make repo method for boolean check
         Owner owner = (Owner) usersRepository.findById(ownerId).get();
         warehouseAssignedToAgentRepository.saveAll(OwnerUtil.assignAgentsToWarehouse(agents, warehouse));
@@ -161,20 +161,16 @@ public class OwnerService {
 
 
     public List<WarehouseAssignedToAgent> getAllAssignedAgentsToWarehouse(List<Agent> agentList, Warehouse warehouse) {
-
         List<WarehouseAssignedToAgent> assignedAgents = new ArrayList<>();
-        for (Agent agent : agentList
-        ) {
+        for (Agent agent : agentList) {
             {
                 Optional<WarehouseAssignedToAgent> agentWarehousePair =
                         warehouseAssignedToAgentRepository.findById_AgentIdAndId_WarehouseId(agent.getId(), warehouse.getId());
-                if (agentWarehousePair.isPresent()) {
-                    assignedAgents.add(agentWarehousePair.get());
-                }
-
+                agentWarehousePair.ifPresent(assignedAgents::add);
             }
 
         }
+
         return assignedAgents;
     }
 
@@ -183,7 +179,7 @@ public class OwnerService {
         Owner owner = (Owner) usersRepository.findById(ownerId).get(); //
         Warehouse warehouse = warehouseRepository.findById(warehouseId).get(); //
         List<WarehouseAssignedToAgent> warehouseAgentPair = new ArrayList<>();
-        if (warehouse.getOwner().getId() == owner.getId()) {
+        if (Objects.equals(warehouse.getOwner().getId(), owner.getId())) {
             warehouseAgentPair = warehouseAssignedToAgentRepository.findAllByIdWarehouseId(warehouseId);
         }
 
@@ -224,8 +220,7 @@ public class OwnerService {
 
     public AgentDTO getAgent(Long id) {
         Agent agent = (Agent) usersRepository.findById(id).orElseThrow(() -> new UserNotExististingException());
-        AgentDTO agentDTO = new AgentDTO(agent.getId(), agent.getFirstName(), agent.getLastName());
-        return agentDTO;
+        return new AgentDTO(agent.getId(), agent.getFirstName(), agent.getLastName());
     }
 }
 

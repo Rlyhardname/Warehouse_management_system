@@ -14,6 +14,7 @@ import com.example.warehouses.repository.UsersRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class OwnerUtil {
@@ -67,8 +68,8 @@ public class OwnerUtil {
         ) {
             for (WarehouseAssignedToAgent assignedAgent : assignedAgents
             ) {
-                if (agent.getId() == assignedAgent.getId().getAgentId() &&
-                        warehouse.getId() == assignedAgent.getId().getWarehouseId()
+                if (Objects.equals(agent.getId(), assignedAgent.getId().getAgentId())
+                        && Objects.equals(warehouse.getId(), assignedAgent.getId().getWarehouseId())
                         && assignedAgent.getRelationshipStatus().equals("CONTRACTED")) {
                     WarehouseAssignedToAgentPK PK = new WarehouseAssignedToAgentPK(agent.getId(), warehouse.getId());
                     WarehouseAssignedToAgent agentWarehouse = new WarehouseAssignedToAgent(PK);
@@ -88,14 +89,15 @@ public class OwnerUtil {
 
     public static List<Agent> getAllAgentsById(UsersRepository usersRepository, List<Long> agentIds) {
         List<Agent> agents = new ArrayList<>();
-        for (Long agentId : agentIds
-        ) {
+        for (Long agentId : agentIds) {
             User agent = usersRepository.findById(agentId).get();
             if (agent != null) {
                 if (agent.getDType().equals("agent")) {
                     agents.add((Agent) agent);
                 }
+
             }
+
         }
 
         return agents;
@@ -111,8 +113,8 @@ public class OwnerUtil {
     }
 
     public static WarehouseCategory warehouseCategory(String category) {
-        switch (category.toLowerCase()) {
-            case "garage":
+        switch (category.toUpperCase()) {
+            case "GARAGE":
                 return WarehouseCategory.GARAGE;
             case "SMALL":
                 return WarehouseCategory.SMALL;

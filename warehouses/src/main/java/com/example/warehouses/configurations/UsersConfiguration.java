@@ -7,9 +7,9 @@ import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.AgentRatingsPK;
 import com.example.warehouses.model.Notification;
 import com.example.warehouses.model.user.Agent;
-import com.example.warehouses.model.user.User;
 import com.example.warehouses.model.user.MasterAdmin;
 import com.example.warehouses.model.user.Owner;
+import com.example.warehouses.model.user.User;
 import com.example.warehouses.model.warehouse.*;
 import com.example.warehouses.repository.*;
 import com.example.warehouses.services.UsersService;
@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 public class UsersConfiguration {
@@ -163,9 +162,9 @@ public class UsersConfiguration {
                 rentalFormRepository.save(rentalForm1);
             }
 
-            Notification notificationToAgent = new Notification((Owner) owner1, agent1, warehouse1, ActivityType.ASSIGNED_TO_AGENT);
-            Notification notificationToOwner = new Notification((Owner) owner1, agent1, warehouse1, ActivityType.RENTED_OUT);
-            Notification notificationContractExpire = new Notification((Owner) owner1, agent1, warehouse1, ActivityType.CONTRACT_EXPIRATION);
+            Notification notificationToAgent = new Notification(owner1, agent1, warehouse1, ActivityType.ASSIGNED_TO_AGENT);
+            Notification notificationToOwner = new Notification(owner1, agent1, warehouse1, ActivityType.RENTED_OUT);
+            Notification notificationContractExpire = new Notification(owner1, agent1, warehouse1, ActivityType.CONTRACT_EXPIRATION);
             notificationRepository.saveAll(
                     List.of(notificationToAgent, notificationToOwner, notificationContractExpire)
             );
