@@ -8,6 +8,7 @@ import com.example.warehouses.model.user.Agent;
 import com.example.warehouses.model.warehouse.Address;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.services.OwnerService;
+import com.example.warehouses.util.OwnerUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.validation.Valid;
@@ -99,7 +100,7 @@ public class OwnerController {
             @RequestParam("ownerId") String email,
             @Valid @ModelAttribute Address address,
             @Valid @ModelAttribute Warehouse warehouse) {
-        WarehouseCategory category = ownerService.warehouseCategory(warehouse.getCategory());
+        WarehouseCategory category = OwnerUtil.warehouseCategory(warehouse.getCategory());
         return ownerService.createWarehouse(
                 email,
                 address.getCounty(),

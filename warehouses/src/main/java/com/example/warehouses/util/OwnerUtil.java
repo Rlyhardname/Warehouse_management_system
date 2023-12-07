@@ -109,4 +109,21 @@ public class OwnerUtil {
         }
         return agentIds;
     }
+
+    public static WarehouseCategory warehouseCategory(String category) {
+        switch (category.toLowerCase()) {
+            case "garage":
+                return WarehouseCategory.GARAGE;
+            case "SMALL":
+                return WarehouseCategory.SMALL;
+            case "MEDIUM":
+                return WarehouseCategory.MEDIUM;
+            case "LARGE":
+                return WarehouseCategory.LARGE;
+            case "INDUSTRIAL":
+                return WarehouseCategory.INDUSTRIAL;
+            default:
+                return WarehouseCategory.EMPTY;
+        }
+    }
 }

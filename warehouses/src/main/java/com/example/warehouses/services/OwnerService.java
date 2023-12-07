@@ -23,30 +23,20 @@ import java.util.*;
 public class OwnerService {
 
     private final UsersRepository usersRepository;
-    private final UsersService globalService;
     private final WarehouseRepository warehouseRepository;
     private final RatingsRepository ratingsRepository;
-    private final RentalFormRepository rentalFormRepository;
-    private final WarehouseAssignedToAgentRepository marketRepository;
-
     private final AddressRepository addressRepository;
     private final WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository;
 
     @Autowired
     public OwnerService(UsersRepository usersRepository,
-                        UsersService globalService,
                         WarehouseRepository warehouseRepository,
                         RatingsRepository ratingsRepository,
-                        RentalFormRepository rentalFormRepository,
-                        WarehouseAssignedToAgentRepository marketRepository,
                         AddressRepository addressRepository,
                         WarehouseAssignedToAgentRepository warehouseAssignedToAgentRepository) {
         this.usersRepository = usersRepository;
-        this.globalService = globalService;
         this.warehouseRepository = warehouseRepository;
         this.ratingsRepository = ratingsRepository;
-        this.rentalFormRepository = rentalFormRepository;
-        this.marketRepository = marketRepository;
         this.addressRepository = addressRepository;
         this.warehouseAssignedToAgentRepository = warehouseAssignedToAgentRepository;
     }
@@ -61,12 +51,11 @@ public class OwnerService {
                                         Double humidityPercent,
                                         String inventory,
                                         WarehouseCategory warehouseCategory) {
-
         WarehouseDTO warehouseDTO = null;
-
         User ownerOpt = usersRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         );
+
         if (warehouseRepository.findByName(name).isPresent() == false) {
             // TODO possibly not need owner object here, make repo method for boolean check
             Owner owner = (Owner) ownerOpt;
@@ -88,7 +77,9 @@ public class OwnerService {
         } else {
             throw new WarehouseAlreadyExistsException();
         }
+
         WarehouseDTO warehouseDTOOpt = warehouseDTO;
+
         return warehouseDTOOpt;
     }
 
@@ -185,23 +176,6 @@ public class OwnerService {
 
         }
         return assignedAgents;
-    }
-
-    public WarehouseCategory warehouseCategory(String category) {
-        switch (category.toLowerCase()) {
-            case "garage":
-                return WarehouseCategory.GARAGE;
-            case "SMALL":
-                return WarehouseCategory.SMALL;
-            case "MEDIUM":
-                return WarehouseCategory.MEDIUM;
-            case "LARGE":
-                return WarehouseCategory.LARGE;
-            case "INDUSTRIAL":
-                return WarehouseCategory.INDUSTRIAL;
-            default:
-                return WarehouseCategory.EMPTY;
-        }
     }
 
     public Set<Agent> getAllAgentsPairedToWarehouse(Long ownerId, Long warehouseId) {
