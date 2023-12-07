@@ -40,9 +40,9 @@ public class RentalForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @DecimalMin(value = "997.0")
-    private double contractFiatWorth;
+    private Double contractFiatWorth;
     @DecimalMin(value = "0.1")
-    private double agentFee;
+    private Double agentFee;
     private Long contractInDays;
 
     public RentalForm(User agent, User customer, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {

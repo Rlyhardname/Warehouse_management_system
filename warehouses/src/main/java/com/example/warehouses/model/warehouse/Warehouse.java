@@ -2,8 +2,12 @@ package com.example.warehouses.model.warehouse;
 
 import com.example.warehouses.configurations.Enum.WarehouseCategory;
 import com.example.warehouses.model.user.Owner;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,28 +32,28 @@ public class Warehouse implements Serializable {
     @ManyToOne()
     private Owner owner;
     @Column(unique=true)
-    @NotBlank
+    @NotBlank(message = "warehouse must a name!")
     private String name;
     @ManyToOne
     private Address address;
-    @NotBlank
-    private String squareFeet;
-    @NotBlank
-    private String temperature;
-    @NotBlank
-    private String humidityPercent;
-    @NotBlank
-    private String stockedGoodsType;
-    @NotBlank
+    @NotNull(message = "input square feet in field!")
+    private Double squareFeet;
+    @Nullable
+    private Double temperature;
+    @Nullable
+    private Double humidityPercent;
+    @Nullable
+    private String inventory;
+    @NotBlank (message = "please choose one of the categories")
     private String category;
     private boolean rented;
 
     public void init(Owner owner,
                      Address address,
                      String name,
-                     String squareFeet,
-                     String temperature,
-                     String humidityPercent,
+                     Double squareFeet,
+                     Double temperature,
+                     Double humidityPercent,
                      String stockedGoodsType,
                      WarehouseCategory warehouseCategory
                      ){
@@ -59,7 +63,7 @@ public class Warehouse implements Serializable {
         setSquareFeet(squareFeet);
         setTemperature(temperature);
         setHumidityPercent(humidityPercent);
-        setStockedGoodsType(stockedGoodsType);
+        setInventory(stockedGoodsType);
         setCategory(warehouseCategory.name());
         rented = false;
     }
@@ -68,7 +72,7 @@ public class Warehouse implements Serializable {
     public String toString(){
 
         return name + " " + id + " " + squareFeet + " " + temperature + " " +  humidityPercent +
-                " " + stockedGoodsType + " " + category + " " + rented;
+                " " + inventory + " " + category + " " + rented;
     }
 
 }

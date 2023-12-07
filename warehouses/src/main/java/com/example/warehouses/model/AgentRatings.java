@@ -18,5 +18,5 @@ public class AgentRatings {
     private AgentRatingsPK id;
     @Min(value = 1, message = "Min is 1")
     @Max(value = 5, message = "Max is 5")
-    private int stars;
+    private Integer stars;
 }

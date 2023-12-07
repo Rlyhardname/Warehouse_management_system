@@ -14,9 +14,9 @@ public class WarehouseDTO {
     private final Long id;
     private final Address address;
     private final String warehouseName;
-    private final String squareFeet;
-    private final String temperature;
-    private final String humidityPercent;
+    private final Double squareFeet;
+    private final Double temperature;
+    private final Double humidityPercent;
     private final String stockedGoodsType;
     private final String warehouseCategory;
     private final boolean rented;
@@ -28,7 +28,7 @@ public class WarehouseDTO {
         this.squareFeet = warehouse.getSquareFeet();
         this.temperature = warehouse.getTemperature();
         this.humidityPercent = warehouse.getHumidityPercent();
-        this.stockedGoodsType = warehouse.getStockedGoodsType();
+        this.stockedGoodsType = warehouse.getInventory();
         this.warehouseCategory = warehouse.getCategory();
         this.rented = warehouse.isRented();
     }
