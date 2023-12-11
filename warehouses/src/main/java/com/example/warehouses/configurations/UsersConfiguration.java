@@ -6,10 +6,7 @@ import com.example.warehouses.interfaces.Administrator;
 import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.AgentRatingsPK;
 import com.example.warehouses.model.Notification;
-import com.example.warehouses.model.user.Agent;
-import com.example.warehouses.model.user.MasterAdmin;
-import com.example.warehouses.model.user.Owner;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.*;
 import com.example.warehouses.model.warehouse.*;
 import com.example.warehouses.repository.*;
 import com.example.warehouses.services.UsersService;
@@ -47,40 +44,46 @@ public class UsersConfiguration {
                     "Jack",
                     "Daniels");
 
-            User owner1 = new Owner("owner1@gmail.com",
+            UserImpl owner1 = UserFactory.instanceOf("owner",
+                    "owner1@gmail.com",
                     "hello",
                     "Black",
                     "Swan");
-            User owner2 = new Owner("owner2@gmail.com",
+            UserImpl owner2 = UserFactory.instanceOf("owner",
+                    "owner2@gmail.com",
                     "hello",
                     "White",
                     "Truffle");
-            User owner3 = new Owner("owner3@gmail.com",
+            UserImpl owner3 = UserFactory.instanceOf("owner",
+                    "owner3@gmail.com",
                     "hello",
                     "White",
                     "Truffle");
-            User agent1 = new Agent("agent1@gmail.com",
+            UserImpl agent1 = UserFactory.instanceOf("agent",
+                    "agent1@gmail.com",
                     "hello",
                     "Orange",
                     "Juice");
-            User agent2 = new Agent("agent2@gmail.com",
+            UserImpl agent2 = UserFactory.instanceOf("agent",
+                    "agent2@gmail.com",
                     "hello",
                     "Yellow",
                     "Lamborghini");
-                    repository.saveAll(
-                            List.of(admin1, admin2)
-                    );
 
-            List<User> userList = new ArrayList<>();
-            for (User item : List.of(owner1, owner2, agent1, agent2)) {
+            repository.saveAll(
+                    List.of(admin1, admin2)
+            );
+
+            List<UserImpl> userImplList = new ArrayList<>();
+            for (UserImpl item : List.of(owner1, owner2, agent1, agent2)) {
                 if (!globalService.isUsernameTaken(item.getEmail())) {
-                    userList.add(item);
+                    userImplList.add(item);
                 }
 
             }
 
             usersRepository.saveAll(
-                    userList
+                    userImplList
             );
 
             Address address1 = new Address();
@@ -91,12 +94,25 @@ public class UsersConfiguration {
                     List.of(address1, address2)
             );
 
-            Warehouse warehouse1 = new Warehouse();
-            warehouse1.init((Owner) owner2, address1, "EcontVarnaMain", 1000.0, 22.0, 25.0, "retail",
-                    WarehouseCategory.INDUSTRIAL);
-            Warehouse warehouse2 = new Warehouse();
-            warehouse2.init((Owner) owner2, address2, "SkladZaDrehi", 1000.0, 17.0, 33.0, "clothes",
-                    WarehouseCategory.GARAGE);
+            Warehouse warehouse1 = new WarehouseBuilderImpl(new Warehouse(address1))
+                    .owner((Owner) owner2)
+                    .name("EcontVarnaMain")
+                    .area(1000.0)
+                    .celsiusTemp(22.0)
+                    .humidityPercent(25.0)
+                    .inventory("retail")
+                    .category(WarehouseCategory.INDUSTRIAL.name())
+                    .build();
+            Warehouse warehouse2 = new WarehouseBuilderImpl(new Warehouse(address2))
+                    .owner((Owner) owner2)
+                    .name("Second Hand Clothes LLC")
+                    .area(1000.0)
+                    .celsiusTemp(17.0)
+                    .humidityPercent(33.3)
+                    .inventory("Clothes")
+                    .category(WarehouseCategory.GARAGE.name())
+                    .build();
+
             warehouseRepository.save(warehouse1);
             warehouseRepository.save(warehouse2);
 
