@@ -2,7 +2,7 @@ package com.example.warehouses.controller.admin;
 
 import com.example.warehouses.interfaces.Administrator;
 import com.example.warehouses.interfaces.AdministratorFunctions;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.services.AdminService;
 import com.example.warehouses.services.UsersService;
 import com.google.common.io.ByteStreams;
@@ -59,17 +59,17 @@ public class AdminController implements AdministratorFunctions {
     @SneakyThrows
     @PostMapping("createClient")
     @Override
-    public User createClient(@RequestParam String email,
-                             @RequestParam String password,
-                             @RequestParam String firstName,
-                             @RequestParam String lastName,
-                             @RequestParam String clientType,
-                             HttpServletResponse response) {
+    public UserImpl createClient(@RequestParam String email,
+                                 @RequestParam String password,
+                                 @RequestParam String firstName,
+                                 @RequestParam String lastName,
+                                 @RequestParam String clientType,
+                                 HttpServletResponse response) {
 
-        User userOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
+        UserImpl userImplOpt = adminService.createClient(email, password, firstName, lastName, clientType, response);
         response.sendRedirect("http://localhost:8080/MainPage.html");
 
-        return userOpt;
+        return userImplOpt;
     }
 
     @PostMapping("createUser")

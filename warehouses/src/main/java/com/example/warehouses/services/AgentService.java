@@ -7,7 +7,7 @@ import com.example.warehouses.exception.Client.UserNotExististingException;
 import com.example.warehouses.exception.Warehouse.AlreadyRentedException;
 import com.example.warehouses.exception.Warehouse.WarehouseNotExistingException;
 import com.example.warehouses.model.AgentRatings;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.warehouse.RentalForm;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.repository.*;
@@ -53,12 +53,12 @@ public class AgentService {
 
     public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(Long agentId, LocalDate startDate, LocalDate endDate) {
         // TODO change return type or use it somehow?
-        User user = usersRepository.findById(agentId).orElseThrow(() -> {
+        UserImpl userImpl = usersRepository.findById(agentId).orElseThrow(() -> {
             new UserNotExististingException();
             return null;
         });
 
-        if (!user.getDType().equals("agent")) {
+        if (!userImpl.getDType().equals("agent")) {
             return null;
         }
 
@@ -71,9 +71,9 @@ public class AgentService {
         double totalStars = AgentUtil.totalStars(ratings);
         List<RentFormDTO> rentalFormDTO = AgentUtil.createRentalFormDTO(allAgentRentalForms);
         AgentAndRentFormDTO agentAndRentFormDTO = new AgentAndRentFormDTO(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
+                userImpl.getFirstName(),
+                userImpl.getLastName(),
+                userImpl.getEmail(),
                 totalStars,
                 ratings.size(),
                 rentalFormDTO);
@@ -94,10 +94,10 @@ public class AgentService {
             throw new UserNotExististingException();
         }
 
-        User agent = usersRepository.findById(agentId).orElseThrow(
+        UserImpl agent = usersRepository.findById(agentId).orElseThrow(
                 () -> new UserNotExististingException()
         );
-        User customer = usersRepository.findById(customerId).orElseThrow(
+        UserImpl customer = usersRepository.findById(customerId).orElseThrow(
                 () -> new UserNotExististingException()
         );
         Warehouse warehouse = warehouseRepository.findById(warehouseId).orElseThrow(

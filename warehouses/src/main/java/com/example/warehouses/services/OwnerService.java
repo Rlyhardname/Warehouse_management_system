@@ -9,7 +9,7 @@ import com.example.warehouses.exception.Warehouse.WarehouseAlreadyExistsExceptio
 import com.example.warehouses.exception.Warehouse.WarehouseNotExistingException;
 import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.user.Agent;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.user.Owner;
 import com.example.warehouses.model.warehouse.*;
 import com.example.warehouses.repository.*;
@@ -52,7 +52,7 @@ public class OwnerService {
                                         String inventory,
                                         WarehouseCategory warehouseCategory) {
         WarehouseDTO warehouseDTO;
-        User ownerOpt = usersRepository.findByEmail(email).orElseThrow(
+        UserImpl ownerOpt = usersRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         );
 
@@ -208,10 +208,10 @@ public class OwnerService {
     }
 
     public Set<AgentDTO> getAllAgents() {
-        List<User> agents = usersRepository.findBydType(Role.AGENT.name());
+        List<UserImpl> agents = usersRepository.findBydType(Role.AGENT.name());
         Set<AgentDTO> agentsDTO = new HashSet<>();
         if (!agents.isEmpty()) {
-            for (User agent : agents
+            for (UserImpl agent : agents
             ) {
                 agentsDTO.add(new AgentDTO(agent.getId(), agent.getFirstName(), agent.getLastName()));
             }

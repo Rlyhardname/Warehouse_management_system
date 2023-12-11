@@ -1,7 +1,7 @@
 package com.example.warehouses.controller.user;
 
 import com.example.warehouses.exception.Client.ClientAlreadyRegisteredException;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.services.UsersService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -28,10 +28,10 @@ public class UsersController {
     @SneakyThrows
     @PostMapping(path = "/register", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
     )//"application/x-www-form-urlencoded")
-    public ResponseEntity<String> registerClient(@Valid @ModelAttribute User user,
+    public ResponseEntity<String> registerClient(@Valid @ModelAttribute UserImpl userImpl,
                                                  HttpServletResponse response) {
-        if (!usersService.isUsernameTaken(user.getEmail())) {
-            usersService.register(user.getEmail(), user.getPassword(), user.getFirstName(), user.getDType(), user.getLastName(), response); //,
+        if (!usersService.isUsernameTaken(userImpl.getEmail())) {
+            usersService.register(userImpl.getEmail(), userImpl.getPassword(), userImpl.getFirstName(), userImpl.getDType(), userImpl.getLastName(), response); //,
             return new ResponseEntity<>("User Successfully registered!", HttpStatus.ACCEPTED);
         } else {
             throw new ClientAlreadyRegisteredException();

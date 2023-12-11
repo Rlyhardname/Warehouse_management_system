@@ -2,7 +2,7 @@ package com.example.warehouses.util;
 
 import com.example.warehouses.DTO.RentFormDTO;
 import com.example.warehouses.model.AgentRatings;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.warehouse.RentalForm;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.repository.RatingsRepository;
@@ -11,7 +11,6 @@ import com.example.warehouses.repository.RentalFormRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class AgentUtil {
 
@@ -42,8 +41,8 @@ public class AgentUtil {
         return rentalForms;
     }
 
-    public static RentalForm createContract(User agent, User user, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
-        RentalForm rentalForm = new RentalForm(agent, user, warehouse, startDate, endDate, contractFiatWorth, agentFee);
+    public static RentalForm createContract(UserImpl agent, UserImpl userImpl, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
+        RentalForm rentalForm = new RentalForm(agent, userImpl, warehouse, startDate, endDate, contractFiatWorth, agentFee);
         return rentalForm;
     }
 

@@ -2,7 +2,7 @@ package com.example.warehouses.services;
 
 import com.example.warehouses.exception.Client.UserNotExististingException;
 import com.example.warehouses.exception.Login.WrongPasswordException;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.repository.UsersRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ public class CustomClientService {
         this.globalService = globalService;
     }
 
-    public Optional<User> isLoginClient(String email, String password, HttpServletResponse response) throws IOException {
+    public Optional<UserImpl> isLoginClient(String email, String password, HttpServletResponse response) throws IOException {
 
-        Optional<User> adminOpt = Optional.of(usersRepository.findByEmail(email).orElseThrow(
+        Optional<UserImpl> adminOpt = Optional.of(usersRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotExististingException()
         ));
         System.out.println(adminOpt.get().getEmail() + " " + adminOpt.get().getPassword());

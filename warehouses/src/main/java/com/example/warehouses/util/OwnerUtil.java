@@ -5,7 +5,7 @@ import com.example.warehouses.model.AgentRatings;
 import com.example.warehouses.model.AgentRatingsPK;
 import com.example.warehouses.model.user.Agent;
 import com.example.warehouses.model.user.Owner;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.warehouse.Address;
 import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.model.warehouse.WarehouseAssignedToAgentPK;
@@ -35,15 +35,14 @@ public class OwnerUtil {
                                              String stockedGoodsType,
                                              WarehouseCategory warehouseCategory
     ) {
-        Warehouse warehouse = new Warehouse();
-        warehouse.init(owner,
-                address,
+        Warehouse warehouse = new Warehouse(owner,
                 name,
+                address,
                 squareFeet,
                 temperature,
                 humidityPercent,
                 stockedGoodsType,
-                warehouseCategory);
+                warehouseCategory.name());
         return warehouse;
     }
 
@@ -90,7 +89,7 @@ public class OwnerUtil {
     public static List<Agent> getAllAgentsById(UsersRepository usersRepository, List<Long> agentIds) {
         List<Agent> agents = new ArrayList<>();
         for (Long agentId : agentIds) {
-            User agent = usersRepository.findById(agentId).get();
+            UserImpl agent = usersRepository.findById(agentId).get();
             if (agent != null) {
                 if (agent.getDType().equals("agent")) {
                     agents.add((Agent) agent);

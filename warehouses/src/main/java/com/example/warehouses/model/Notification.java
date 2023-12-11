@@ -1,7 +1,7 @@
 package com.example.warehouses.model;
 
 import com.example.warehouses.configurations.Enum.ActivityType;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.warehouse.Warehouse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,9 +21,9 @@ public class Notification {
  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @ManyToOne
-    private User owner;
+    private UserImpl owner;
     @ManyToOne
-    private User agent;
+    private UserImpl agent;
     @Enumerated(EnumType.STRING)
     private ActivityType activityType;
     @ManyToOne
@@ -31,7 +31,7 @@ public class Notification {
     private LocalDate timeSent;
     private boolean isUnread;
 
-   public Notification(User owner, User agent, Warehouse warehouse, ActivityType activityType) {
+   public Notification(UserImpl owner, UserImpl agent, Warehouse warehouse, ActivityType activityType) {
       this.owner = owner;
       this.agent = agent;
       this.warehouse = warehouse;

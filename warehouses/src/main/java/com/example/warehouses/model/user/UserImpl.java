@@ -20,16 +20,16 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
-public class User {
+public class UserImpl {
 
-    public User(String email, String password, String firstName, String lastName) {
+    public UserImpl(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public User() {
+    public UserImpl() {
     }
 
     @Id

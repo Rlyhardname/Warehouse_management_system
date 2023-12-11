@@ -9,7 +9,7 @@ import lombok.ToString;
 @Entity
 @EqualsAndHashCode
 @DiscriminatorValue("owner")
-public class Owner extends User {
+public class Owner extends UserImpl {
 
     public Owner(String email, String password, String firstName, String lastName) {
         super(email, password, firstName, lastName);

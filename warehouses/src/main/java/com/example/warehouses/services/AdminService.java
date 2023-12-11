@@ -6,7 +6,7 @@ import com.example.warehouses.exception.Login.WrongPasswordException;
 import com.example.warehouses.exception.admin.AdminDoesntExistException;
 import com.example.warehouses.interfaces.Administrator;
 import com.example.warehouses.interfaces.AdministratorFunctions;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.user.MasterAdmin;
 import com.example.warehouses.repository.AdminRepository;
 import com.example.warehouses.repository.UsersRepository;
@@ -48,12 +48,12 @@ public class AdminService implements AdministratorFunctions {
     }
 
     @Override
-    public User createClient(String email,
-                             String password,
-                             String firstName,
-                             String lastName,
-                             String clientType,
-                             HttpServletResponse response) {
+    public UserImpl createClient(String email,
+                                 String password,
+                                 String firstName,
+                                 String lastName,
+                                 String clientType,
+                                 HttpServletResponse response) {
 
         return globalService.register(email,
                 password,
@@ -73,7 +73,7 @@ public class AdminService implements AdministratorFunctions {
         MasterAdmin admin = (MasterAdmin) adminRepository.findById(adminId).orElseThrow(
                 () -> new AdminDoesntExistException()
         );
-        User user = admin.createUser(email,
+        UserImpl userImpl = admin.createUser(email,
                 password,
                 firstName,
                 lastName,
@@ -83,8 +83,8 @@ public class AdminService implements AdministratorFunctions {
         if (type.equals("owner")) message += "owner";
         if (type.equals("agent")) message += "agent";
 
-        if (usersRepository.findById(user.getId()).isPresent() == false) {
-            usersRepository.save(user);
+        if (usersRepository.findById(userImpl.getId()).isPresent() == false) {
+            usersRepository.save(userImpl);
         } else {
             throw new ClientAlreadyRegisteredException();
         }

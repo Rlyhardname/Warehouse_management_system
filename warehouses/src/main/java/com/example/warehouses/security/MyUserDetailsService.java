@@ -3,6 +3,7 @@ package com.example.warehouses.security;
 import com.example.warehouses.configurations.Enum.Role;
 import com.example.warehouses.exception.Client.UserNotExististingException;
 import com.example.warehouses.interfaces.Administrator;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.repository.AdminRepository;
 import com.example.warehouses.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
         String password = null;
         String ROLE = null;
         Optional<Administrator> admin;
-        Optional<com.example.warehouses.model.user.User> client = usersRepository.findByEmail(email1);
+        Optional<UserImpl> client = usersRepository.findByEmail(email1);
 
         if (client.isPresent()) {
             email = client.get().getEmail();

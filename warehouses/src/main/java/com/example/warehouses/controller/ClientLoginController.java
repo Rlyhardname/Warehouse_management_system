@@ -1,6 +1,6 @@
 package com.example.warehouses.controller;
 
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.services.CustomClientService;
 import com.example.warehouses.services.UsersService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,11 +32,11 @@ public class ClientLoginController {
     // For removal, implemented before Spring security implementation.
     @SneakyThrows
     @PostMapping
-    public Optional<User> isLoginClient(@RequestParam String email,
-                                        @RequestParam String password,
-                                        HttpServletResponse response) {
+    public Optional<UserImpl> isLoginClient(@RequestParam String email,
+                                            @RequestParam String password,
+                                            HttpServletResponse response) {
 
-        Optional<User> adminOpt = null;
+        Optional<UserImpl> adminOpt = null;
         adminOpt = clientService.isLoginClient(email, password, response);
         response.sendRedirect("login");
 

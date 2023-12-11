@@ -1,7 +1,7 @@
 package com.example.warehouses.model.warehouse;
 
 import com.example.warehouses.model.user.Agent;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserImpl;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
@@ -28,7 +28,7 @@ public class RentalForm {
     @ManyToOne
     private Agent agent;
     @ManyToOne
-    private User customer;
+    private UserImpl customer;
     @ManyToOne
     private Warehouse warehouse;
     @Future(message = "Date must be in the future")
@@ -45,7 +45,7 @@ public class RentalForm {
     private Double agentFee;
     private Long contractInDays;
 
-    public RentalForm(User agent, User customer, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
+    public RentalForm(UserImpl agent, UserImpl customer, Warehouse warehouse, LocalDate startDate, LocalDate endDate, double contractFiatWorth, double agentFee) {
         this.agent = (Agent) agent;
         this.customer = customer;
         this.warehouse = warehouse;

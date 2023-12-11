@@ -1,7 +1,8 @@
 package com.example.warehouses.services;
 
 import com.example.warehouses.model.user.Agent;
-import com.example.warehouses.model.user.User;
+import com.example.warehouses.model.user.UserFactory;
+import com.example.warehouses.model.user.UserImpl;
 import com.example.warehouses.model.user.Owner;
 import com.example.warehouses.repository.AdminRepository;
 import com.example.warehouses.repository.UsersRepository;
@@ -22,23 +23,16 @@ public class UsersService {
 
     }
 
-    public User register(String email,
-                         String password,
-                         String firstName,
-                         String lastName,
-                         String clientType,
-                         HttpServletResponse response) {
+    public UserImpl register(String email,
+                             String password,
+                             String firstName,
+                             String lastName,
+                             String clientType,
+                             HttpServletResponse response) {
 
-        User user = null;
-        if (clientType.equals("owner")) {
-            user = new Owner();
-            ((Owner) user).init(email, password, firstName, lastName);
-        } else if (clientType.equals("agent")) {
-            user = new Agent();
-            ((Agent) user).init(email, password, firstName, lastName);
-        }
-            usersRepository.save(user);
-        return user;
+        UserImpl userImpl = UserFactory.instanceOf(clientType,email,password,firstName,lastName);
+            usersRepository.save(userImpl);
+        return userImpl;
     }
 
 
