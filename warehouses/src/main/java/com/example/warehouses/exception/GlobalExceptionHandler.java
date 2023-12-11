@@ -2,9 +2,9 @@ package com.example.warehouses.exception;
 
 import com.example.warehouses.exception.Client.*;
 import com.example.warehouses.exception.Login.WrongPasswordException;
-import com.example.warehouses.exception.Warehouse.AlreadyRentedException;
-import com.example.warehouses.exception.Warehouse.WarehouseAlreadyExistsException;
-import com.example.warehouses.exception.Warehouse.WarehouseNotExistingException;
+import com.example.warehouses.exception.warehouse.AlreadyRentedException;
+import com.example.warehouses.exception.warehouse.WarehouseAlreadyExistsException;
+import com.example.warehouses.exception.warehouse.WarehouseNotExistingException;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
