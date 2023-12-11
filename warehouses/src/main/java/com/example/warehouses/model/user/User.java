@@ -7,14 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-
 @Entity
 @Table(
         name = "client",
@@ -27,6 +21,16 @@ import org.hibernate.annotations.DynamicUpdate;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class User {
+
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User() {
+    }
 
     @Id
     @GeneratedValue(
@@ -53,4 +57,31 @@ public class User {
     private String lastName;
     @Column(name = "dtype", insertable = false, updatable = false)
     private String dType;
+
+    public Long getId() {
+        return Id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+
+    public String getDType() {
+        return dType;
+    }
 }
+
+

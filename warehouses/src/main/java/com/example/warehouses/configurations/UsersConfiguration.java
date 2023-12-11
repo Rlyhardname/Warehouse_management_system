@@ -47,43 +47,29 @@ public class UsersConfiguration {
                     "Jack",
                     "Daniels");
 
-            User owner1 = new Owner();
-            ((Owner) owner1).init(
-                    "owner1@gmail.com",
+            User owner1 = new Owner("owner1@gmail.com",
                     "hello",
                     "Black",
-                    "Swan"
-            );
-
-            User owner2 = new Owner();
-            ((Owner) owner2).init(
-                    "owner2@gmail.com",
+                    "Swan");
+            User owner2 = new Owner("owner2@gmail.com",
                     "hello",
                     "White",
-                    "Truffle"
-            );
-            User owner3 = new Owner();
-            ((Owner) owner3).init(
-                    "owner3@gmail.com",
+                    "Truffle");
+            User owner3 = new Owner("owner3@gmail.com",
                     "hello",
                     "White",
-                    "Truffle"
-            );
-
-
-            User agent1 = new Agent();
-            ((Agent)agent1).init("agent1@gmail.com",
+                    "Truffle");
+            User agent1 = new Agent("agent1@gmail.com",
                     "hello",
                     "Orange",
                     "Juice");
-            User agent2 = new Agent();
-            ((Agent)agent2).init("agent2@gmail.com",
+            User agent2 = new Agent("agent2@gmail.com",
                     "hello",
                     "Yellow",
                     "Lamborghini");
-            repository.saveAll(
-                    List.of(admin1, admin2)
-            );
+                    repository.saveAll(
+                            List.of(admin1, admin2)
+                    );
 
             List<User> userList = new ArrayList<>();
             for (User item : List.of(owner1, owner2, agent1, agent2)) {
@@ -188,7 +174,6 @@ public class UsersConfiguration {
 //            System.out.println("TEST spring data function " + marketRepository.findAllByIdWarehouseId(warehouse1.getId()));
 //            System.out.println("TEST spring data function " + ratingsRepository.findAllByIdOwnerID(user1.getId()));
 //            System.out.println("TEST spring data function " + ratingsRepository.findAllByIdAgentID(agent1.getId()));
-
 
 
         };
