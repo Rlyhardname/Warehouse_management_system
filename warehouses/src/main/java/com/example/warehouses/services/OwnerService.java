@@ -60,9 +60,6 @@ public class OwnerService {
             // TODO possibly not need owner object here, make repo method for boolean check
             Owner owner = (Owner) ownerOpt;
             Address address = new Address();
-            address.init(county, town, streetName);
-            addressRepository.save(address);
-
             Warehouse warehouse = new WarehouseBuilderImpl(new Warehouse(address))
                     .owner(owner)
                     .name(name)
@@ -71,7 +68,11 @@ public class OwnerService {
                     .humidityPercent(humidityPercent)
                     .inventory(inventory)
                     .category(warehouseCategory.name())
+                    .country(county)
+                    .town(town)
+                    .street(streetName)
                     .build();
+            addressRepository.save(address);
             warehouseRepository.save(warehouse);
             warehouseDTO = new WarehouseDTO(warehouse);
         } else {
