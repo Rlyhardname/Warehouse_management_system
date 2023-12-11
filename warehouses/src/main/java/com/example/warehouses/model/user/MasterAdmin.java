@@ -18,28 +18,12 @@ public class MasterAdmin extends Administrator {
 
     }
 
-    public User createUser(String email,
-                           String password,
-                           String firstName,
-                           String lastName,
-                           String clientType) {
-        User user = null;
-        if(clientType.toLowerCase().equals("owner")){
-            user =  new Owner();
-            ((Owner) user).init(email,password,firstName,lastName);
-        }else{
-            user = new Agent();
-            ((Agent) user).init(email,password,firstName,lastName);
-        }
-        return user;
+    public UserImpl createUser(String email,
+                               String password,
+                               String firstName,
+                               String lastName,
+                               String clientType) {
+        return UserFactory.instanceOf(clientType, email, password, firstName, lastName);
     }
 
-    public Agent createAgent(String email,
-                             String password,
-                             String firstName,
-                             String lastName) {
-        Agent agent = new Agent();
-        agent.init(email,password,firstName,lastName);
-        return agent;
-    }
 }
