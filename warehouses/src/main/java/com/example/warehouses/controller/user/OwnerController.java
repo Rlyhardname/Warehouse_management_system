@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,7 +52,7 @@ public class OwnerController {
     // Users
 
     @GetMapping("/warehouses/{owner_id}")
-    public List<WarehouseDTO> getAllWarehousesOwnedBy(@PathVariable @Min(value = 0, message = "Invalid id, input number is" +
+    public ResponseEntity<List<WarehouseDTO>> getAllWarehousesOwnedBy(@PathVariable @Min(value = 0, message = "Invalid id, input number is" +
             "lower than 1 or not a hall number") long owner_id) {
         List<WarehouseDTO> warehouseList = new ArrayList<>();
         List<Warehouse> warehousesOpt = ownerService.getWarehouseByOwnerId(owner_id);
@@ -62,46 +63,46 @@ public class OwnerController {
             }
         }
 
-        return warehouseList;
+        return ResponseEntity.ok(warehouseList);
     }
 
 
     // TODO look at implmentantation of this method and all methods underneath and possibly refactor if it doesn't make sense.
     @GetMapping("/agents/remove/owners/{ownerId}/warehouses/{warehouseId}/agents")
-    public Set<AgentDTO> RemoveAgentsFromWarehouse(@PathVariable @Min(value = 1) Long ownerId,
+    public ResponseEntity<Set<AgentDTO>> RemoveAgentsFromWarehouse(@PathVariable @Min(value = 1) Long ownerId,
                                                    @PathVariable @Min(value = 1) Long warehouseId,
                                                    @RequestParam @NotEmpty List<Long> agents) {
         Set<AgentDTO> agentsLeftDTO = ownerService.RemoveAgentsFromWarehouse(ownerId, agents, warehouseId);
 
-        return agentsLeftDTO;
+        return ResponseEntity.ok(agentsLeftDTO);
     }
 
     // TODO look at at service method
     @GetMapping("/market/warehouse/owner/{ownerId}/warehouse/{warehouseId}/agentsId")
-    public Set<Agent> setAgentsToWarehouse(@PathVariable @Min(value = 1) Long ownerId,
+    public ResponseEntity<Set<Agent>> setAgentsToWarehouse(@PathVariable @Min(value = 1) Long ownerId,
                                            @PathVariable @Min(value = 1) Long warehouseId,
                                            @RequestParam @NotEmpty List<Long> agentsId) {
 
-        return ownerService.setAgentsToWarehouse(ownerId, agentsId, warehouseId);
+        return ResponseEntity.ok(ownerService.setAgentsToWarehouse(ownerId, agentsId, warehouseId));
     }
 
     @GetMapping("/agents")
-    public Set<AgentDTO> getAllAgents() {
-        return ownerService.getAllAgents();
+    public ResponseEntity<Set<AgentDTO>> getAllAgents() {
+        return ResponseEntity.ok(ownerService.getAllAgents());
     }
 
     @GetMapping("/agents/{id}")
-    public AgentDTO getAgent(@PathVariable @Min(value = 1) Long id) {
-        return ownerService.getAgent(id);
+    public ResponseEntity<AgentDTO> getAgent(@PathVariable @Min(value = 1) Long id) {
+        return ResponseEntity.ok(ownerService.getAgent(id));
     }
 
     @PostMapping("/create/warehouse")
-    public WarehouseDTO createWarehouse(
+    public ResponseEntity<WarehouseDTO> createWarehouse(
             @RequestParam("ownerId") String email,
             @Valid @ModelAttribute Address address,
             @Valid @ModelAttribute Warehouse warehouse) {
         WarehouseCategory category = OwnerUtil.warehouseCategory(warehouse.getCategory());
-        return ownerService.createWarehouse(
+        return ResponseEntity.ok(ownerService.createWarehouse(
                 email,
                 address.getCounty(),
                 address.getTown(),
@@ -111,7 +112,7 @@ public class OwnerController {
                 warehouse.getTemperature(),
                 warehouse.getHumidityPercent(),
                 warehouse.getInventory(),
-                category);
+                category));
         // possibly return a view with a list of agents to pick from.
     }
 
@@ -125,30 +126,30 @@ public class OwnerController {
 
 
     @GetMapping("rented-warehouses/{status}")
-    public List<WarehouseDTO> getWarehouseByStatus(@PathVariable(required = false) String status) {
+    public ResponseEntity<List<WarehouseDTO>> getWarehouseByStatus(@PathVariable(required = false) String status) {
         List<WarehouseDTO> warehouseDTOlist = new ArrayList<>();
         for (Warehouse warehouse : ownerService.getAllWarehouses(status)
         ) {
             warehouseDTOlist.add(new WarehouseDTO(warehouse));
         }
 
-        return warehouseDTOlist;
+        return ResponseEntity.ok(warehouseDTOlist);
     }
 
     @GetMapping("/market/{ownerId}")
-    public List<Warehouse> fetchWarehouses(@PathVariable @Min(value = 1) Long ownerId) { //
+    public ResponseEntity<List<Warehouse>> fetchWarehouses(@PathVariable @Min(value = 1) Long ownerId) { //
         List<Warehouse> allOwnerWarehouses = ownerService.fetchWarehouses(ownerId);
         System.out.println(allOwnerWarehouses.size());
         ModelAndView modelAndView = new ModelAndView("/main/testFetch");
         modelAndView.addObject("dataList", allOwnerWarehouses);
-        return allOwnerWarehouses;
+        return ResponseEntity.ok(allOwnerWarehouses);
     }
 
     @PostMapping("rate-agent")
-    public List<AgentRatings> rateAgent(@RequestParam @Min(value = 1) Long ownerId,
+    public ResponseEntity<List<AgentRatings>> rateAgent(@RequestParam @Min(value = 1) Long ownerId,
                                         @RequestParam @Min(value = 1) Long agentId,
                                         @RequestParam @Min(value = 1) @Max(value = 5) int stars) {
-        return ownerService.rateAgent(ownerId, agentId, stars);
+        return ResponseEntity.ok(ownerService.rateAgent(ownerId, agentId, stars));
     }
 
 }

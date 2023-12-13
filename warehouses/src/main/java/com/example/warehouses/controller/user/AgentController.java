@@ -24,7 +24,7 @@ public class AgentController {
     @SneakyThrows
     @GetMapping("/{agent_id}")
     // TODO Maybe redesign to post? Also still hardcoded dates...
-    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(@PathVariable @Min(value = 1) Long agent_id) {
+    public ResponseEntity<AgentAndRentFormDTO> getAgentContractsAndRatingsByPeriod(@PathVariable @Min(value = 1) Long agent_id) {
         LocalDate startDate = LocalDate.of(2024, 5, 25);
         LocalDate endDate = LocalDate.of(2027, 6, 26);
 
@@ -46,8 +46,7 @@ public class AgentController {
                                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                                                 @RequestParam @DecimalMin("0.1") double contractFiatWorth,
                                                 @RequestParam @DecimalMin("0.1") @DecimalMax("5.0") double agentFee) {
-
-        return agentService.rentWarehouse(ownerId,
+        agentService.rentWarehouse(ownerId,
                 agentId,
                 clientId,
                 warehouseId,
@@ -55,5 +54,7 @@ public class AgentController {
                 endDate,
                 contractFiatWorth,
                 agentFee);
+
+        return ResponseEntity.ok("Successfully rented out!");
     }
 }

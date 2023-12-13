@@ -13,7 +13,6 @@ import com.example.warehouses.model.warehouse.Warehouse;
 import com.example.warehouses.repository.*;
 import com.example.warehouses.util.AgentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +50,7 @@ public class AgentService {
         this.warehouseAssignedToAgentRepository = warehouseAssignedToAgentRepository;
     }
 
-    public AgentAndRentFormDTO getAgentContractsAndRatingsByPeriod(Long agentId, LocalDate startDate, LocalDate endDate) {
+    public ResponseEntity<AgentAndRentFormDTO> getAgentContractsAndRatingsByPeriod(Long agentId, LocalDate startDate, LocalDate endDate) {
         // TODO change return type or use it somehow?
         UserImpl userImpl = usersRepository.findById(agentId).orElseThrow(() -> {
             new UserNotExististingException();
@@ -78,18 +77,18 @@ public class AgentService {
                 ratings.size(),
                 rentalFormDTO);
 
-        return agentAndRentFormDTO;
+        return ResponseEntity.ok(agentAndRentFormDTO);
     }
 
 
-    public ResponseEntity<String> rentWarehouse(Long ownerId,
-                                                Long agentId,
-                                                Long customerId,
-                                                Long warehouseId,
-                                                LocalDate startDate,
-                                                LocalDate endDate,
-                                                double contractFiatWorth,
-                                                double agentFee) {
+    public void rentWarehouse(Long ownerId,
+                              Long agentId,
+                              Long customerId,
+                              Long warehouseId,
+                              LocalDate startDate,
+                              LocalDate endDate,
+                              double contractFiatWorth,
+                              double agentFee) {
         if (!usersRepository.existsById(ownerId)) {
             throw new UserNotExististingException();
         }
@@ -118,8 +117,6 @@ public class AgentService {
 
         rentalFormRepository.save(contract);
         warehouseAssignedToAgentRepository.updateStatus("CONTRACTED", agentId, warehouseId);
-
-        return new ResponseEntity<>("Successfully rented out!", HttpStatus.ACCEPTED);
     }
 
 }
