@@ -1,2 +1,2 @@
-# Warehouse_management_system_API
+# REST-API-Warehouse-Management
 Web Warehouse management system using Spring_Boot
